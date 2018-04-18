@@ -1,0 +1,17 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-04-15T22:44:54+08:00
+
+====== LNMP搭建动态网站服务器 ======
+Created 星期日 15 四月 2018
+
+===== 基本概念 =====
+LNMP =  Linux + Nginx +MySQL+PHP
+
+===== 功能 =====
+动态网站服务
+
+===== 好处 =====
+免费、高效、扩展能力强和资源消耗低
+
+

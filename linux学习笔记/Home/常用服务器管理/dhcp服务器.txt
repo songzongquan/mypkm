@@ -1,0 +1,50 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-04-15T13:03:15+08:00
+
+====== DHCP服务 ======
+
+Created 星期日 15 四月 2018
+
+DHCP(Dynamic Host Configration Protocol) --动态主机配置协义
+
+===== 功能与能力 =====
+实现主机的ip地址、子网掩码、网关、DNS的自动配置
+
+可划分作用域
+分层管理作用域
+可以将某此ip排除在外
+可以设置ip的租期
+可以固定给一个设备指定固定的ip
+
+===== 好处 =====
+节省ip资源、提高配置效率、降低管理维护成本
+
+===== 安装包 =====
+服务名称：dhcpd
+
+==== redhat ====
+yum install dhcp
+
+==== debian ====
+apt-get install   dhcpd
+或可能是udhcpd
+
+===== 常用功能配置 =====
+其配置文件在/etc/dhcp/(u)dhcpd.conf
+
+自动分配ip地址
+...
+submet   <ip>  netmask <mask> {
+range <ip>  <ip>   ; ---ip段
+optins  key   vlaue   ;  路由网关、域名服务器等多行
+default-lease-time   <seconds>
+max-lease-time  <seconds>
+
+}
+
+ip与mac绑定
+host  主机名{
+  hardware ethernet   <mac地址>
+  fixed-address   <ip>
+}

@@ -1,0 +1,46 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-04-15T18:11:47+08:00
+
+====== 电子邮件服务器 ======
+Created 星期日 15 四月 2018
+
+===== 功能 =====
+ 发送接收电子邮件。发送的协义叫smtp(simple mail tronsfer  protocol),接收邮件的协义有pop3(post office protocol)与imap4（internet  message  access protocol）.
+名词：MUA-邮件用户代理，如foxmail ,outlook,俗称邮件客户端
+			 MTA-邮件传输代理，如sendmail,postfix,exim4
+			 MDA-邮件投递代理，如Dovocat  ，相当于小区的邮箱
+
+MTA与MDA在一个域或服务商中是配套使用的。当邮件客户端发的邮件是本域的，由mda将期转放在另一个邮箱中，如果是外域的，则由mta试着联系外域的服务器接收，连不上会暂时保存在本域，待网通后再发。外域接收到后用MDA投递到收件人邮箱。等待收件用MUA连接MDA进行接收，接收后就下载到客户端本地机了。
+
+
+===== 好处 =====
+不管人在线不在线，都可以分享数据。
+
+===== 软件包 =====
+sendmail 早期是用这个，现在用的很少，复杂。
+postfix ,（MTA）-redhat上标配
+exim4  （MTA）-debian上标配
+Dovocat   （MDA)
+
+===== 基本配置 =====
+
+其本邮箱服务配置
+1. hostname 设定邮件服务器主机名，和邮箱服务域名保持一致
+2. 为电子邮件服务解析域名，在bind的配置中配
+
+postfix
+1. 配置/etc/postfix/main.cf
+2. 创建登录邮箱的账户，也就是创建主机的普通账号
+
+{{./pasted_image001.png}}
+
+Dovecot:
+1、安装  dovecot
+2、配置：/etc/dovecot/dovecot.conf
+ 主要配置支持的协义、是否加密、可信任连接的网段、邮箱格式与路径
+
+==== 设置邮箱别名 ====
+ 配置文件 [[/etc/aliase]]
+给别名发邮件，都只是发给同一个人。
+
