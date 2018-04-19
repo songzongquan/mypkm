@@ -1,0 +1,24 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-04-19T22:47:17+08:00
+
+====== linux发展史 ======
+Created 星期四 19 四月 2018
+
+====== linux核心版本说明 ======
+版本号分为主。次，释出版 本。修改版本
+
+2.6.x之前的规则是，主，次版本号为偶数，则为稳定版
+3.0 之后的没有此说法，是按主线版本走的。
+新的主线开始后，老的要不不开发了，要不变成长期维护版本LTS
+
+====== 发行版的异同 ======
+
+内核相同，主要目录结构也相同，不同的是提供一些工具
+为了保证相同的标准，推出了LSB（Linux Standard Base) 
+还有FHS（File  Hierarchy Standard ） 来约束文件系统目录结构
+
+按安装包管理工具划分
+RPM系：Redhat   Fedora、CentOS  openSUSE
+dpkg系：Debian  Ununtu    
+源码：gentoo， 

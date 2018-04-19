@@ -2,7 +2,7 @@ Content-Type: text/x-zim-wiki
 Wiki-Format: zim 0.4
 Creation-Date: 2018-04-18T23:25:02+08:00
 
-====== 计算机硬件知识 ======
+====== 计算机概述 ======
 Created 星期三 18 四月 2018
 
-c
+
