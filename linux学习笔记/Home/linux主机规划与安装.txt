@@ -1,0 +1,51 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-04-20T14:58:03+08:00
+
+====== linux主机规划与安装 ======
+Created 星期五 20 四月 2018
+
+重点是要注意所选硬件linux是否支持，是否有驱动可提供
+
+Red Hat的硬件支持：https://hardware.redhat.com/?pagename=hcl
+Open SuSE的硬件支持：http://en.opensuse.org/Hardware?LANG=en_UK
+Linux对笔记本电脑的支持：http://www.linux-laptop.net/
+Linux对打印机的支持：http://www.openprinting.org/
+Linux硬件支持的中文HowTo：http://www.linux.org.tw/CLDP/HOWTO/hardware.html#hardware
+
+选型主要考虑用途，个人用，家用，可以自已组装，如果只是办公上网，配置要不滶不高，
+如果要是做图形类的，显示卡要好，如果做服务器用，网卡要好。如果是公司，重要的业务用，稳定性要求 同，一定要买大品牌的服务器，稳定性及服务有保障。
+
+====== 设备文件名称 ======
+设备 设备在Linux内的文件名
+SCSI/SATA/USB硬盘机 /dev/sd[a-p]
+USB闪存盘 /dev/sd[a-p] （与SATA相同）
+VirtI/O界面 /dev/vd[a-p] （用于虚拟机内）
+软盘机 /dev/fd[0-7]
+打印机 /dev/lp[0-2] （25针打印机）
+/dev/usb/lp[0-15] （USB 接口）
+鼠标
+/dev/input/mouse[0-15] （通用）
+/dev/psaux （PS/2界面）
+/dev/mouse （当前鼠标）
+CDROM/DVDROM
+/dev/scd[0-1] （通用）
+/dev/sr[0-1] （通用，CentOS 较常见）
+/dev/cdrom （当前 CDROM）
+磁带机
+/dev/ht0 （IDE 界面）
+/dev/st0 （SATA/SCSI界面）
+/dev/tape （当前磁带）
+IDE硬盘机 /dev/hd[a-d] （旧式系统才有）
+
+====== 关于虚拟机 ======
+现代的cpu都有虚拟化微指令集，可以将一个机器分成n个虚拟机
+常用的虚拟机软件有virtualbox, windows,linux上都可用。
+linux上还可以用kvm，是自带的。
+virtualbox vmware都是软件实现的全功能虚拟机，cpu没有虚拟化也可以用。kvm是基于硬件的。xen的新版本也是基于硬件的。它依赖于cpu的虚拟化指令
+在支持 虚拟化的情况下，vbox 和 kvm 的性能差不多，主要是面向对象不同：kvm使用于服务器，vbox使用于桌面应用。
+
+===== KVM =====
+全程是kernel  based virtual machine,基于内核的虚拟机。
+Kernel-based Virtual Machine的简称，是一个开源的系统虚拟化模块，自Linux 2.6.20之后集成在Linux的各个主要发行版本中。它使用Linux自身的调度器进行管理，所以相对于Xen，其核心源码很少。KVM目前已成为学术界的主流VMM之一。
+KVM的虚拟化需要硬件支持（如Intel VT技术或者AMD V技术)。是基于硬件的完全虚拟化。而Xen早期则是基于软件模拟的Para-Virtualization，新版本则是基于硬件支持的完全虚拟化。但Xen本身有自己的进程调度器，存储管理模块等，所以代码较为庞大。广为流传的商业系统虚拟化软件VMware ESX系列是基于软件模拟的Full-Virtualization。
