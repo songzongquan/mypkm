@@ -1,0 +1,64 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-04-21T19:28:21+08:00
+
+====== 安装方式与选项 ======
+Created 星期六 21 四月 2018
+
+1. CentOS7 中自带KVM管理工具，在应用程序-系统管理-虚拟机管理员
+2. 小于2T的磁盘，linux会自动用MBR方式分区，如果强制用GPT分区，那么须要启动时加启动参数 "inst.gpt"
+3. 在安装界面菜单按tab键
+
+图形安装很简单，按界面提示一步一步安装就行。在此略过
+注意 如果要是用gpt方式分区，要先分一个2m的biosboot类型分区。redhat的缺省文件系统是xfs,比较适合大容量硬盘，格式化比较快
+
+====== 核心参数 ======
+
+有时在安装笔记本电脑时，因为它的特殊硬件特性，需要在内核启动时，指定一些核心参数。关掉一些功能
+如nofb  apm=off acpi=off pci=noacpi
+
+apm是早期的高级电源管理
+acpi则时最近的电源管理模块
+这些都是硬件支持的，但笔记本可能都不用这些
+
+====== parted命令分区 ======
+例：
+[anaconda root@localhost /]# parted /dev/vda mklabel msdos # 创建 MBR 分区
+[anaconda root@localhost /]# parted /dev/vda mkpart primary 1M 2G # 创建 [[/boot]]
+
+[anaconda root@localhost /]# parted /dev/vda mkpart extended 152G 100% # 创建延伸分区
+[anaconda root@localhost /]# parted /dev/vda mkpart logical 152G 100% # 创建逻辑分区
+[anaconda root@localhost /]# parted /dev/vda print # 显示分区结果
+
+在centos安装过程中可以ctrl+alt+f2进入shell, 操作完后，可以ctrl+alt+f6返回图形化安装界面。
+
+====== 救援 MBR 内的开机管理程序与设置多重开机菜单 ======
+也即先安装linux，后安装window后，MBR被 windows重写。
+1. 放入原版光盘
+2. 重启
+3. 选择recure模式
+4. 如果 发现有linux,则会提示你继续
+5. 输入以下指令：
+sh-4.2# chroot /mnt/sysimage
+sh-4.2# grub2-install /dev/vda
+Installing for i386-pc platform.
+Installation finished. No error reported.
+sh-4.2# exit
+sh-4.2# reboot
+6. 接下来修改启动菜单
+[root@study ~]# vim /etc/grub.d/40_custom
+#!/bin/sh
+exec tail -n +3 $0
+# This file provides an easy way to add custom menu entries. S# menu entries you want to add after this comment. Be careful # the 'exec tail' line above.
+menuentry "Windows 7" {
+set root=' ( hd0,3 )'
+chainloader +1
+}
+[root@study ~]# vim /etc/default/grub
+GRUB_TIMEOUT= 30 # 将 5 秒改成 30 秒长一些
+...
+[root@study ~]# grub2-mkconfig -o /boot/grub2/grub.cfg
+
+
+
+
