@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-04-24T17:26:48+08:00
+
+====== 管理命令 ======
+Created 星期二 24 四月 2018
+
+====== apt-get ======

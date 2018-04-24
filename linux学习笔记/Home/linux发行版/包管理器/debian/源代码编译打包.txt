@@ -1,0 +1,25 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-04-24T17:27:37+08:00
+
+====== 源代码编译打包 ======
+Created 星期二 24 四月 2018
+
+前题，要安装打包工具包
+
+build-essential  dpkg-dev  devscripts
+0、下载到源码包 apt-get source  mypackage 
+
+1、首先安装依赖包
+apt-get build-dep mypackage
+2、构建打包
+dpkg-buildpackage -us -uc
+3、安装包
+debi  
+
+如果压缩包没解压
+dpkg-source -x   grep_*.dsc 
+
+====== 如何调节缺省编译参数？ ======
+如果想要修改编译的规则
+在debain/ruls中找文件来改，ruls其实就是Makefile
