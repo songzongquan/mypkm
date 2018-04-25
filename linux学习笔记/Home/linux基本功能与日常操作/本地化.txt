@@ -1,0 +1,15 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-04-24T21:38:35+08:00
+
+====== 本地化 ======
+Created 星期二 24 四月 2018
+
+====== 查看当前支持语言 ======
+locale
+设置语言
+LANG=en_US.utf8   只控制显示
+LC_ALL=zh_CN.utf8  其它的控制
+
+
+

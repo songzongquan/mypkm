@@ -1,0 +1,11 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-04-24T21:52:47+08:00
+
+====== 计算器程序 ======
+Created 星期二 24 四月 2018
+
+====== bc ======
+交互式计算程序
+quit退出。
+缺省只支持整数运算。想支持小数，用scale=3 表示保留3位小数。

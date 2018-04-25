@@ -1,0 +1,39 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-04-24T22:29:14+08:00
+
+====== 命令在线帮助 ======
+Created 星期二 24 四月 2018
+
+命令这么多，参数这么多，要背吗？当然不用。
+
+====== man ======
+详细操作手册,不仅可以查命令，也可以查配置文件格式、函数等，手册分成好几类，用不同的数字代表 
+如man date [number]，number种类如下：
+
+{{./pasted_image.png}}
+
+man 环境中有一些键盘命令如下：
+{{./pasted_image001.png}}
+
+man 对应的文档路径，可以在/etc/manpage.config中查看。也可以修改
+
+===== man -f  cmd 可以查看cmd分布在哪一类手册 中，相当于whatis =====
+
+===== man -k   keyword   查询出包含keyword的在线手册,相当于apropos =====
+
+注，要使用whatis,apropos需要先mandb命令，创建更新数据库。
+
+man对应的文档文件在/usr/share/man
+
+====== info ======
+
+比man好的一点是，它分页、带超连接。每一页叫node，可以在文档显示时用下面的快捷键
+{{./pasted_image002.png}}
+info的文档文件在/usr/share/info
+
+====== --help 选项 ======
+简单的说明
+
+===== 其它的帮助文档 =====
+在/usr/share/doc

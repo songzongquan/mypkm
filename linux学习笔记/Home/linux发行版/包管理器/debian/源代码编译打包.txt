@@ -18,7 +18,7 @@ dpkg-buildpackage -us -uc
 debi  
 
 如果压缩包没解压
-dpkg-source -x   grep_*.dsc 
+dpkg-source -x   *.dsc 
 
 ====== 如何调节缺省编译参数？ ======
 如果想要修改编译的规则

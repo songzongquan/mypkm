@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-04-24T21:39:07+08:00
+
+====== 显示日期 ======
+Created 星期二 24 四月 2018
+
+====== date ======
+
+====== date +%Y/%m/%d ======
+按2018/04/23方式显示
+
+====== date +%H:%M ======
+按21：46格式显示时间 
