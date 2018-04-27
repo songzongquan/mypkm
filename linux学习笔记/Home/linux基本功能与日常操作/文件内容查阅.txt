@@ -8,4 +8,22 @@ Created 星期四 26 四月 2018
 {{./pasted_image.png}}
 
 ===== 直接检视 =====
-cat  filename  ：  
+cat  filename  
+显示行号，包括空行 -n
+显示行号，但空行不带  -b
+nl  比cat -n 的行号在显示上更灵活 
+
+od 可以按字符，及各种进制 显示
+[root@study ~]# od [-t TYPE]
+ 文件
+选项或参数:
+-t :后面可以接各种“类型 (TYPE)”的输出,例如:
+a
+ :利用默认的字符来输出;
+c
+ :使用 ASCII 字符来输出
+d[size] :利用十进制(decimal)来输出数据,每个整数占用 size Bytes ;
+f[size] :利用浮点数值(floating)来输出数据,每个数占用 size Bytes ;
+o[size] :利用八进位(octal)来输出数据,每个整数占用 size Bytes ;
+x[size] :利用十六进制(hexadecimal)来输出数据,每个整数占用 size Bytes ;
+
