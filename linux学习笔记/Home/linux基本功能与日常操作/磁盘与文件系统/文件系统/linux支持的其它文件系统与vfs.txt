@@ -1,0 +1,25 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-04-30T17:13:17+08:00
+
+====== linux支持的其它文件系统与vfs ======
+Created 星期一 30 四月 2018
+
+===== 标准为ext2/ext3/ext4 =====
+
+===== 支持的其它文件系统 =====
+统,以及 Windows 的 FAT 文件系统等等, 都能够被 Linux 所支持喔!常见的支持文件系统有:
+传统文件系统:ext2 / minix / MS-DOS / FAT (用 vfat 模块) / iso9660 (光盘)等等;
+日志式文件系统: ext3 /ext4 / ReiserFS / Windows' NTFS / IBM's JFS / SGI's XFS / ZFS
+网络文件系统: NFS / SMBFS
+
+其中，ReiserFS 对小文件有好处。xfs更快。支持的文件系不止上面这些。
+
+想要知道你的 Linux 支持的文件系统有哪些,可以察看下面这个[root@study ~]# ls -l /lib/modules/$ ( uname -r ) /kernel/fs
+系统目前已载入到内存中支持的文件系统则有:
+[root@study ~]# cat /proc/filesystems
+
+
+===== VFS 虚拟文件系统交换 =====
+一个目录树可根据需要 挂载多种文件系统，但我们在读写文件时并不需要指定 ，仍采用统一的接口方式。这是因为os中有vfs这样的功能，帮我们自动切换处理。
+
