@@ -1,0 +1,12 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-06T18:20:48+08:00
+
+====== 以文件作为文件系统并挂载 ======
+Created 星期日 06 五月 2018
+
+1. 创建一个大文件：dd
+2. 格式化它  mkfs.ext4  -f  文件名
+3. 挂载它  用-o loop 
+
+常用来构建 一虚拟机的文件系统。

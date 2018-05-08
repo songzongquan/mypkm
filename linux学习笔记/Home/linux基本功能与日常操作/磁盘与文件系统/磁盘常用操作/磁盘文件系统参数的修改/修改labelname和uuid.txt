@@ -1,0 +1,13 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-06T13:28:10+08:00
+
+====== 修改labelname和uuid ======
+Created 星期日 06 五月 2018
+
+===== 修改xfs的 =====
+
+{{./pasted_image.png}}
+
+===== 修改ext4的 =====
+{{./pasted_image001.png}}

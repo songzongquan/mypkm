@@ -1,0 +1,51 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-06T19:11:49+08:00
+
+====== 文件压缩打包备份 ======
+Created 星期日 06 五月 2018
+
+===== 常用压缩工具与压缩文件常见的扩展名 =====
+{{./pasted_image.png}}
+
+其中 compress已经基本上不流行了; 而bzip2,xz 的压缩比更高一些。
+
+===== 压缩比与压缩时间 =====
+
+压缩比  zip <gzip< bzip2< xz
+压缩比高，时间 也越长
+
+===== 直接查看压缩文件的工具 =====
+zcat [[/bzcat]] [[/xzcat]] ,以此类推，
+zmore
+zgrep
+zless
+
+===== 打包指令 =====
+tar -zxtcvf      压缩文件名   [目录]
+z表示用gzip压缩工具
+z可能换民j表示用bzip2 ，J表示用xz
+
+x表示解包动作
+c表示打包动作
+v是查看过程
+t表示检查文件
+f 表示后面跟的文件名
+
+===== 从压缩包中提取指定文件 =====
+tar -zxv 压缩包  文件名
+
+===== 解压到指定目录 =====
+tar  zxvf  压缩包 -C  目录
+
+===== 打包时排除某文件 =====
+tar zcvf   --exclude=FILE  。。。
+
+===== 按时间 备份更新的文件 =====
+--newer="filename"
+--newer-mtime="2018/01/01"
+
+===== 备份到磁带机 =====
+tar -cvf  [[/dev/st0]]  [[/home]] /etc
+
+
