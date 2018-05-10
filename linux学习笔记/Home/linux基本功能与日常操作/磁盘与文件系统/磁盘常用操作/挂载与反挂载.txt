@@ -1,0 +1,29 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-03T23:11:06+08:00
+
+====== 挂载与反挂载 ======
+Created 星期四 03 五月 2018
+
+{{./pasted_image.png}}
+
+使用该类型的文件系统挂载起来啊!那么系统有没有指定哪些类型的 filesystem 才需要进行上述的挂载测试呢? 主要是参考下面这
+两个文件:
+/etc/filesystems:系统指定的测试挂载文件系统类型的优先顺序;
+/proc/filesystems:Linux 系统已经载入的文件系统类型。
+那我怎么知道我的 Linux 有没有相关文件系统类型的驱动程序呢?我们 Linux 支持的文件系统之驱动程序都写在如下的目
+录中:
+/lib/modules/$(uname -r)/kernel/fs/
+例如 ext4 的驱动程序就写在“/lib/modules/$ (uname -r)/kernel/fs/ext4/” 这个目录下啦!
+
+===== 中文语系文件系统挂载 =====
+加-o  codepage=950,iocharset=utf8|gbk
+
+
+===== 重新挂载 =====
+一般用于/目录的挂载，因为/目录不能缷载，如果想改变选项，只能用这个方法
+mount  -o remount,rw,auto   /
+
+===== 挂载目录 =====
+mount --bind  srcdir   destdir
+  

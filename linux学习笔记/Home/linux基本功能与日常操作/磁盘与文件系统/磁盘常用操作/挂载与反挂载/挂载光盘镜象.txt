@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-06T18:12:02+08:00
+
+====== 挂载光盘镜象 ======
+Created 星期日 06 五月 2018
+
+===== loop =====
+mount -o loop  *.iso    /media

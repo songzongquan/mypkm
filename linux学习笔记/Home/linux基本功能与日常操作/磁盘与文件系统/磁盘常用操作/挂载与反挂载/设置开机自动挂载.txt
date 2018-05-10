@@ -1,0 +1,27 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-06T13:38:47+08:00
+
+====== 设置开机自动挂载 ======
+Created 星期日 06 五月 2018
+
+===== /etc/fstab =====
+1. 将想要挂载的文件系统挂载命令的参数按固定的格式放在这个文件里即可
+2. 启动后系统读取此文件 一个一个的执行
+3. 格式如下
+{{./pasted_image.png}}
+4. 文件系统参数解释
+{{./pasted_image001.png}}
+6. 限制 
+
+根目录 / 是必须挂载的,而且一定要先于其它 mount point 被挂载进来。
+其它 mount point 必须为已创建的目录,可任意指定,但一定要遵守必须的系统目录架构原则 (FHS )
+所有 mount point 在同一时间之内,只能挂载一次。
+所有 partition 在同一时间之内,只能挂载一次。
+如若进行卸载,您必须先将工作目录移到 mount point(及其子目录) 之外。
+
+
+===== /etc/mtab =====
+
+/etc/fstab 是开机时的配置文件,不过,实际 filesystem 的挂载是记录到 /etc/mtab 与 /proc/mounts 这两个文件当中的。
+

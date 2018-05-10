@@ -1,0 +1,20 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-03T22:41:34+08:00
+
+====== 格式化-创建文件系统 ======
+Created 星期四 03 五月 2018
+
+mkfs.xxx
+xxx是文件系统类型名
+
+如 mkfs.ext4
+[root@study ~]# mkfs.ext4 [-b size] [-L label]
+ 设备名称
+选项与参数:
+-b :设置 block 的大小,有 1K, 2K, 4K 的容量,
+-L :后面接这个设备的标头名称。
+
+
+	mkfs.xfs
+每一个类型的命令的参数 也不一样。要具体的了解。

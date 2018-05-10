@@ -1,0 +1,16 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-04-27T23:27:26+08:00
+
+====== 文件特殊权限 ======
+Created 星期五 27 四月 2018
+
+权限1 ：  让当前用户运行命令时，临时拥有命令文件属主的身份。即SUID，
+			  只用于可执行文件，且使用者本向要具有它的x权限，
+		
+		chmod u+s  cmdfile   或 chmod  4775 cmdfile  ,4表示 suid
+权限2：  简单的说，执行者临时 具有了文件属组的特殊。如权限等，对目录来讲，在该目录中建新文件或目录 都 属于该组。
+	  chmod g+s cmdfile
+
+权限3 :  当大家都 有rw权时，令只有自已创建的文件，目录 ，自已可以删除。其它人不行。（本来是都可以的。）
+	   chmod o+t  cmdline
