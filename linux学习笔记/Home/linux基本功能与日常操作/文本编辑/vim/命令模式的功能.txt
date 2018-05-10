@@ -1,0 +1,13 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-10T00:55:00+08:00
+
+====== 命令模式的功能 ======
+Created 星期四 10 五月 2018
+
+[[+光标移动]]
+[[+搜索与替换]]
+[[+删除]]
+[[+复制粘贴]]
+
+
