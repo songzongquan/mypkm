@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-15T22:48:13+08:00
+
+====== 多窗口 ======
+Created 星期二 15 五月 2018
+
+===== 分隔水平窗口 =====
+：sp [filename]
+
+===== 切换窗口 =====
+1. 向上切换 Ctrl+w k
+2. 向下切换 Ctrl+w  j
+3. 关闭窗口 ：q

@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-15T23:07:02+08:00
+
+====== 字符集转换 ======
+Created 星期二 15 五月 2018
+
+iconv --list 列出支持的字符集
+
+iconv -f src -t target  filename

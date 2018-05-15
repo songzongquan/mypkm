@@ -1,0 +1,15 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-15T23:05:35+08:00
+
+====== 环境设置 ======
+Created 星期二 15 五月 2018
+
+===== 在.vimrc中设置 =====
+
+===== 查看所有的设置 项 =====
+
+[[:set]] all
+
+
+===== .viminfo 文件保存了你所有操作状态 =====

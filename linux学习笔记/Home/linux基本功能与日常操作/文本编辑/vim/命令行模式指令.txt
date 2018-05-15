@@ -24,3 +24,10 @@ Created 星期五 11 五月 2018
 ：set  xxx=yyy
 1. 设置显示行号： set nu
 2. 去掉行号：set nonu
+
+===== 多文件编辑 =====
+vi  filename1  filename2
+1. 切换到下一个文件：n
+2. 切换到上一个文件：N
+
+
