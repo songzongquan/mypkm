@@ -1,0 +1,33 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-11T01:05:01+08:00
+
+====== 命令行模式指令 ======
+Created 星期五 11 五月 2018
+
+===== 保存指令 =====
+
+1. 保存：w
+2. 用指定的文件名保存：w 文件名
+3. 保存指定行为一个文件 ：n1,n2  w 文件名
+
+
+===== 退出vim =====
+1. 一般退出：q
+2. 强制 退出：q！
+3. 保存并退出：wq
+
+===== 执行shell =====
+:! command
+
+===== 设置vim的环境 =====
+：set  xxx=yyy
+1. 设置显示行号： set nu
+2. 去掉行号：set nonu
+
+===== 多文件编辑 =====
+vi  filename1  filename2
+1. 切换到下一个文件：n
+2. 切换到上一个文件：N
+
+

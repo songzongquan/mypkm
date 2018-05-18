@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-15T22:46:41+08:00
+
+====== 多文件编辑 ======
+Created 星期二 15 五月 2018
+
+===== 同时打开多个文件 =====
+vim  filename   filename2
+
+===== 在多个文件上切换 =====
+：n  下一个
+：N  上一个
+

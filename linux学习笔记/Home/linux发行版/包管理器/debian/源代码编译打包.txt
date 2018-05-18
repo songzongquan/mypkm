@@ -18,7 +18,10 @@ dpkg-buildpackage -us -uc
 debi  
 
 如果压缩包没解压
-dpkg-source -x   *.dsc 
+dpkg-source   -x   *.dsc 
+
+如果报找不到公钥，执行下面命令
+ aptitude install debian-keyring   
 
 ====== 如何调节缺省编译参数？ ======
 如果想要修改编译的规则
