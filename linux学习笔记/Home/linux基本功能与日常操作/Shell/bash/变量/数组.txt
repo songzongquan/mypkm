@@ -1,0 +1,22 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-25T00:11:46+08:00
+
+====== 数组 ======
+Created 星期五 25 五月 2018
+
+===== 声明变量类型 =====
+
+declare  [-aixr] 变量 
+
+-a 即声明 一个数组，
+-i  整数
+-x 自定义变量 
+-r  只读变量 
+
+===== 数组赋值 =====
+var[1]=hello
+var[2]=world
+
+===== 数组读取 =====
+echo ${var[1]}

@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-24T23:17:09+08:00
+
+====== 指令下达 ======
+Created 星期四 24 五月 2018
+
+即命令后回车
+如果一行输入不完，可在行末用‘\’，然后回车换行， 
