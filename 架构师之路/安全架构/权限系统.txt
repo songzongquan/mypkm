@@ -1,0 +1,15 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-28T18:55:48+08:00
+
+====== 权限系统 ======
+Created 星期一 28 五月 2018
+
+下面的参考网站和我选取的思路90%一样。
+
+
+参考
+
+https://blog.csdn.net/wabiaozia/article/details/73412204
+
+https://my.oschina.net/tinyframework/blog/675439

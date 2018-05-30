@@ -1,0 +1,21 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-28T12:12:40+08:00
+
+====== SSO原理总结 ======
+Created 星期一 28 五月 2018
+
+ 
+单点登录是指用户在某个应用系统上登录之后，进入其子应用或相关应用系统可以免去登录步骤，从而实现一次登录，到处操作。而实现单点登录主要有一下三种方式：　　
+
+Auth via cookie
+{{./pasted_image.png?width=620}}
+
+
+Auth via jsonp
+{{./pasted_image001.png?width=620}}
+
+
+Auth via redirect
+
+{{./pasted_image002.png?width=620}}

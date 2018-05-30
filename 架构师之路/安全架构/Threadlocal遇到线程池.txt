@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-28T19:36:53+08:00
+
+====== Threadlocal遇到线程池 ======
+Created 星期一 28 五月 2018
+
+参考：
+https://www.jianshu.com/p/85d96fe9358b

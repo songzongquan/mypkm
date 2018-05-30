@@ -1,0 +1,21 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-28T12:12:33+08:00
+
+====== OAuth原理 ======
+Created 星期一 28 五月 2018
+
+OAuth认证是为了做到第三方应用在未获取到用户敏感信息（如：账号密码、用户PIN等）的情况下，能让用户授权予他来访问开放平台（主要访问平台中的资源服务器Resource Server）中的资源接口。
+
+其流程主要是：
+
+	用户首先要保持登录，即已认证通过的状态
+	第三方应用请求用户授权（我理解是弹出一个显示的操作界面让用户确认给第三方授权）
+	用户授权成功之后会向Authorization Server（认证服务器）请求“授权码”（指authorization_code而不是最终的access_token），请求中还会携带redirect_uri（跳转至第三方应用的链接）
+	获得“授权码”之后用户所在的浏览器网页将跳转到redirect_uri（即第三方应用）
+	第三方应用携带“授权码”和应用认证信息（client_id & client_secret）到Authorization Server换取access_token
+	第三方应用就可以在访问开放平台时带上access_token
+
+ 
+
+ 

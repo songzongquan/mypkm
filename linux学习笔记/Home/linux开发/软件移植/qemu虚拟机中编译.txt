@@ -1,0 +1,11 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-18T15:21:39+08:00
+
+====== qemu虚拟机中编译 ======
+Created 星期五 18 五月 2018
+参考下文　：
+https://blog.csdn.net/mephp/article/details/5123044
+https://www.aurel32.net/info/debian_mips_qemu.php --貌似现在在debian 官网上找不到专门为qemu编译的安装镜象了．怎么办？
+
+这个性能比较差，但直接在嵌入式机上要快些．
