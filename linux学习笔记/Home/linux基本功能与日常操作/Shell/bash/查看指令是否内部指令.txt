@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-24T23:15:33+08:00
+
+====== 查看指令是否内部指令 ======
+Created 星期四 24 五月 2018
+
+type  cmdname

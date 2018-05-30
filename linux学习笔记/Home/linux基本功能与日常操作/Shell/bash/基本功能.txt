@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-24T23:02:41+08:00
+
+====== 基本功能 ======
+Created 星期四 24 五月 2018
+
+1. 支持历史 命令 history,   历史命令保存在.bash_history，本次登录历史 暂存在内存中。
+2. tab 自动补全指令和文件
+3. 别名 alias
+4. 作业控制  前台后台转
+5. 程序化 脚本能力
+6. 支持通配符
+

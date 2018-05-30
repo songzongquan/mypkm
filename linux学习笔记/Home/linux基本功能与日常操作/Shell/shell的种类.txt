@@ -1,0 +1,20 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-24T22:55:16+08:00
+
+====== shell的种类 ======
+Created 星期四 24 五月 2018
+
+1. bash
+2. tcsh
+3. csh
+
+===== 查看系统支持的shell =====
+[[/etc/shells]]
+
+===== 了解当前用的是哪个shell =====
+根据当前登录用户，到/etc/passwd中查最后一个字段的值
+其中有一个/sbin/nologin表示没有shell
+
+===== 最常用的shell =====
+bash

@@ -1,0 +1,11 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-25T00:08:03+08:00
+
+====== 从键盘读取值到变量 ======
+Created 星期五 25 五月 2018
+
+read  [-pt]  var
+
+-p 后面跟提示语
+-t 后面跟秒数。
