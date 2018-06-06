@@ -1,0 +1,22 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-06-01T00:31:21+08:00
+
+====== 历史命令 ======
+Created 星期五 01 六月 2018
+
+===== history =====
+
+history  10 看最近10条
+history -c 全部清除
+history -r 从bash_history加载
+-w 强制写入bash_history文件 
+
+在退出时，系统会将最近的HISTSIZE个命令写入文件 
+下次进入 时，会加载 
+
+===== 快速执行历史命令 =====
+
+1. 执行指定命令 ： ！num  num为编号
+2. 执行最近执行的前缀为command 的命令： !command
+3. 执行上一个命令 ！！

@@ -1,0 +1,8 @@
+digraph a{
+  a ->b[label=xxx,color=red,style=dotted];
+  a ->c;
+  b ->e;
+  b -> f;
+  c-> i;
+  a[shape=box];
+}

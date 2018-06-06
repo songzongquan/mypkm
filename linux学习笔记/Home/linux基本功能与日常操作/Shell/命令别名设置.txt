@@ -1,0 +1,20 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-06-01T00:24:28+08:00
+
+====== 命令别名设置 ======
+Created 星期五 01 六月 2018
+
+别名可以简化常用命令的输入
+
+===== 设置 =====
+alias
+如： alias rm='rm -i'
+
+===== 取消 =====
+unalias
+例如 unalias rm 
+
+===== 查看现有 别名 =====
+alias 
+
