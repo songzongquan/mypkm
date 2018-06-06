@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-18T14:21:53+08:00
+
+====== 利用crosstools脚本编译出交叉编译工具链 ======
+Created 星期五 18 五月 2018
+
+请参考以下地址：
+https://www.cnblogs.com/zzmv/p/5128998.html
+https://blog.csdn.net/woshidahuaidan2011/article/details/51344312

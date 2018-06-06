@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-29T09:56:54+08:00
+
+====== OO设计 ======
+Created 星期二 29 五月 2018
+
+===== plantUML =====
+它是java程序，但基于graphiz
+可以画全部的uml图，效果很漂亮
+
+参考
+
+https://blog.csdn.net/zxc123e/article/details/71837923

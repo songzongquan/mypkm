@@ -1,0 +1,11 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-05-30T10:09:09+08:00
+
+====== python ======
+Created 星期三 30 五月 2018
+
+python语言常见的库和框架
+I/O，OLAP，Web开发，高性能网络通信，测试，爬虫
+现在流行于人工智能.
+
