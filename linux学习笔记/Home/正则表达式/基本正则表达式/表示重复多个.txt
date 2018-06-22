@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-06-22T17:49:38+08:00
+
+====== 表示重复多个 ======
+Created 星期五 22 六月 2018
+
+===== 用星号*表示 =====
+如.* 表示多个任意字符.

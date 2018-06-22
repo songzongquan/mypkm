@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-06-22T18:04:03+08:00
+
+====== 在文件中查找字符 ======
+Created 星期五 22 六月 2018
+
+===== grep =====

@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-06-22T17:36:11+08:00
+
+====== 行首行尾表示 ======
+Created 星期五 22 六月 2018
+
+===== 行首  ^ =====
+
+===== 行尾  $ =====

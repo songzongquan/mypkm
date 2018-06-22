@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-06-22T17:49:16+08:00
+
+====== 任意一单字符 ======
+Created 星期五 22 六月 2018
+
+小数点表示 ,即.
