@@ -1,0 +1,29 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-06-14T21:33:06+08:00
+
+====== 字符转换命令 ======
+Created 星期四 14 六月 2018
+
+===== tr  - 替换或删除一个字符 =====
+
+例子：tr -d '\r'   string   删除文件中的换行符
+		 tr -s '[a-z]'  '[A-Z]'  myfile 小写字母都替换成大写 
+
+
+===== col - 将tab键换成空白符 =====
+例子： col -x  string
+
+===== join - 将有关联的行合并 =====
+
+例子： join -t ':'  [[/etc/passwd]]  [[/etc/shadow]]
+以：为分隔 ，缺省是空白 ，以第一列为关联列，将两文件的相同行合并。
+
+===== paste - 直接按顺序将两文件的每一行合并 =====
+例：paste  -d ':'  file1  file2   
+-d 后面跟的是分隔符，缺省是tab
+
+===== expand - tab转空白 =====
+
+===== unexpand 空白 转tab =====
+注意 ，必须4个空格才会转换成tab，

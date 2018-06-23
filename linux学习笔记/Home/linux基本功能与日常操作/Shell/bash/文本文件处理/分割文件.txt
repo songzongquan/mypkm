@@ -1,0 +1,12 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-06-14T22:41:46+08:00
+
+====== 分割文件 ======
+Created 星期四 14 六月 2018
+
+===== split =====
+
+将大文件分成小文件
+-b  N(m|k|b) 按大小分
+-l  N  按行数分

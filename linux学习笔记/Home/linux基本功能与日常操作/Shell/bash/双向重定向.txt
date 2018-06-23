@@ -1,0 +1,12 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-06-07T22:57:10+08:00
+
+====== 双向重定向 ======
+Created 星期四 07 六月 2018
+
+===== tee =====
+同时重定向到文件也屏幕
+
+tee  [-a]  file 
+

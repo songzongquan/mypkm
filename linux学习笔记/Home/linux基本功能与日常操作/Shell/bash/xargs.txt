@@ -1,0 +1,13 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-06-14T22:52:12+08:00
+
+====== xargs ======
+Created 星期四 14 六月 2018
+
+这个命令功能就是接收标准输出，并以空白字符或断行区分，转为参数 作为后面指定的命令的输入参数，重。复调用指定命令
+
+它常常用来为本身不支持管道的命令建立类似管道的功能。
+
+例子：
+find [[/usr/sbin]]  | xargs ls -l

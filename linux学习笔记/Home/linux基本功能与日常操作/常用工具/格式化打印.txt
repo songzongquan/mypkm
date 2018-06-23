@@ -1,0 +1,36 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-06-22T23:15:14+08:00
+
+====== 格式化打印 ======
+Created 星期五 22 六月 2018
+
+===== printf =====
+
+打印的内容主要对用tab或空白分隔的数据文件的内容。
+
+[dmtsai@study ~]$ printf ' 打印格式 ' 实际内容
+选项与参数:
+关于格式方面的几个特殊样式:
+\a
+警告声音输出
+\b
+倒退键(backspace)
+\f
+清除屏幕 (form feed)
+\n
+输出新的一行
+\r
+亦即 Enter 按键
+\t
+水平的 [tab] 按键
+\v
+垂直的 [tab] 按键
+\xNN NN 为两位数的数字,可以转换数字成为字符。
+关于 C 程序语言内,常见的变量格式
+%ns
+那个 n 是数字, s 代表 string ,亦即多少个字符;
+%ni
+那个 n 是数字, i 代表 integer ,亦即多少整数码数;
+%N.nf 那个 n 与 N 都是数字, f 代表 floating (浮点),如果有小数码数,
+假设我共要十个位数,但小数点有两位,即为 %10.2f 啰
