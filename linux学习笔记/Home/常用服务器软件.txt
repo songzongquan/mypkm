@@ -2,6 +2,6 @@ Content-Type: text/x-zim-wiki
 Wiki-Format: zim 0.4
 Creation-Date: 2018-04-15T13:02:45+08:00
 
-====== 常用服务器管理 ======
+====== 常用服务器软件 ======
 Created 星期日 15 四月 2018
 

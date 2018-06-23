@@ -1,0 +1,15 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-06-23T16:41:58+08:00
+
+====== 跟踪与debug ======
+Created 星期六 23 六月 2018
+
+sh执行时加-n等选项,可以在执行前看语法上有没有问题.
+美中不足的是,并没有单步调试功能.  只是进行语法检查,以及执行过程的暴露.
+
+[dmtsai@study ~]$ sh [-nvx] scripts.sh
+选项与参数：
+-n ：不要执行 script，仅查询语法的问题；
+-v ：再执行 sccript 前，先将 scripts 的内容输出到屏幕上；
+-x ：将使用到的 script 内容显示到屏幕上，这是很有用的参数！

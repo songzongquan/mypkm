@@ -1,0 +1,18 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-06-23T12:10:02+08:00
+
+====== 脚本执行方式的差异 ======
+Created 星期六 23 六月 2018
+
+===== 第一类: 用 sh script.sh     ,bash script.sh  以及./script.sh =====
+
+
+
+这些方式,本质上都是在shell进程下的子进程中执行, 脚本中声明 的变量用完后就消失 了.不会影响当前shell
+
+===== 第二类: source  或 . 命令 =====
+
+ 这种的话,它声明的变量执行完后,在当前shell中仍存在.
+
+
