@@ -1,0 +1,46 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-06-23T10:58:36+08:00
+
+====== shell脚本语言 ======
+Created 星期六 23 六月 2018
+
+就是能把各种shell命令能够串起来写成程序的东东.
+它不需要编译即可执行,
+包括了高级语言的基本语法,且支持调试
+
+用处:
+1. 批处理
+2. 系统的服务 ,和自启动功能
+3. 所有需要自动化的东东.
+
+例子:
+[dmtsai@study bin]$ vim hello.sh
+#!/bin/bash
+# Program:
+# This program shows "Hello World!" in your screen.
+# History:
+# 2015/07/16 VBird First release
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
+export PATH
+echo -e "Hello World! \a \n"
+exit 0
+
+===== 一些规则 =====
+1. 第一行要声明解释器命令
+2. #号后面表示注释
+3. exit 0 表示命令完成返回0值.
+4. shell碰到回车换行就执行,一行一行执行.
+5. 命令文件可以sh  hello.sh  或 bash hello.sh来执行, 表示用sh/bash来解释运行.
+6. 如果文件已经是可执行的,那么也可以./hello.sh来执行. 前题是要在第一行声明正确的解释器
+7. 如果一行命令太长,可以用\符号来断行. 
+
+===== 写脚本的好习惯 =====
+
+script 的功能；
+script 的版本信息；
+script 的作者与联络方式；
+script 的版权宣告方式；
+script 的 History （历史纪录）；
+script 内较特殊的指令，使用“绝对路径”的方式来下达；
+script 运行时需要的环境变量预先宣告与设置。
