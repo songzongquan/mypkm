@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-06-25T22:09:54+08:00
+
+====== 星期一 25 6月 2018 ======
+
+sed的另外一种用途，从html或xml中按照tag对应关系，筛选打印出指定的tag内容，使用了正则中的p命令，好像默认就没有“不能处理多行内容”以及“贪婪性”的问题，很好用，很强大：
+
+	$ sed -n -e '/<title>/p' -e '/<text /,/<\/text>/p' from.xml

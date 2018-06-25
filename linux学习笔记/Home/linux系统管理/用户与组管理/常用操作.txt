@@ -1,0 +1,17 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-06-25T23:09:18+08:00
+
+====== 常用操作 ======
+Created 星期一 25 六月 2018
+
+===== 查看用户的UID/gid =====
+$ id  用户名
+
+===== 得到当前用户的支持群组 =====
+$ groups 
+
+===== 变更当前用户的有效群组 =====
+$newgrp  群组名
+
+
