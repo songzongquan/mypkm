@@ -1,0 +1,66 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-04T14:54:36+08:00
+
+====== PAM ======
+Created 星期三 04 七月 2018
+
+===== PAM(Pluggable Authentication Modules) =====
+为了解决各种认证程序不兼容 ,账户数据不同步的问题.
+
+它其实是一套api,  可以被任何程序调用来进行身份认证的模块. 它相当于统一了不同的认证实现的接口.
+
+现代的linux基本上都使用了pam来管理安全相关的过程.
+
+==== 工作流程 ====
+1. 使用者开始执行 /usr/bin/passwd 这支程序，并输入密码；
+2. passwd 调用 PAM 模块进行验证；
+3. PAM 模块会到 /etc/pam.d/ 找寻与程序 （passwd） 同名的配置文件；
+4. 依据 /etc/pam.d/passwd 内的设置，引用相关的 PAM 模块逐步进行验证分析；
+5. 将验证结果 （成功、失败以及其他讯息） 回传给 passwd 这支程序；
+6. passwd 这支程序会根据 PAM 回传的结果决定下一个动作 （重新输入新密码或者通过验证！）
+
+==== 配置文件 ====
+
+ 配置文件在/etc/pam.d/中与需要验证的命令的同名文件中配置.
+
+举例:
+root@study ~]# cat /etc/pam.d/passwd
+#%PAM-1.0 <==PAM版本的说明而已！
+auth include system-auth <==每一行都是一个验证的过程
+account include system-auth
+password substack system-auth
+-password optional pam_gnome_keyring.so use_authtok
+password substack postlogin
+验证类别 控制标准 PAM 模块与该模块的参数
+
+
+==== 验证类别 ====
+
+1. auth   身份认证过程
+2. account    授权过程
+3. session      记录会话过程
+4. password    修改设置密码过程
+
+
+==== 控制标准 ====
+1. required    不论成功失败都继承下一步
+2. requisite    成功了走一下步,不成功就结束
+3. sufficient    失败了走一下步,不成功就结束
+4. optional      用于显示,不是验证.
+
+==== PAM 模块与该模块的参数 ====
+
+上面这个表格当中使用到非常多的 PAM 模块，每个模块的功能都不太相同，详细的模块情报可以在你的系统中找到：
+/etc/pam.d/*：每个程序个别的 PAM 配置文件；
+/lib64/security/*：PAM 模块文件的实际放置目录；
+/etc/security/*：其他 PAM 环境的配置文件；
+/usr/share/doc/pam-*/：详细的 PAM 说明文档。
+
+==== 其它相关文件 ====
+[[/etc/security]] 目录 下的
+limits.conf  对账户可用资源的一些设置.
+
+[[/var/log/securit]]   [[/var/log/messages]]
+这些记录了登录失败或出现问题时的日志信息.
+

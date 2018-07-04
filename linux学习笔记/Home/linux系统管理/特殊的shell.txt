@@ -1,0 +1,15 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-04T14:54:28+08:00
+
+====== 特殊的shell ======
+Created 星期三 04 七月 2018
+
+
+就是这个:
+
+/sbin/nologin 
+
+主要用于邮件,ftp, apache 等一些服务器软件用, 不能登录,但可以使用一些资源.
+
+/etc/nologin.txt这个文件可以写一些提示信息,在用记试图登录时,会提示为什么不能登录.

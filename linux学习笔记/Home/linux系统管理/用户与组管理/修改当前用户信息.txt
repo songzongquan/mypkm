@@ -1,0 +1,20 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-03T15:43:00+08:00
+
+====== 修改当前用户信息 ======
+Created 星期二 03 七月 2018
+
+===== 查看UID/GID =====
+
+ 命令:id
+
+===== 查看个人资料 =====
+命令 : finger
+
+
+===== 改变 finger时原那些资料 =====
+命令  chfn
+
+===== 改变shell =====
+命令 :  chsh

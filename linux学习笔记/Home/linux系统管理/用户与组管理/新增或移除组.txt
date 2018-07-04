@@ -1,0 +1,19 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-04T12:08:29+08:00
+
+====== 新增或移除组 ======
+Created 星期三 04 七月 2018
+
+===== 新增 groupadd =====
+
+===== 修改  groupmod =====
+
+===== 删除 groupdel =====
+
+
+===== 群组管理员功能  gpasswd =====
+
+ 1.  没参数时,表示给组一个密码.(root操作)
+ 2.  组管理员 可以将某用户加入到某组 
+3. 可以将某用户设为组管理员 (root 操作)
