@@ -1,0 +1,16 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-09T15:33:37+08:00
+
+====== xfs磁盘限额的其它功能 ======
+Created 星期一 09 七月 2018 
+
+===== xfs_quota  用以下特殊指令 =====
+
+1. disable：暂时取消 quota 的限制，但其实系统还是在计算 quota 中，只是没有管制而已！应该算最有用的功能啰！
+2. enable：就是回复到正常管制的状态中，与 disable 可以互相取消、启用！
+3. off：完全关闭 quota 的限制，使用了这个状态后，你只有卸载再重新挂载才能够再次的启动 quota 喔！也就是说， 用了 off 状
+态后，你无法使用 enable 再次复原 quota 的管制喔！注意不要乱用这个状态！一般建议用 disable 即可，除非你需要执行
+remove 的动作！
+4. remove：必须要在 off 的状态下才能够执行的指令～这个 remove 可以“移除”quota 的限制设置，例如要取消 project 的设置，
+无须重新设置为 0 喔！只要 remove -p 就可以了！

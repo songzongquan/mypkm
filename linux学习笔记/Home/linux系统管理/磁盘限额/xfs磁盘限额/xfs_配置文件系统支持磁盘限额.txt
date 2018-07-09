@@ -1,0 +1,18 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-09T15:11:22+08:00
+
+====== 磁盘限额的文件系统支持 ======
+Created 星期一 09 七月 2018
+
+1. 查看文件系统类型 :     df -hT [[/home]]    ,要看看是什么类型的文件系统,是不是独立的文件系统,支持不支持quota
+2. root@study ~]# vim /etc/fstab
+/dev/mapper/centos-home /home xfs defaults,usrquota,grpquota 0 0
+# 其他项目鸟哥并没有列出来！重点在于第四字段！于 default 后面加上两个参数！
+改完,必须卸载再重新挂载测试. 有错要及时修正,否则重启后系统可能不能用了.
+3. 基本上，针对 quota 限制的项目主要有三项，如下所示：
+uquota/usrquota/quota：针对使用者帐号的设置
+gquota/grpquota：针对群组的设置
+pquota/prjquota：针对单一目录的设置，但是不可与 grpquota 同时存在！
+
+以上示例都是xfs为例, ext文件系统有不同. 

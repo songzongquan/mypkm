@@ -1,0 +1,18 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-09T15:36:03+08:00
+
+====== ext磁盘限额 ======
+Created 星期一 09 七月 2018
+
+上面就是 XFS 文件系统的简易 quota 处理流程～那如果你是使用 EXT 家族呢？能不能使用 quota 呢？除了参考上一版的
+文件之外，鸟哥这里也列出相关的参考指令/设置文件给你对照参考！ 没学过的可以看看流程，有学过的可以对照了解！ ^_^
+设置流程项目 XFS文件系统 EXT家族
+/etc/fstab参数设置 usrquota/grpquota/prjquota usrquota/grpquota
+quota 配置文件 不需要 quotacheck
+设置用户/群组限制值 xfs_quota -x -c "limit..." edquota 或 setquota
+设置 grace time xfs_quota -x -c "timer..." edquota
+设置目录限制值 xfs_quota -x -c "limit..." 无
+观察报告 xfs_quota -x -c "report..." repquota 或 quota
+启动与关闭 quota 限制 xfs_quota -x -c "[disable|enable]..." quotaoff, quotaon
+发送警告信给用户 目前版本尚未支持 warnquota

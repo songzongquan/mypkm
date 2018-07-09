@@ -1,0 +1,30 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-09T15:17:43+08:00
+
+====== xfs限额值的具体配置 ======
+Created 星期一 09 七月 2018
+
+===== 查看目前的配置 =====
+也可以用来验证文件系统的配额支持已经生效.(即用report指令)
+
+[root@study ~]# xfs_quota -x -c "指令" [挂载点]
+选项与参数：
+-x ：专家模式，后续才能够加入 -c 的指令参数喔！
+-c ：后面加的就是指令，这个小节我们先来谈谈数据回报的指令
+指令：
+print ：单纯的列出目前主机内的文件系统参数等数据
+df ：与原本的 df 一样的功能，可以加上 -b （block） -i （inode） -h （加上单位） 等
+report：列出目前的 quota 项目，有 -ugr （user/group/project） 及 -bi 等数据
+state ：说明目前支持 quota 的文件系统的信息，有没有起动相关项目等
+
+===== 修改配置信息 =====
+
+root@study ~]# xfs_quota -x -c "limit [-ug] b[soft|hard]=N i[soft|hard]=N name"
+[root@study ~]# xfs_quota -x -c "timer [-ug] [-bir] Ndays"
+选项与参数：
+limit ：实际限制的项目，可以针对 user/group 来限制，限制的项目有
+bsoft/bhard : block 的 soft/hard 限制值，可以加单位
+isoft/ihard : inode 的 soft/hard 限制值
+name : 就是用户/群组的名称啊！
+timer ：用来设置 grace time 的项目喔，也是可以针对 user/group 以及 block/inode 设置

@@ -1,0 +1,24 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-09T15:25:16+08:00
+
+====== xfs目录磁盘限额配置 ======
+Created 星期一 09 七月 2018
+
+1. 修改 /etc/fstab 内的文件系统支持参数
+[root@study ~]# vim /etc/fstab
+/dev/mapper/centos-home /home xfs defaults,usrquota,grpquota,prjquota 0 0
+# 记得， grpquota 与 prjquota 不可同时设置喔！所以上面删除 grpquota 加入 prjquota
+2. 规范目录、专案名称（project）与专案 ID
+# 2.1 指定专案识别码与目录的对应在 /etc/projects
+[root@study ~]# echo "11:/home/myquota" >> /etc/projects
+# 2.2 规范专案名称与识别码的对应在 /etc/projid
+[root@study ~]# echo "myquotaproject:11" >> /etc/projid
+# 2.3 初始化专案名称
+[root@study ~]# xfs_quota -x -c "project -s myquotaproject"
+
+这里,名称与id都是自已定的.
+
+3. 实际设置规范与测试
+# 3.1 先来设置好这个 project 吧！设置的方式同样使用 limit 的 bsoft/bhard 喔！：
+[root@study ~]# xfs_quota -x -c "limit -p bsoft=450M bhard=500M myquotaproject" /home
