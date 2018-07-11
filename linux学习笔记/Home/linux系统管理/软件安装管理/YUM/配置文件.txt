@@ -1,0 +1,32 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-10T17:20:12+08:00
+
+====== 配置文件 ======
+Created 星期二 10 七月 2018
+
+===== 文件位置 =====
+/etc/yum.repos.d 下面多个.repo为扩展名的文件
+一般情况下, 分为多个文件,分别对应于 不同类型的仓库.
+
+===== 文件格式 =====
+
+示例:
+[root@study ~]# vim /etc/yum.repos.d/CentOS-Base.repo
+[base]
+name=CentOS-$releasever - Base
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra
+#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+说明:
+[base]：代表软件库的名字！中括号一定要存在，里面的名称则可以随意取。但是不能有两个相同的软件库名称， 否则 yum 会
+不晓得该到哪里去找软件库相关软件清单文件。
+name：只是说明一下这个软件库的意义而已，重要性不高！
+mirrorlist=：列出这个软件库可以使用的映射站台，如果不想使用，可以注解到这行；
+baseurl=：这个最重要，因为后面接的就是软件库的实际网址！ mirrorlist 是由 yum 程序自行去捉映射站台， baseurl 则是指定
+固定的一个软件库网址！我们刚刚找到的网址放到这里来啦！
+enable=1：就是让这个软件库被启动。如果不想启动可以使用 enable=0 喔！
+gpgcheck=1：还记得 RPM 的数码签章吗？这就是指定是否需要查阅 RPM 文件内的数码签章！
+gpgkey=：就是数码签章的公钥档所在位置！使用默认值即可

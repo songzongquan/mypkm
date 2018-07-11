@@ -1,0 +1,25 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-11T14:16:11+08:00
+
+====== 关闭软件RAID ======
+Created 星期三 11 七月 2018
+
+1. 先umount 卸载此设备
+2. 从/etc/fstab 中删除挂载它的那一行.
+3. 先覆盖掉 RAID 的 metadata 以及 XFS 的 superblock，
+[root@study ~]# dd if=/dev/zero of=/dev/md0 bs=1M count=50
+
+4. 关闭 [[/dev/md0]]
+[root@study ~]# mdadm --stop [[/dev/md0]]
+
+5. 把阵列中所有设备都清0,每个设备执行一次.
+ [root@study ~]# dd if=/dev/zero of=/dev/vda5 bs=1M count=50
+......
+6. 最后修改 /etc/mdadm.conf中,将该设备的那一条删除.
+[root@study ~]# vim /etc/mdadm.conf
+#ARRAY /dev/md0 UUID=2256da5f:4870775e:cf2fe320:4dfabbc6
+# 一样啦！删除他或是注解他！
+
+dd操作不作的话,仍会导致raid被重新创建.
+经试验确实是这样!!!  

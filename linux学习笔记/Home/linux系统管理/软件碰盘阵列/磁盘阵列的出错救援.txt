@@ -1,0 +1,36 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-11T14:05:53+08:00
+
+====== 磁盘阵列的出错救援 ======
+Created 星期三 11 七月 2018
+
+[root@study ~]# mdadm --manage /dev/md[0-9] [--add 设备] [--remove 设备] [--fail 设备]
+选项与参数：
+--add ：会将后面的设备加入到这个 md 中！
+--remove ：会将后面的设备由这个 md 中移除
+--fail ：会将后面的设备设置成为出错的状态
+
+===== 设备一个磁盘出错 =====
+root@study ~]# mdadm --manage /dev/md0 --fail /dev/vda7
+
+此时可以看到spare disk正在自动重建加入.
+Number Major Minor RaidDevice State
+0 252 5 0 active sync /dev/vda5
+1 252 6 1 active sync /dev/vda6
+4 252 9 2 spare rebuilding /dev/vda9
+5 252 8 3 active sync /dev/vda8
+2 252 7 - faulty /dev/vda7
+# 看到没！这的动作要快做才会看到！ /dev/vda9 启动了而 /dev/vda7 死掉了
+
+===== 移除出错的盘,加入好的盘 =====
+# 3. 拔除“旧的”/dev/vda7 磁盘
+[root@study ~]# mdadm --manage /dev/md0 --remove [[/dev/vda7]]
+# 4. 安装“新的”/dev/vda7 磁盘
+[root@study ~]# mdadm --manage /dev/md0 --add [[/dev/vda7]]
+
+
+以上操作并不适用所有level,  比如,   raid0, 就不能让一个设备出错, 并且如果真的设备掉线,或者坏了,其本上就无法再恢复了.移除,加入什么的都无法操作.  即使盘没坏,也加不进去了.
+至少我没试成功.
+
+raid1以上操作都可以.   自动发现故障,移除, 都是知动,换盘后再加入,也是可以正常工作的,,但要注意, 换盘后可能盘符有变化,注意add的盘符.

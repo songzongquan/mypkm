@@ -5,3 +5,36 @@ Creation-Date: 2018-07-09T17:19:23+08:00
 ====== 软件磁盘阵列设置 ======
 Created 星期一 09 七月 2018
 
+===== 使用mdadm创建磁盘阵列 =====
+
+
+[root@study ~]# mdadm --create /dev/md[0-9] --auto=yes --level=[015] --chunk=NK \
+> --raid-devices=N --spare-devices=N /dev/sdx /dev/hdx...
+选项与参数：
+--create ：为创建 RAID 的选项；
+--auto=yes ：决定创建后面接的软件磁盘阵列设备，亦即 /dev/md0, /dev/md1...
+--chunk=Nk ：决定这个设备的 chunk 大小，也可以当成 stripe 大小，一般是 64K 或 512K。
+--raid-devices=N ：使用几个磁盘 （partition） 作为磁盘阵列的设备
+--spare-devices=N ：使用几个磁盘作为备用 （spare） 设备
+--level=[015] ：设置这组磁盘阵列的等级。支持很多，不过建议只要用 0, 1, 5 即可
+--detail ：后面所接的那个磁盘阵列设备的详细信息
+
+===== 查看磁盘阵列状态 =====
+
+[root@study ~]# mdadm --detail [[/dev/md0]]
+或者是
+[root@study ~]# cat [[/proc/mdstat]]
+
+
+===== 格式化磁盘阵列与挂载 =====
+
+root@study ~]# mkfs.xfs -f -d su=256k,sw=3 -r extsize=768k [[/dev/md0]]
+和普通 的格式化无什么大区别,注意su  ,sw   extsize的参数 要根据 --chunk 的大小来计算 . 这是 一种xfs文件系统优化措施,计算方法如下:
+具体参数含义看xfs文件系统介绍.
+
+srtipe （chunk） 容量为 256K，所以 su=256k
+共有 4 颗组成 RAID5 ，因此容量少一颗，所以 sw=3 喔！
+由上面两项计算出数据宽度为： 256K*3=768k
+
+
+

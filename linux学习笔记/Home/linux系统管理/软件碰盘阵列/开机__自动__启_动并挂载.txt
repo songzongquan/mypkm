@@ -1,0 +1,20 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-11T14:12:06+08:00
+
+====== 开机  自动  启 动并挂载 ======
+Created 星期三 11 七月 2018
+
+1. 配置/etc/mdadm.conf  ,[root@study ~]# vim /etc/mdadm.conf
+ARRAY /dev/md0 UUID=2256da5f:4870775e:cf2fe320:4dfabbc6
+
+[结我试验, linux(CentOS7可以)会自动识别该设备,这个配置可以不用 ,但加上会更保险吧]
+
+2. 配置/etc/fstab
+# 开始设置开机自动挂载并测试
+[root@study ~]# blkid /dev/md0
+/dev/md0: UUID="494cb3e1-5659-4efc-873d-d0758baec523" TYPE="xfs"
+[root@study ~]# vim /etc/fstab
+UUID=494cb3e1-5659-4efc-873d-d0758baec523 /srv/raid xfs defaults 0 0
+
+3. 重新启动验证.

@@ -1,0 +1,13 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-09T16:28:07+08:00
+
+====== 逻辑卷管理(lvm) ======
+Created 星期一 09 七月 2018
+
+===== 概念 =====
+实现磁盘空间可以动态的扩展. 之前需要加新硬盘,将分区,目录什么的连接到新的磁盘. 操作复杂不方便.不灵活.
+
+ LVM 可以整合多个实体 partition 在一起， 让这些 partitions 看起来就像是一个磁盘一样！而
+且，还可以在未来新增或移除其他的实体 partition 到这个 LVM 管理的磁盘当中
+
