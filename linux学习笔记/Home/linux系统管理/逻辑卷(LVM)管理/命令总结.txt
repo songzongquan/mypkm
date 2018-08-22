@@ -1,0 +1,17 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-13T11:53:01+08:00
+
+====== 命令总结 ======
+Created 星期五 13 七月 2018
+
+{{./pasted_image.png}}
+
+ 如果不用lvm了,要回收资源要这样: (不能直接简单的删除或挪用)
+
+1. 先卸载系统上面的 LVM 文件系统 （包括快照与所有 LV）；
+2. 使用 lvremove 移除 LV ；
+3. 使用 vgchange -a n VGname 让 VGname 这个 VG 不具有 Active 的标志；
+4. 使用 vgremove 移除 VG：
+5. 使用 pvremove 移除 PV；
+6. 最后，使用 fdisk 修改 ID 回来啊！

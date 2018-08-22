@@ -1,0 +1,58 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-13T11:24:29+08:00
+
+====== lvm磁盘快照 ======
+Created 星期五 13 七月 2018
+
+===== 快照 (snapshot) =====
+
+ 1.  是一种备份机制,会把lv中被改变的数据部分的原始信息保存在快照 区
+2. 占用的空间少, 原始没变的数据并不改变位置,
+3. 快照与文件系统共用原始没变的数据.
+4. 快照区创建成后,可以和普通 lv一样被使用.但它是只读的.
+
+===== 操作方法 =====
+
+# 1. 先观察 VG 还剩下多少剩余容量
+[root@study ~]# vgdisplay vbirdvg
+....（其他省略）....
+Total PE 252
+Alloc PE / Size 226 / 3.53 GiB
+Free PE / Size 26 / 416.00 MiB
+# 就只有剩下 26 个 PE 了！全部分配给 vbirdsnap1 啰！
+
+
+# 2. 利用 lvcreate 创建 vbirdlv 的快照区，快照被取名为 vbirdsnap1，且给予 26 个 PE
+[root@study ~]# lvcreate -s -l 26 -n vbirdsnap1 /dev/vbirdvg/vbirdlv
+Logical volume "vbirdsnap1" created
+# 上述的指令中最重要的是那个 -s 的选项！代表是 snapshot 快照功能之意！
+# -n 后面接快照区的设备名称， /dev/.... 则是要被快照的 LV 完整文件名。
+# -l 后面则是接使用多少个 PE 来作为这个快照区使用
+
+因为 XFS 不允许相同的 UUID 文件系统的挂载，因此我们得要加上那个 nouuid 的参数，让文件系统忽略相同的 UUID 所
+造成的问题！ 没办法啊！因为快照出来的文件系统当然是会一模一样的！
+
+===== 用快照恢复 =====
+# 2. 利用快照区将原本的 filesystem 备份，我们使用 xfsdump 来处理！
+[root@study ~]# xfsdump -l 0 -L lvm1 -M lvm1 -f /home/lvm.dump /srv/snapshot1
+# 此时你就会有一个备份数据，亦即是 /home/lvm.dump 了
+注意,为什么还要备份,而不是直接把vbirdlv给格式化了,用快照恢复. 第一是因为你的格式化动作也是改动,这时所有的数据都会转移到vbirdsnap1中,往往是空间不够的.
+
+# 3. 将 vbirdsnap1 卸载并移除 （因为里面的内容已经备份起来了）
+[root@study ~]# umount /srv/snapshot1
+Tips
+[root@study ~]# lvremove /dev/vbirdvg/vbirdsnap1
+Do you really want to remove active logical volume "vbirdsnap1"? [y/n]: y
+Logical volume "vbirdsnap1" successfully removed
+[root@study ~]# umount /srv/lvm
+[root@study ~]# mkfs.xfs -f /dev/vbirdvg/vbirdlv
+[root@study ~]# mount /dev/vbirdvg/vbirdlv /srv/lvm
+[root@study ~]# xfsrestore -f /home/lvm.dump -L lvm1 [[/srv/lvm]] 
+[root@study ~]# ll /srv/lvm
+drwxr-xr-x. 131 root root 8192 Jul 28 00:12 etc
+drwxr-xr-x. 16 root root 4096 Jul 28 00:01 log
+# 是否与最初的内容相同啊！这就是通过快照来还原的一个简单的方法啰！
+
+另外,通过对当前文件系统与快照区作比较,可以得到你都改了啥.
+

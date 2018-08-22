@@ -1,0 +1,28 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-13T10:58:48+08:00
+
+====== 动态调整磁盘使用率 ======
+Created 星期五 13 七月 2018
+
+===== LVM thin Volume =====
+即可以创建很大的lv,但实际上用多少分多少空间, 并不会真正的占用那么大的空间,  即可以在一个小容易的磁盘上暂时模拟出超过它本身大小的一个lv
+
+
+===== 实现方法 =====
+# 1. 先以 lvcreate 来创建 vbirdtpool 这个 thin pool 设备：
+[root@study ~]# lvcreate -L 1G -T vbirdvg/vbirdtpool # 最重要的创建指令
+注意那个-T选项 就是指定用thin 模式.
+
+如:
+
+# 2. 开始创建 vbirdthin1 这个有 10GB 的设备，注意！必须使用 --thin 与 vbirdtpool 链接喔！
+[root@study ~]# lvcreate -V 10G -T vbirdvg/vbirdtpool -n vbirdthin1
+[root@study ~]# lvs vbirdvg
+LV VG Attr LSize Pool Origin Data% Meta% Move Log Cpy%Sync Convert
+vbirdlv vbirdvg -wi-ao---- 2.50g
+vbirdthin1 vbirdvg Vwi-a-tz-- 10.00g vbirdtpool 0.00
+vbirdtpool vbirdvg twi-aotz-- 1.00g 0.00 0.27
+
+这就是用多少算多少的 thin pool 实作方式！基本上，用来骗人挺吓人的！小小的一个磁盘可以仿真出好多容量！但实际
+上，真的可用容量就是实际的磁盘储存池内的容量！ 如果突破该容量，这个 thin pool 可是会爆炸而让数据损毁的！要注意！要

@@ -1,0 +1,15 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-13T11:57:51+08:00
+
+====== 例行任务调度(crontab) ======
+Created 星期五 13 七月 2018
+
+===== 一次性的(at) =====
+
+须要有 atd 这个服务
+
+===== 周期性的(crontab) =====
+
+可循环的时间为分钟、小时、每周、每月或每年等。
+crontab 除了可以使用指令执行外，亦可编辑 /etc/crontab 来支持。 至于让 crontab 可以生效的服务则是 crond 这个服务喔！

@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-27T11:47:19+08:00
+
+====== 星期五 27 7月 2018 ======
+find ./ -type f -exec iconv -f GB2312 -t UTF-8 {} -o {} \;
+
+此命令可以递归的将当前目录下所有文件转码.
