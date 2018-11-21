@@ -1,0 +1,23 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-09-26T11:21:48+08:00
+
+====== 应用开发 ======
+创建日期 星期三 26 九月 2018
+
+１．客户端准备
+
+客户端可以用instant client　，注意版本最好是和服务端一致的．
+ 在安装目录下加network/admin
+下面考tnsnames.ora  sqlnet.ora, 可参考服务端的．
+tnsnames.org格式如下：
+
+ORCL = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 172.16.26.27)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = orcl) ) )
+必须用这个，用服务器上的提供的带addresslist 的不行．
+
+
+客户端用环境变量window:
+1.ORACLE_HOME　指向安装目录．
+2. TNS_ADMIN 指向network/admin
+3. PATH 指向安装目录
+4. 官方还有一说OCI_LIB64也是指向安装目录．

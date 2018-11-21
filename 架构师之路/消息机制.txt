@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-08-03T15:28:17+08:00
+
+====== 消息机制 ======
+Created 星期五 03 八月 2018
+
+实现系统间传递数据
+实现系统间解偶,   异步调用等.
+

@@ -1,0 +1,11 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-31T13:44:57+08:00
+
+====== 解决jar包冲突 ======
+Created 星期二 31 七月 2018
+
+参考资料:
+https://blog.csdn.net/yinweitao12/article/details/77815068
+
+http://www.shop988.com/blog/如何实现jar包隔离.html

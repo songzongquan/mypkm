@@ -1,0 +1,10 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-31T13:18:20+08:00
+
+====== 缓存更新策略 ======
+Created 星期二 31 七月 2018
+
+
+
+参考:https://www.aliyun.com/jiaocheng/1106559.html

@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-09-29T15:46:15+08:00
+
+====== mysql ======
+创建日期 星期六 29 九月 2018
+1. 查看建表语句
+show create table 表名

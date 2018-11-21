@@ -1,0 +1,7 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-10-24T12:08:43+08:00
+
+====== 面向对象（OO) ======
+创建日期 星期三 24 十月 2018
+

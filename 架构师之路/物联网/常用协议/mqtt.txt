@@ -1,0 +1,20 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-11-21T14:46:05+08:00
+
+====== mqtt ======
+创建日期 星期三 21 十一月 2018
+
+MQTT (MessageQueuing Telemetry Transport )，消息队列遥测传输，由IBM开发的即时通讯协议，相比来说比较适合物联网场景的通讯协议。MQTT协议采用发布/订阅模式，所有的物联网终端都通过TCP连接到云端，云端通过主题的方式管理各个设备关注的通讯内容，负责将设备与设备之间消息的转发。
+
+适用范围：在低带宽、不可靠的网络下提供基于云平台的远程设备的数据传输和监控。
+
+===== 相关工具 =====
+
+1. linux 下的代理服务器安讨
+sudo apt-get install mosquitto
+2. 源代码编译安装客户端工具
+http://mosquitto.org/download/
+参考安装使用教程
+https://blog.csdn.net/xukai871105/article/details/39252653
+

@@ -1,0 +1,38 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-09-25T17:17:43+08:00
+
+====== 安装 ======
+创建日期 星期二 25 九月 2018
+
+1. 命令行方式安装（静默安装）不用ＧＵＩ
+https://blog.csdn.net/yabingshi_tech/article/details/46801539
+
+根据原文安装出错，注意根据提示查看安装日志，增加一些未配的参数．就可以了．
+dbca静默安装给的方法不对．参考下，可能版本不对应，
+装的是１２ｃ（加头自已重试一下，总结一个完整无误的），估计按官方对应版本的安装指南装是没问题的
+
+
+2. oracle instant  client 安装
+简单，占空间少，基本开发够用．
+
+1.1 下载链接：http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html
+注意32位还是64位,还有对应服务端的版本号. 下载base,sqlplus即可.
+1.2  安装方法:先解压到一个目录下,如c:\instantclient_11_2
+1.3  配环境变量:  ORACLE_HOME, TNS_AMDIN,PATH,NLS_LANG   ,注意 用系统环境变量.ORACLE_HOME就指向安装目录 ,其中TNS_ADMIN指到oracle_home目录中的子目录 network/admin目录.这个目录要自已建一下.PATH也把oracle_home目录添加上. nls_lang要指定与服务器一样的类型,一般是AMERICAN_AMERICA.ZHS16GBK
+1.4 添加tnsnames.ora等文件 在network/admin目录下建这个文件,内容例子如下:
+orcl =
+  (DESCRIPTION =
+	(ADDRESS_LIST =
+	  (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.1.11)(PORT = 1521))
+	)
+	(CONNECT_DATA =
+	  (SERVER = DEDICATED)
+	  (SERVICE_NAME = orcl.being.com)
+	)
+  )
+
+ 1.5 使用: 一种方式直接用sqlplus连,另一种是安装plsql工具,你可以在编辑-设置- oracle-  指定安装路径,及oci.dll路径, 即可.
+
+参考:
+https://www.cnblogs.com/ivictor/p/3898702.html

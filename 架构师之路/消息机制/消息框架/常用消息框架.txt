@@ -1,0 +1,36 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-08-03T15:29:51+08:00
+
+====== 常用消息框架 ======
+Created 星期五 03 八月 2018
+
+====== ActiiveMQ ======
+JMS实现，Peer-to-Peer，支持持久化、XA事务；
+与spring集成
+
+https://blog.csdn.net/suifeng3051/article/details/51718675
+
+官网下载:  http://activemq.apache.org/activemq-5154-release.html
+
+====== Kafka ======
+Kafka®用于构建实时数据管道和流应用程序。它具有水平可扩展性，容错性，快速性，并在数千家公司的生产中运行。
+
+可作为消息系统,  存储系统,  流处理,
+参考网文 :
+https://blog.csdn.net/javastart/article/details/50638325
+
+spring集成:
+https://www.cnblogs.com/wangb0402/p/6187796.html
+
+===== RabbitMQ =====
+Erlang编写，支持多协议 AMQP，XMPP，SMTP，STOMP。支持负载均衡、数据持久化。同时支持Peer-to-Peer和发布/订阅模式；
+
+===== Redis =====
+基于Key-Value对的NoSQL数据库，同时支持MQ功能，可做轻量级队列服务使用。就入队操作而言， Redis对短消息(小于10KB)的性能比RabbitMQ好，长消息的性能比RabbitMQ差；
+
+===== ZeroMQ =====
+轻量级，不需要单独的消息服务器或中间件，应用程序本身扮演该角色，Peer-to-Peer。它实质上是 一个库，需要开发人员自己组合多种技术，使用复杂度高；
+
+===== MetaQ/RocketMQ =====
+ 纯Java实现，发布/订阅消息系统，支持本地事务和XA分布式事务；

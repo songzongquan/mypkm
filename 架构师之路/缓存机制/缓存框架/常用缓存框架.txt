@@ -1,0 +1,34 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-07-31T13:17:44+08:00
+
+====== 常用缓存框架 ======
+Created 星期二 31 七月 2018
+
+====== ehcache ======
+
+
+====== memcache ======
+
+
+
+====== redis ======
+
+官网:https://redis.io/
+
+
+
+
+参考:
+https://www.cnblogs.com/qlqwjy/p/7788912.html
+
+https://www.jianshu.com/p/5a0669d6305e/
+集群部署方法:
+https://redis.io/topics/cluster-tutorial
+手工安装 gem redis
+https://blog.csdn.net/weijifeng_/article/details/80115117
+重建集群时问题解决:
+1. pkill -9   redis 2.  删除node.conf,重启每个节点,3,  连上每一个节点执行flushall , cluster reset 4. 重建cluster
+节点的管理
+https://blog.csdn.net/shudaqi2010/article/details/53261761
+https://blog.csdn.net/xiaojin21cen/article/details/70445545
