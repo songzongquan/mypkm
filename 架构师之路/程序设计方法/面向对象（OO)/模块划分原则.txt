@@ -9,3 +9,6 @@ Creation-Date: 2018-10-24T12:09:15+08:00
 
 其中包划分的原则参考
 https://blog.csdn.net/it_man/article/details/38292925
+
+如何从用例来划分模块（包）：
+https://www.jianshu.com/p/f18183951f9d
