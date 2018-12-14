@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-12T11:54:01+08:00
+
+====== JCache API标准 ======
+创建日期 星期三 12 十二月 2018
+
+这是一套标准的api定义，可以对接不同实现这一api的缓存框架。
+
+好处就是让开发者学习一套api即可，根据需要可以选择不同的缓存框架实现。
+这个被推荐使用。
+
+目前实现JCache的框架有：
+1. ehcache3.6    见 http://www.ehcache.org/documentation/3.6/107.html

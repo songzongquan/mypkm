@@ -1,0 +1,41 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-12T13:43:06+08:00
+
+====== 特征 ======
+创建日期 星期三 12 十二月 2018
+
+Java语言的特征：
+
+Simple
+Object oriented
+Distributed
+Multithreaded
+Dynamic
+Architecture neutral
+Portable
+High performance
+Robust
+Secure
+
+中文意思：
+简单的
+
+面向对象
+
+__分布式的__
+
+多线程的
+
+__动态的__
+
+硬件架构中立
+
+__便携式__
+
+高性能
+
+稳健的
+
+__安全的__
+

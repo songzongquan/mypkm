@@ -5,3 +5,11 @@ Creation-Date: 2018-05-28T10:27:26+08:00
 ====== 微服务架构 ======
 Created 星期一 28 五月 2018
 
+当前微服务架构，Dubbo和SpringCloud比较火，另外还有Thrift、gRPC等等，下面把这些做一个比较，即可看出SpringCloud的强大之处。
+
+{{./pasted_image.png}}
+
+{{./pasted_image001.png}}
+在微服务架构的实施和落地过程中，通常我们会进行技术选型，很多人会拿阿里开源的Dubbo和Spring Cloud进行对比，实际上对比的是REST和RPC，其实Dubbo和Spring Cloud并不在同一领域，没有可比性。
+
+Spring Cloud是一个完整的微服务解决方案，正如上面的表格中展现的，它提供分布式情况下的各种解决方案合集。而Dubbo是一款高性能的Java RPC框架。Spring Cloud生态和Dubbo生态随着技术的发展，会逐渐的融合互补。

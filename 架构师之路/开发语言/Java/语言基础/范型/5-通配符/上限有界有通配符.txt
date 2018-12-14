@@ -1,0 +1,17 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-14T14:39:53+08:00
+
+====== 上限有界有通配符 ======
+创建日期 星期五 14 十二月 2018
+
+您可以使用上限通配符来放宽对变量的限制。，在此上下文中，extends在一般意义上用于表示“extends”（如在类中）或“implements”（如在interfaces中）。
+例如：
+public static void process(List<? extends Foo> list) { /* ... */ }
+
+===== 重要意义 =====
+可以传类型参数为 Foo或其子类类型的范型对象。但这个和List<U extends Foo>什么区别？？
+
+前者是在取得list中的对象，可以调用Foo的所有接口方法，但是后者只能是U的方法，自动会转会成U。------我猜 想的。
+
+

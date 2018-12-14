@@ -1,0 +1,49 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-14T17:29:42+08:00
+
+====== 通配符捕获与帮助方法 ======
+创建日期 星期五 14 十二月 2018
+
+在某些情况下，编译器会推断出通配符的类型。例如，列表可以定义为List <？>，但是在评估表达式时，编译器会从代码中推断出特定类型。此方案称为通配符捕获。
+
+在大多数情况下，您不必担心通配符捕获，除非您看到包含短语“capture of”的错误消息。
+
+出现错误如何处理？
+
+如：import java.util.List;
+
+public class WildcardError {
+
+	void foo(List<?> i) {
+		i.set(0, i.get(0));
+	}
+}
+在jdk7编译时报错:
+WildcardError.java:6: error: method set in interface List<E> cannot be applied to given types;
+	i.set(0, i.get(0));
+	 ^
+  required: int,CAP#1
+  found: int,Object
+  reason: actual argument Object cannot be converted to CAP#1 by method invocation conversion
+  where E is a type-variable:
+	E extends Object declared in interface List
+  where CAP#1 is a fresh type-variable:
+	CAP#1 extends Object from capture of ?
+1 error
+解决方法：
+您可以通过编写捕获通配符的私有帮助程序方法来修复它。在这种情况下，您可以通过创建私有帮助器方法fooHelper来解决此问题，如下所示 WildcardFixed：
+
+public class WildcardFixed { 
+
+	void foo（List <？> i）{ 
+		fooHelper（i）; 
+	} 
+
+
+	//创建了Helper方法，以便
+	通过类型推断来捕获通配符。private <T> void fooHelper（List <T> l）{ 
+		l.set（0，l.get（0））; 
+	} 
+}
+    

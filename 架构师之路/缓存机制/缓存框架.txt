@@ -4,7 +4,14 @@ Creation-Date: 2018-07-31T13:16:12+08:00
 
 ====== 缓存框架 ======
 Created 星期二 31 七月 2018
+以下对多种缓存框架的一些介绍和比较
+
+缓存框架最全的设计思路：
+https://blog.csdn.net/zjttlance/article/details/80234341
+
+5大java缓存框架
+https://blog.csdn.net/u010682330/article/details/73322781
 
 
 
-
+[[+常用缓存框架]]

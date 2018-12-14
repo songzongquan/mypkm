@@ -1,0 +1,100 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-14T17:56:46+08:00
+
+====== 类型擦除与桥梁方法的影响 ======
+创建日期 星期五 14 十二月 2018
+
+
+
+类型擦除和桥梁方法的影响
+有时类型擦除会导致您可能没有预料到的情况。以下示例显示了如何发生这种情况。该示例（在Bridge方法中描述 ）显示了编译器有时如何创建一个称为桥接方法的合成方法，作为类型擦除过程的一部分。
+
+给出以下两个类：
+
+public class Node <T> { 
+
+	public T data; 
+
+	公共节点（T数据）{this.data = data; } 
+
+	公共无效使用setData（T数据）{ 
+		的System.out.println（ “Node.setData”）; 
+		this.data = data; 
+	} 
+} 
+
+公共类MYNODE延伸节点<Integer>的{ 
+	公共MYNODE（整数数据）{超级（数据）; } 
+
+	公共无效使用setData（整数数据）{ 
+		的System.out.println（ “MyNode.setData”）; 
+		super.setData（数据）; 
+	} 
+}
+请考虑以下代码：
+
+MyNode mn = new MyNode（5）; 
+节点n = mn; //原始类型 - 编译器抛出未经检查的警告
+n.setData（“Hello”）;     
+整数x = mn.data; //导致抛出ClassCastException。
+类型擦除后，此代码变为：
+
+MyNode mn = new MyNode（5）; 
+节点n =（MyNode）mn; //原始类型 - 编译器抛出未经检查的警告
+n.setData（“Hello”）; 
+整数x =（String）mn.data; //导致抛出ClassCastException。
+以下是代码执行时发生的情况：
+
+n.setData（ “你好”）; 导致方法setData（Object）在类MyNode的对象上执行。（MyNode类从Node继承了setData（Object）。）
+在setData（Object）的主体中，n引用的对象的数据字段被分配给String。
+可以访问通过mn引用的同一对象的数据字段，并且期望它是整数（因为mn是MyNode，它是Node <Integer>。
+尝试指派一个字符串到整数导致ClassCastException异常从一个Java编译器分配插入一个演员。
+
+===== 桥梁方法 =====
+
+在编译扩展参数化类或实现参数化接口的类或接口时，编译器可能需要创建一个称为桥接方法的合成方法，作为类型擦除过程的一部分。您通常不需要担心桥接方法，但如果出现在堆栈跟踪中，您可能会感到困惑。
+
+在类型擦除之后，Node和MyNode类变为：
+
+public class Node { 
+
+	public Object data; 
+
+	public Node（Object data）{this.data = data; } 
+
+	公共无效使用setData（对象数据）{ 
+		的System.out.println（ “Node.setData”）; 
+		this.data = data; 
+	} 
+} 
+
+公共类MYNODE延伸节点{ 
+
+	公共MYNODE（整数数据）{超级（数据）; } 
+
+	公共无效使用setData（整数数据）{ 
+		的System.out.println（ “MyNode.setData”）; 
+		super.setData（数据）; 
+	} 
+}
+在类型擦除之后，方法签名不匹配。的节点的方法变为使用setData（对象）和MYNODE方法变得使用setData（整数）。因此，MyNode setData方法不会覆盖Node setData方法。
+
+为了解决这个问题并在类型擦除后保留泛型类型的 多态性，Java编译器会生成一个桥接方法，以确保子类型按预期工作。对于MyNode类，编译器为setData生成以下桥接方法：
+
+class MyNode extends Node { //由编译器生成的Bridge方法
+	// 
+	public void setData（Object data）{ 
+		setData（（Integer）data）; 
+	} 
+	公共无效使用setData（整数数据）{ 
+		的System.out.println（ “MyNode.setData”）; 
+		super.setData（数据）; 
+	} 
+	// ... 
+}
+
+    
+
+
+如您所见，桥接方法与类型擦除后的Node类的setData方法具有相同的方法签名，委托给原始的setData方法。

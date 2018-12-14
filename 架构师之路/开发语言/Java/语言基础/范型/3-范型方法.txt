@@ -1,0 +1,28 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-12T16:17:59+08:00
+
+====== 3-范型方法 ======
+创建日期 星期三 12 十二月 2018
+
+引入其自己的类型参数的方法。这类似于声明泛型类型，但类型参数的范围仅限于声明它的方法。允许使用静态和非静态泛型方法，以及泛型类构造函数。
+
+===== 声明方式 =====
+泛型方法的语法包括类型参数列表，在尖括号内，它出现在方法的返回类型之前。对于静态泛型方法，类型参数部分必须出现在方法的返回类型之前。
+
+例：
+public static __<K，V>__ boolean compare（Pair <K，V> p1，Pair <K，V> p2） {...}
+
+===== 使用方式 =====
+语法如下：
+Pair<Integer, String> p1 = new Pair<>(1, "apple");
+Pair<Integer, String> p2 = new Pair<>(2, "pear");
+boolean same = Util.<Integer, String>compare(p1, p2);
+
+但由于有类型推断能力，所以也可以简写成：
+
+The complete syntax for invoking this method would be:
+
+Pair<Integer, String> p1 = new Pair<>(1, "apple");
+Pair<Integer, String> p2 = new Pair<>(2, "pear");
+boolean same = Util.compare(p1, p2);

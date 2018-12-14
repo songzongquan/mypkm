@@ -1,0 +1,142 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-12T14:01:32+08:00
+
+====== 注解（Annotations） ======
+创建日期 星期三 12 十二月 2018
+
+===== 基础 =====
+注解的用途：
+1. 给编译提供信息，如检测错误，提示警告
+2. 编译时与部署时进行处理，如工具可以生成代码、xml或者其它东东
+3. 运行时处理，
+
+==== 注解的几种形式 ====
+1. 简单的  @Entity
+2. 带元素的 @Author(name="sss",date="xx")
+3. 如果元素只有一个value=?,也可以省略为@SuppressWarnings("unchecked")  即是@SuppressWarnings(value="unchecked")
+4. 在一个声明处有两种注解 同时声明
+@Author(name = "Jane Doe")
+@EBook
+5. 一个注解类型声明两次，@Author(name = "Jane Doe")
+@Author(name = "John Smith")
+这个java8才支持。
+
+==== 注解能用在哪里 ====
+1. 一般在类声明前，方法声明前和成员变量声明前。
+2. 自从java8后，还有一些地方可以用注解，如下：
+As of the Java SE 8 release, annotations can also be applied to the use of types. Here are some examples:
+
+类实例化表达式中（Class instance creation expression）:
+	new @Interned MyObject();
+类型转换时（Type cast）:
+	myString = (@NonNull String) str;
+实现接口时（implements clause）:
+	class UnmodifiableList<T> implements
+		@Readonly List<@Readonly T> { ... }
+异常抛出声明时（Thrown exception declaration）:
+	void monitorTemperature() throws
+		@Critical TemperatureException { ... }
+
+这种特殊情况叫类型注解，它主要用于可插拔系统。
+
+===== 声明注解类型 =====
+如下：
+@interface ClassPreamble {
+   String author();
+   String date();
+   int currentRevision() default 1;
+   String lastModified() default "N/A";
+   String lastModifiedBy() default "N/A";
+   // Note use of array
+   String[] reviewers();
+}
+看起来象是一个接口，其实它就是一个特殊的接口，而它的元素象一个方法声明 ，且有缺省值。
+
+
+===== 预定义的注解类型 =====
+
+===== 被java语言使用的注解类型： =====
+这是指jvm中内定的一些注解。
+在java.lang.*中定义，
+
+==== @Deprecated ====
+表示这个方法过时了，不推荐用
+
+==== @Override ====
+表示此方法是重写了父类
+
+==== @SuppressWarnings ====
+设定压制哪些警告它可以指定哪些警告不生成。
+如：@SuppressWarnings({"unchecked", "deprecation"})
+
+==== @SafeVarargs ====
+用于方法或构造方法，断言不会对可变参数进行不安全的操作，如果用了它，则会压制和可变参数相关的unchecked警告。
+
+==== @FunctionalInterface ====
+java8后有，指示类型声明是由Java语言规范定义的功能接口。
+
+===== 可用于注解的注解： =====
+应用于其他注释的注释称为元注释，元注解有如下几种：
+
+==== @Retention ====
+用于指定如何存储标定的注解，有三种方式：
+1. RetentionPolicy.SOURCE        标记的注释只保留在源级别，编译器会忽略它
+2. RetentionPolicy.CLASS            标记的注释只保留在编译级别，jvm会忽略它
+3. RetentionPolicy.RUNTIME      会在运行时被用
+
+==== @Documented ====
+表示标定的注解会被javadoc进行文档化。一般的注解不会被文档化。
+
+==== @Target ====
+用来指定标定的注解，可以用在哪些地方，如下
+1. ElementType.ANNOTATION_TYPE can be applied to an annotation type.
+2. ElementType.CONSTRUCTOR can be applied to a constructor.
+3. ElementType.FIELD can be applied to a field or property.
+4. ElementType.LOCAL_VARIABLE can be applied to a local variable.
+5. ElementType.METHOD can be applied to a method-level annotation.
+6. ElementType.PACKAGE can be applied to a package declaration.
+7. ElementType.PARAMETER can be applied to the parameters of a method.
+8. ElementType.TYPE can be applied to any element of a class.
+
+==== @Inherited ====
+注释指示可以从超类继承注释类型。（默认情况下不是这样。）当用户查询注释类型并且该类没有对此类型的注释时，将查询该类的超类以获得注释类型。此注释仅适用于类声明。
+
+==== @Repeatable ====
+在Java SE 8中引入的注释表明，标记注释可以不止一次地应用于相同的声明或类型使用。有关更多信息，请参阅重复注释。
+
+
+===== 类型注释和可插入类型系统 =====
+自从java8后，不仅可以是类、方法、字段前加注解，而且可以在对象创建、类型转换、异常声明、接口实现等使用。
+这叫做类型注解，它的作用主要是打造可插拔的类型检查系统。
+创建类型注释以支持改进Java程序的分析，以确保更强的类型检查。Java SE 8版本不提供类型检查框架，但它允许您编写（或下载）类型检查框架，该框架被实现为与Java编译器一起使用的一个或多个可插拔模块。
+例如，您希望确保程序中的特定变量永远不会被分配为null；您希望避免触发NullPointerException。您可以编写自定义插件来检查这一点。然后，您将修改代码以注释该特定变量，指示它从未被分配到null。变量声明可能如下所示：
+@NonNull String str；
+在编译代码时，包括在命令行中的NonNull模块，如果它检测到潜在的问题，编译器将打印警告，从而允许您修改代码以避免错误。在纠正代码以删除所有警告之后，当程序运行时将不会发生此特定错误。
+您可以使用多个类型检查模块，其中每个模块检查不同类型的错误。这样，您可以在Java类型系统的顶部构建，并在需要的时候和特定的地方添加特定的检查。
+通过明智地使用类型注释和可插入类型检查器，可以编写更强大、更不容易出错的代码。
+在许多情况下，您不必编写自己的类型检查模块。有一些第三方已经为您完成了工作。例如，您可能希望利用华盛顿大学创建的Checker框架。这个框架包括一个NonNull模块，以及一个正则表达式模块和一个互斥锁模块。有关更多信息，请参阅检查器框架。
+
+
+===== 可重复注解 =====
+1. 声明一个可重复的注解类型
+例：
+import java.lang.annotation.Repeatable;
+
+@Repeatable(Schedules.class)
+public @interface Schedule {
+  String dayOfMonth() default "first";
+  String dayOfWeek() default "Mon";
+  int hour() default 12;
+}
+3. 声明一个可包含的注解类型
+public @interface Schedules {
+	Schedule[] value();
+}
+
+==== 检索注解 ====
+即如何利用注解，得先得到注解信息。
+反射API中有几种可用于检索注释的方法。返回单个注释（如AnnotatedElement.getAnnotation（Class<T>））的方法的行为没有改变，因为它们仅在存在所请求类型的一个注释时才返回单个注释。如果存在多个请求类型的注释，则可以通过首先获取它们的容器注释来获得它们。通过这种方式，遗留代码继续工作。JavaSE 8中介绍了其他方法，通过容器注释扫描以同时返回多个注释，如AnNealDebug元素.GETANNODITSYBYTYPE（类< T>）。有关所有可用方法的信息，请参阅AnnotatedElement类规范。
+
+==== 设计注解 ====
+在设计注释类型时，必须考虑该类型的注释的基数。现在可以零次、一次或者多次使用注释，如果注释的类型被标记为@Repeatable。还可以通过使用@Target元注释来限制在哪里可以使用注释类型。例如，可以创建只能在方法和字段上使用的可重复注释类型。仔细设计注释类型以确保使用注释的程序员发现它尽可能灵活和强大，这一点很重要。

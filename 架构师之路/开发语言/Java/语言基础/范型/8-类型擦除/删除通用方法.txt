@@ -1,0 +1,7 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-14T17:56:06+08:00
+
+====== 删除通用方法 ======
+创建日期 星期五 14 十二月 2018
+

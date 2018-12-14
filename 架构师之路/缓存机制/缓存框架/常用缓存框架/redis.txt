@@ -1,0 +1,12 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-12T11:58:16+08:00
+
+====== redis ======
+创建日期 星期三 12 十二月 2018
+
+spring+redis实现缓存方案
+参考：
+https://blog.csdn.net/wx5040257/article/details/79226742
+
+redis本身没有更新能

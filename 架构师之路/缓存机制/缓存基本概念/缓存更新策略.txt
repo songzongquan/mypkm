@@ -5,9 +5,15 @@ Creation-Date: 2018-07-31T13:18:20+08:00
 ====== 缓存更新策略 ======
 Created 星期二 31 七月 2018
 
+主要说明单机版缓存服务，如何保证不出现脏数据。
+即缓存在必要的时候和数据库进行同步，以达到业务上的一致性。
+
 更新缓存的的Design Pattern有四种：
 
-Cache aside, Read through, Write through, Write behind caching
+Cache aside, 
+Read through,
+ Write through, 
+Write behind caching
 
 
 

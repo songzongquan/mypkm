@@ -1,0 +1,36 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-12T16:56:52+08:00
+
+====== 7-有界类型参数 ======
+创建日期 星期三 12 十二月 2018
+
+有时您可能希望限制可用作参数化类型中的类型参数的类型。例如，对数字进行操作的方法可能只想接受Number其子类的实例。这是有界类型参数的用途。
+
+要声明有界类型参数，请列出类型参数的名称，后跟extends关键字，后跟其上限，在此示例中为Number。注意，在这种情况下，extends在一般意义上用于表示“扩展”（如在类中）或“实现”（如在接口中）。
+例：
+	public <U extends Number> void inspect(U u){
+		System.out.println("T: " + t.getClass().getName());
+		System.out.println("U: " + u.getClass().getName());
+	}
+
+效果：
+1. 此方法传入的对象只是Number及其子类的对象。
+2. 传入的对象可以调用Number类中定义的方法。
+
+===== 多重边界 =====
+
+
+前面的示例说明了使用带有单个边界的类型参数，但是类型参数可以有多个边界：
+
+<T extends B1＆B2和B3>
+具有多个边界的类型变量是绑定中列出的所有类型的子类型。如果其中一个边界是类，则必须首先指定它。例如：
+
+class A{/ * ... * /} 
+interface B {/ * ... * /} 
+interface C {/ * ... * /} 
+
+class D <T extends A＆B＆C> {/ * ... * /}
+如果未首先指定绑定A，则会出现编译时错误：
+
+class D <T extends B＆A＆C> {/ * ... * /} //编译时错误

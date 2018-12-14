@@ -1,0 +1,58 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-14T12:26:08+08:00
+
+====== 6-类型推断 ======
+创建日期 星期五 14 十二月 2018
+
+类型推断是指编译器会根据某一个地方的范型参数声明推断另一处代码应该有的范型的类型参数，从而可以不必在另一处显示式的书写它。
+
+如：
+  Box<U> box = new Box<>();
+再如：
+static <T> T pick(T a1, T a2) { return a2; }
+Serializable s = pick("d", new ArrayList<String>());
+这个根据返回值的范型声明来推断后观pick中的参数是Serializable类型。
+
+===== 类型推断与范型方法 =====
+例如，要调用泛型方法addBox，可以使用类型见证指定type参数，如下所示：
+
+BoxDemo.<Integer> addBox（Integer.valueOf（10），listOfIntegerBoxes）;
+或者，如果省略类型见证，Java编译器会自动推断（从方法的参数）类型参数是Integer：
+
+BoxDemo.addBox（Integer.valueOf（20），listOfIntegerBoxes）;
+
+
+===== 类型推断与范型类的实例化 =====
+
+Map <String，List <String >> myMap = new HashMap <String，List <String >>（）;
+您可以使用一组空的类型参数（<>）替换构造函数的参数化类型：
+
+Map <String，List <String >> myMap = new HashMap <>（）;
+但这个<>不能没有。
+
+===== 类型推断和范型的范型构造方法以及非范型类 =====
+请注意，构造函数在泛型和非泛型类中都可以是通用的（换句话说，声明它们自己的形式类型参数）。请考虑以下示例：
+
+class MyClass <X> { 
+  <T> MyClass（T t）{ 
+	// ... 
+  } 
+}
+考虑以下类的实例化MyClass：
+
+new MyClass <Integer>（“”）
+该语句创建参数化类型的实例MyClass<Integer>; 该语句显式指定泛型类Integer的形式类型参数X的类型MyClass<X>。请注意，此泛型类的构造函数包含正式的类型参数T。编译器推断出此泛型类的构造函数String的形式类型参数的类型T（因为此构造函数的实际参数是String对象）。
+
+===== 目标类型 =====
+
+Java编译器利用目标类型来推断泛型方法调用的类型参数。表达式的目标类型是Java编译器所期望的数据类型，具体取决于表达式的显示位置。考虑一下方法Collections.emptyList，声明如下：
+
+static <T> List <T> emptyList（）;
+请考虑以下赋值语句：
+
+List <String> listOne = Collections.emptyList（）;
+这个陈述期待一个例子List<String>; 此数据类型是目标类型。由于该方法emptyList返回type的值List<T>，因此编译器会推断type参数T必须是值String。这适用于Java SE 7和8.或者，您可以使用类型见证并指定值，
+
+java8完成可以这样用，7可能会有点问题，但可以明确指定参数类型就没有问题了。
+

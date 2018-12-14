@@ -1,0 +1,18 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-12T11:25:32+08:00
+
+====== terracotta ======
+创建日期 星期三 12 十二月 2018
+
+Terracotta是一款由美国Terracotta公司开发的著名开源Java集群平台。它在JVM与Java应用之间实现了一个专门处理集群功能的抽象层，以其特有的增量检测、智能定向传送、分布式协作、服务器镜像、分片等技术，允许用户在不改变现有系统代码的情况下实现单机Java应用向集群化应用的无缝迁移。使得用户可以专注于商业逻辑的开发，由Terracotta负责实现高性能、高可用性、高稳定性的企业级Java集群。
+
+Terracotta公司目前在美国、欧洲、澳大利亚、印度等地有近百名员工，为Terracotta商业用户提供7x24技术支持、解决方案咨询等服务。同时在Terracotta开源产品之上提供适用于企业用户的高端产品。
+Terracotta公司在2009年收购了著名的Java开源缓存项目Ehcache以及Java任务调度项目Quartz。经过对该项目的深度整合，Terracotta推出了易用性更高的分布式缓存、分布式任务调度以及分布式Web Session等快捷解决方案，进一步方便了开发人员开发分布式Java应用。
+
+===== 分布式缓存 =====
+
+
+===== 分布式任务调度 =====
+
+===== 分布式web session =====

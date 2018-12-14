@@ -1,0 +1,25 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-12T13:45:01+08:00
+
+====== 用处：能干什么？ ======
+创建日期 星期三 12 十二月 2018
+
+===== 开发工具 =====
+包含编译、运行、监控、调试、文档工具等。
+
+===== 编程接口（API） =====
+基本、网络、安全与数据库访问等
+
+===== 部署技术 =====
+1. web start
+2. 插件pluggin技术
+
+===== 图形用户接口技术 =====
+1. swing
+2. javaFx
+3. 2D
+
+===== 集成方面的库: =====
+ Integration libraries such as the Java IDL API, JDBC API, Java Naming and Directory Interface (JNDI) API, Java RMI, and Java Remote Method Invocation over Internet Inter-ORB Protocol Technology (Java RMI-IIOP Technology) enable database access and manipulation of remote objects.
+

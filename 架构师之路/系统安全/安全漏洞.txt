@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-14T10:17:27+08:00
+
+====== 安全漏洞 ======
+创建日期 星期五 14 十二月 2018
+
+===== http host 头攻击 =====
+{{./pasted_image.png}}
+修复办法收集：
+1. 采用修改tomcat server.xml办法
+https://blog.csdn.net/hunhun1122/article/details/81478255
+2. 采用加过滤器办法
+https://blog.csdn.net/ahuyangdong/article/details/79091699   加白名单

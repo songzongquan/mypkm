@@ -22,7 +22,10 @@ Ehcache最初是由Greg Luck于2003年开始开发。2009年,该项目被Terraco
 8. 支持多缓存管理器实例，以及一个实例的多个缓存区域
 9. 提供Hibernate的缓存实现
 
+最新版本3.6 ，，分布式集群支持需要一个terracotta server.
+
 参考知识 https://blog.csdn.net/u014209975/article/details/53320395/
+
 
 参考例子
 https://www.cnblogs.com/gordonkong/p/7161809.html ----------- cache throught模式
@@ -37,9 +40,7 @@ https://www.cnblogs.com/mxmbk/articles/5162813.html
 ====== redis ======
 
 官网:https://redis.io/
-
-
-
+它是一个key-value数据库，可作为缓存。
 
 参考:
 https://www.cnblogs.com/qlqwjy/p/7788912.html
