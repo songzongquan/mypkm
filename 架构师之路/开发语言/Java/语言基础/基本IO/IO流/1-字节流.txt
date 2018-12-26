@@ -1,0 +1,33 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-22T15:58:06+08:00
+
+====== 1-字节流 ======
+创建日期 星期六 22 十二月 2018
+
+程序使用字节流来执行8位字节的输入和输出。所有字节流类都来自 InputStream和 OutputStream。
+
+有许多字节流类。为了演示字节流的工作原理，我们将重点关注文件I / O字节流， FileInputStream以及 FileOutputStream。其他种类的字节流的使用方式大致相同; 它们的不同之处主要在于它们的构造方式。
+
+===== 使用方法 =====
+
+例：in = new FileInputStream（“xanadu.txt”）; 
+			out = new FileOutputStream（“outagain.txt”）; 
+			int c; 
+
+			while（（c = in.read（））！= -1）{ 　　　　　　／／一次处理一个字节．此处要用这样的简单的循环，-1表示读到最后．
+				out.write（c）; 
+			} 
+		}最后{ 
+			如果（在！= NULL）{ 
+				in.close（）; 　　　　　　　　／／一定要关闭．
+			} 
+			if（out！= null）{
+				out.close（）; 
+			} 
+		} 
+
+===== 何时不使用字节流 =====
+CopyBytes看起来像是一个普通的程序，但它实际上代表了一种你应该避免的低级I / O. 由于xanadu.txt包含字符数据，最好的方法是使用字符流，如下一节中所述。还有用于更复杂数据类型的流。字节流应仅用于最原始的I / O.
+
+那么为什么要谈论字节流呢？因为所有其他流类型都是基于字节流构建的。

@@ -1,0 +1,18 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-17T15:40:28+08:00
+
+====== 基本I  /O ======
+创建日期 星期一 17 十二月 2018
+
+涵盖用于基本输入和输出的Java平台类。它主要关注 I / O Streams，这是一个强大的概念，可以大大简化I / O操作。本课程还介绍了序列化，它允许程序将整个对象写入流并再次读回。然后，本课程将介绍一些文件系统操作，包括随机访问文件。最后，它简要介绍了新I / O API的高级功能。
+本I/O Streams节中涉及的大多数类都在java.io包中。本File I/O节中涉及的大多数类都在java.nio.file包中。
+
+===== I / O流 =====
+Byte Streams处理原始二进制数据的I / O.
+Character Streams处理字符数据的I / O，自动处理与本地字符集的转换。
+缓冲流Buffered Streams通过减少对本机API的调用次数来优化输入和输出。
+扫描和格式化Scanning and Formatting 允许程序读取和写入格式化文本。
+命令行中的I / O，I/O from the Command Line 描述了标准流和控制台对象。
+数据流Data Streams 处理原始数据类型和String值的二进制I / O.
+对象流Object Streams 处理对象的二进制I / O.

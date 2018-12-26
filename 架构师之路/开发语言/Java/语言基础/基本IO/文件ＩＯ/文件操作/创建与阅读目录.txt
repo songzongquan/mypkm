@@ -1,0 +1,39 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-25T16:05:38+08:00
+
+====== 创建与阅读目录 ======
+创建日期 星期二 25 十二月 2018
+
+前面讨论过的一些方法，例如delete，处理文件，链接和目录。但是如何列出文件系统顶部的所有目录？如何列出目录的内容或创建目录？
+
+本节介绍特定于目录的以下功能：
+
+===== 列出文件系统的根目录 =====
+您可以使用该FileSystem.getRootDirectories方法列出文件系统的所有根目录 。此方法返回一个Iterable，这使您可以使用 增强的for语句迭代所有根目录
+
+===== 创建目录 =====
+您可以使用该createDirectory(Path, FileAttribute<?>)方法创建新目录 。如果未指定any FileAttributes，则新目录将具有默认属性。
+在一个或多个父目录可能尚不存在时创建多个级别的目录，可以使用方便方法 createDirectories(Path, FileAttribute<?>)。与
+
+===== 创建临时目录 =====
+您可以使用以下createTempDirectory方法之一创建临时目录：
+
+createTempDirectory(Path, String, FileAttribute<?>...)
+createTempDirectory(String, FileAttribute<?>...)
+第一种方法允许代码指定临时目录的位置，第二种方法在默认的temporary-fle目录中创建新目录。
+
+===== 列出目录的内容 =====
+您可以使用该newDirectoryStream(Path)方法列出目录的所有内容 。此方法返回实现DirectoryStream接口的对象 。实现DirectoryStream接口的类也实现Iterable，因此您可以遍历目录流，读取所有对象。这种方法很好地扩展到非常大的目录。
+
+记住：  返回的DirectoryStream是一个流。如果您没有使用try-with-resources语句，请不要忘记关闭finally块中的流。在try-与资源语句采用这种照顾你。
+以下代码段显示了如何打印目录的内容：
+
+
+===== 使用Globbing过滤目录列表 =====
+如果只想获取每个名称与特定模式匹配的文件和子目录，可以使用 newDirectoryStream(Path, String)提供内置glob过滤器的方法来实现。如果您不熟悉glob语法，
+
+===== 编写自己的目录过滤器 =====
+您可能希望根据模式匹配以外的某些条件过滤目录的内容。您可以通过实现DirectoryStream.Filter<T>界面来创建自己的过滤器 。此接口由一个方法组成，该方法accept确定文件是否满足搜索要求。
+
+此方法仅用于过滤单个目录。但是，如果要查找文件树中的所有子目录，可以使用“ 遍历文件树”的机制 。

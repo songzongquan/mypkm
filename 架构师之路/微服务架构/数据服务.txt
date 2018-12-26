@@ -1,0 +1,19 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-21T14:17:30+08:00
+
+====== 数据服务 ======
+创建日期 星期五 21 十二月 2018
+
+数据服务，或叫数据服务中间件
+它是把通用的和数据的安全＼性能等多方面的功能，集中实现的一层．
+比如分库，分表，分区，读写分离等　，来提高查询性能，或者多租户实现等．
+
+常见的开源框架有：
+支持分库，分表的：
+
+https://www.cnblogs.com/wangzhongqiu/p/7100332.html
+
+更全的（带架构图）
+
+https://www.cnblogs.com/grefr/p/6087942.html

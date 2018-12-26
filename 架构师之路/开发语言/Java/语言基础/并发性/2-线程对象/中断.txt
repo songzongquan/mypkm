@@ -1,0 +1,23 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-17T16:38:13+08:00
+
+====== 中断 ======
+创建日期 星期一 17 十二月 2018
+
+个中断是一个指示线程它应该终止它在做什么和做别的事情。由程序员决定线程如何响应中断，但线程终止是很常见的。
+
+通过调用Thread.interrupt()来发送一个中断请求，为了线程中断机制正常工作，线程必须支持自已的中断。
+
+
+===== 支持中断 =====
+
+1. 用catch 捕获InterruptedException后，将程序return 
+2. 使用Thread.interrupted（）来探测，并处理，或者直接抛出InterruptedException
+
+
+===== 中断状态标志 =====
+
+中断机制使用称为中断状态的内部标志来实现。调用Thread.interrupt设置此标志。当线程通过调用静态方法检查中断时Thread.interrupted，中断状态被清除。非静态isInterrupted方法（一个线程用于查询另一个线程的中断状态）不会更改中断状态标志。
+
+按照惯例，任何通过抛出InterruptedException清除中断状态而退出的方法。但是，通过另一个线程调用，总是可以立即再次设置中断状态interrupt。

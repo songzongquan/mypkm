@@ -1,0 +1,37 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-18T11:29:47+08:00
+
+====== 1-锁对象 ======
+创建日期 星期二 18 十二月 2018
+
+===== 高级在哪儿？ =====
+老的同步代码依赖于一种简单的可重入锁定。这种锁易于使用，但有许多限制。－也就是所谓的隐式锁，就是在代码上不体现出锁对象．
+
+java.util.concurrent.locks包装支持更复杂的锁定习语 。我们不会详细解说这个包，而是将重点放在它最基本的 Lock的接口上。
+
+
+Lock对象的工作方式与同步代码使用的隐式锁非常相似。与隐式锁一样，一次只有一个线程可以拥有一个Lock对象。Lock对象通过其关联的Condition对象也支持wait/notify机制 。
+
+Lock对象优于隐式锁定的最大优点是它们__能够退出__获取锁定的尝试。tryLock（）方法　如果锁定不可用了就立即退出，或超时到期之前（如果指定），则该方法退出。lockInterruptibly（）方法如果另一个线程在获取锁之前发送中断，则该方法退出。
+
+让我们使用Lock对象来解决我们在Liveness中看到的死锁问题。－－也就是说通过程序明确的操纵锁的释放
+
+在对象里用
+
+private final Lock lock = new ReentrantLock();
+
+在可能出现死锁的地方：
+try {
+				myLock = lock.tryLock();　　／／
+				yourLock = bower.lock.tryLock();　　　
+			} finally {
+				if (! (myLock && yourLock)) {　／／如果两个锁都不可用，
+					if (myLock) {
+						lock.unlock();　　　　／／解锁．
+					}
+					if (yourLock) {
+						bower.lock.unlock();　／／解锁．
+					}
+				}
+			}

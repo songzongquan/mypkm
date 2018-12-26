@@ -6,4 +6,10 @@ Creation-Date: 2018-05-28T19:36:53+08:00
 Created 星期一 28 五月 2018
 
 参考：
+常见坑和解决方案
+https://blog.csdn.net/a837199685/article/details/52712547
+
 https://www.jianshu.com/p/85d96fe9358b
+
+这个是利用ｊｄｋ插件解决的，最彻底，上层代码不用改．
+https://github.com/alibaba/transmittable-thread-local/blob/master/README.md

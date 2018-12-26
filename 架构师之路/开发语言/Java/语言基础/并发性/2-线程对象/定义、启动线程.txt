@@ -1,0 +1,38 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-17T16:21:23+08:00
+
+====== 定义、启动线程 ======
+创建日期 星期一 17 十二月 2018
+
+1. 实现Runnable接口
+
+public class HelloRunnable implements Runnable {
+
+	public void run() {
+		System.out.println("Hello from a thread!");
+	}
+
+	public static void main(String args[]) {
+		(new Thread(new HelloRunnable())).start();
+	}
+
+}
+
+
+2. 继承Thread 类
+public class HelloThread extends Thread {
+
+	public void run() {
+		System.out.println("Hello from a thread!");
+	}
+
+	public static void main(String args[]) {
+		(new HelloThread()).start();
+	}
+
+}
+
+启动都是调用Thread.start();
+
+用哪种好呢？第一种。因为它不受子类的限制 。更灵活。

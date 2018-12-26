@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-19T16:33:45+08:00
+
+====== 5-线程随机数 ======
+创建日期 星期三 19 十二月 2018
+
+在JDK 7中， java.util.concurrent包括一个便利类， ThreadLocalRandom用于期望使用来自多个线程或ForkJoinTasks的随机数的应用程序。
+
+对于并发访问，使用ThreadLocalRandom而不是Math.random()结果可以减少争用，并最终提高性能。
+
+您需要做的就是调用ThreadLocalRandom.current()，然后调用其中一个方法来检索随机数。这是一个例子：
+
+int r = ThreadLocalRandom.current（）。nextxnt（4,77）;

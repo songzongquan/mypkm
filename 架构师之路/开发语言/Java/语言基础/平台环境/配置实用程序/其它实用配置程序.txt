@@ -1,0 +1,18 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-17T15:50:40+08:00
+
+====== 其它实用配置程序 ======
+创建日期 星期一 17 十二月 2018
+
+以下是一些其他配置实用程序的摘要。
+
+的首选项API允许应用程序存储和在与实现相关的后备存储器检索配置数据。支持异步更新，多个线程甚至多个应用程序可以安全地更新同一组首选项。有关更多信息，请参阅“ 首选项API指南（Preferences API Guide.）”。
+
+部署在JAR存档中的应用程序使用清单（manifest）来描述存档的内容。有关更多信息，请参阅JAR文件中的 打包程序课程（Packaging Programs in JAR Files ）。
+
+Java Web Start应用程序的配置包含在JNLP文件中。有关更多信息，请参阅 Java Web Start课程。
+
+Java Plug-in applet的配置部分取决于用于在网页中嵌入applet的HTML标记。根据小应用程序和浏览器，这些标签可以包括<applet>，<object>，<embed>，和<param>。有关更多信息，请参阅 Java Applets课程。
+
+该类 java.util.ServiceLoader提供了一个简单的服务提供者工具。服务提供者是一个的实现服务 -的公知的接口和（通常是抽象）类。服务提供者中的类通常实现接口并子类化服务中定义的类。可以将服务提供程序安装为扩展（请参阅 扩展机制）。通过将提供者添加到类路径或通过其他特定于平台的方式，也可以使提供者可用。

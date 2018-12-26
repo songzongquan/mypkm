@@ -1,0 +1,16 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-18T11:26:37+08:00
+
+====== 高级并发对象 ======
+创建日期 星期二 18 十二月 2018
+
+到目前为止，本课程重点关注从一开始就是Java平台一部分的__低级API__。这些API适用于非常基本的任务，但更高级的任务需要更高级别的构建块。对于充分利用当今多处理器和多核系统的大规模并发应用程序尤其如此。
+
+在本节中，我们将介绍Java平台5.0版中引入的一些高级并发功能。大多数这些功能都在新java.util.concurrent包中实现。Java Collections Framework中还有新的并发数据结构。
+
+锁定对象Lock objects 支持锁定习惯用法，__简化了__许多并发应用程序。
+执行程序Executors定义用于启动和管理线程的高级API。提供的执行程序实现提供java.util.concurrent适用于__大规模应用程序的线程池__管理。
+并发集合Concurrent collections　使__管理大量数据__更容易，并且可以大大减少同步的需要。
+原子变量Atomic variables 具有最小化同步的功能，有助于避免内存一致性错误。
+ThreadLocalRandom （在JDK 7中）提供从多个线程有效生成伪随机数。

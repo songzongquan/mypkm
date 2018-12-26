@@ -1,0 +1,21 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-22T19:02:33+08:00
+
+====== 7-对象流 ======
+创建日期 星期六 22 十二月 2018
+
+正如数据流支持原始数据类型的I / O一样，对象流也支持对象的I / O. 大多数（但不是全部）标准类支持其对象的序列化。那些确实实现标记接口 Serializable。
+
+对象流类是 ObjectInputStream和 ObjectOutputStream。这些类实现 ObjectInput和 ObjectOutput，这是子接口DataInput和DataOutput。这意味着数据流中涵盖的所有原始数据I / O方法也在对象流中实现。因此，对象流可以包含原始值和对象值的混合。这个 ObjectStreams例子说明了这一点 ObjectStreams通过DataStreams一些更改创建相同的应用程序。首先，价格现在是 BigDecimal对象，以更好地表示小数值。其次，将 Calendar对象写入数据文件，指示发票日期。
+
+如果readObject()没有返回预期的对象类型，尝试将其强制转换为正确的类型可能会抛出一个 ClassNotFoundException。在这个简单的例子中，这不可能发生，因此我们不会尝试捕获异常。相反，我们通过添加ClassNotFoundException到main方法的throws子句来通知编译器我们已经意识到了这个问题。
+
+===== 复杂对象的输出和输入 =====
+该writeObject和readObject方法是使用简单，但它们包含了一些非常复杂的对象管理逻辑。这对像Calendar这样的类来说并不重要，它只封装了原始值。但是许多对象包含对其他对象的引用。如果readObject要从流中重构对象，则必须能够重新构建原始对象所引用的所有对象。这些附加对象可能有自己的引用，依此类推。在这种情况下，writeObject遍历整个对象引用Web，并将该Web中的所有对象写入流。因此，单个调用writeObject可以导致将大量对象写入流。
+{{./pasted_image.png}}
+
+这在下图中进行了演示，其中writeObject调用了写入名为a的单个对象。该对象包含对象b和c的引用，而b包含对d和e的引用。调用writeobject(a)写不只是一个，但都需要重建的对象一个也都写，所以在这个网络中的其他四个对象。当读回a时，也会回读readObject其他四个对象，并保留所有原始对象引用。
+
+可能想知道如果同一个流上的两个对象都包含对单个对象的引用会发生什么。当他们被回读时，他们都会引用一个对象吗？答案是肯定的。流只能包含一个对象的副本，尽管它可以包含任意数量的对象。因此，如果您明确地将对象写入流两次，那么您实际上只编写了两次引用。例如，如果以下代码将对象写入ob两次流：
+

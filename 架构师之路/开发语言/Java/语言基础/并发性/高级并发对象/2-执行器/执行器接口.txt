@@ -1,0 +1,34 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-21T22:33:44+08:00
+
+====== 执行器接口 ======
+创建日期 星期五 21 十二月 2018
+
+执行器接口
+该java.util.concurrent包定义了三个执行器接口：
+
+1 Executor，一个支持启动新任务的简单界面。
+2 ExecutorService，它是接口Executor的子接口，增加了有助于__管理生命周期的__功能，包括单个任务和执行程序本身。
+3 ScheduledExecutorService，是ExecutorService的子接口，支持__未来和/或定期执行任__务。
+通常，引用executor对象的变量被声明为这三种接口类型之一，而不是执行器类类型。
+
+该Executor接口
+该 [[https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executor.html|Executor]]接口提供了一种方法，execute旨在成为常见的线程创建习惯用语的替代品。如果r是Runnable对象，e则Executor可以替换为对象
+
+（new Thread（r））.start（）;
+同
+
+e.execute（R）;
+
+但是，定义execute不太具体。低级习语创建一个新线程并立即启动它。根据Executor实现，execute可能会做同样的事情，但更有可能使用现有的工作线程来运行r，或者放在r队列中等待工作线程变得可用。（我们将在线程池的部分中描述工作线程。）
+
+执行程序实现java.util.concurrent旨在充分利用更高级ExecutorService和ScheduledExecutorService接口，尽管它们也可以与基本Executor接口一起使用。
+
+该ExecutorService接口
+该 [[https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorService.html|ExecutorService]]接口补充剂execute具有相似的，但更通用的submit方法。喜欢execute，submit接受Runnable对象，但也接受 [[https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Callable.html|Callable]]允许任务返回值的对象。该submit方法返回一个 [[https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Future.html|Future]]对象，该对象用于检索Callable返回值并管理两者Callable和Runnable任务的状态。
+
+ExecutorService还提供了提交大量Callable对象的方法。最后，ExecutorService提供了许多用于管理执行程序关闭的方法。为了支持立即关闭，任务应该正确处理中断。
+
+该ScheduledExecutorService接口
+该 [[https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ScheduledExecutorService.html|ScheduledExecutorService]]接口补充其父的方法ExecutorService有schedule，其执行Runnable或Callable在指定的延迟后的任务。此外，接口定义scheduleAtFixedRate并scheduleWithFixedDelay以定义的间隔重复执行指定的任务。

@@ -1,0 +1,37 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-25T16:21:25+08:00
+
+====== 查找文件 ======
+创建日期 星期二 25 十二月 2018
+
+如果您曾经使用过shell脚本，则很可能使用模式匹配来查找文件。事实上，你可能已经广泛使用它了。如果您还没有使用它，模式匹配使用特殊字符来创建模式，然后可以将文件名与该模式进行比较。例如，在大多数shell脚本中，星号*，匹配任意数量的字符。例如，以下命令列出当前目录中以下结尾的所有文件.html：
+
+％ls * .html
+该java.nio.file软件包为此有用功能提供了编程支持。每个文件系统实现提供一个 PathMatcher。您可以PathMatcher使用类中的 getPathMatcher(String)方法检索文件系统FileSystem。以下代码段获取默认文件系统的路径匹配器：
+
+字符串模式= ...;
+PathMatcher匹配器=
+	FileSystems.getDefault（）。getPathMatcher（“glob：”+ pattern）;
+传递给的字符串参数getPathMatcher指定语法flavor和要匹配的模式。此示例指定glob语法。如果您不熟悉glob语法，请参阅 什么是Glob。
+
+Glob语法易于使用且灵活，但如果您愿意，还可以使用正则表达式或正则表达式语法。有关正则表达式的详细信息，请参阅正则 表达式课程。某些文件系统实现可能支持其他语法。
+
+如果要使用其他形式的基于字符串的模式匹配，可以创建自己的PathMatcher类。此页面中的示例使用glob语法。
+
+创建PathMatcher实例后，您就可以将文件与文件进行匹配。该PathMatcher接口有一个单一的方法， matches即采用一个Path参数，并返回一个布尔值：它或者与该模式匹配，或没有。下面的代码片段查找，在结尾的文件.java或.class并打印这些文件到标准输出：
+
+PathMatcher匹配器=
+	。FileSystems.getDefault（）getPathMatcher（ “水珠：* {的java，类}。”）;
+
+路径文件名= ...;
+if（matcher.matches（filename））{
+	的System.out.println（文件名）;
+}
+
+===== 递归模式匹配 =====
+搜索与特定模式匹配的文件与遍历文件树密切相关。你知道文件在文件系统的某个地方有多少次，但在哪里？或者，您可能需要查找文件树中具有特定文件扩展名的所有文件。
+
+Find类似于UNIX find实用程序，但在功能上已经减少了。您可以扩展此示例以包含其他功能。例如，该find实用程序支持该-prune标志以从搜索中排除整个子树。您可以通过返回实现该功能SKIP_SUBTREE的preVisitDirectory方法。要实现-L符号链接后面的选项，可以使用四参数walkFileTree方法并传入FOLLOW_LINKS枚举（但请确保在visitFile方法中测试循环链接）。
+示例略．
+步行文件树中介绍了递归遍历 文件树。

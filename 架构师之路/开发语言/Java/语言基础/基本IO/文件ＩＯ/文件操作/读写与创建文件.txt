@@ -1,0 +1,22 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-25T15:14:40+08:00
+
+====== 读写与创建文件 ======
+创建日期 星期二 25 十二月 2018
+
+页讨论了阅读，编写，创建和打开文件的详细信息。有多种文件I / O方法可供选择。为了帮助理解API，下图按复杂性排列文件I / O方法。
+{{./pasted_image.png}}
+
+文件I / O方法从较简单到复杂排列
+最左边的图的是实用方法readAllBytes，readAllLines和write方法，设计简单，常见的情况。到那些的右侧是用于迭代流或文本行，如方法newBufferedReader，newBufferedWriter，然后newInputStream和newOutputStream。这些方法可与java.io包进行互操作。对于那些右边是处理方法ByteChannels，SeekableByteChannels及ByteBuffers如newByteChannel方法。最后，最右边是FileChannel用于需要文件锁定或内存映射I / O的高级应用程序的方法。
+
+注意：  创建新文件的方法使您可以为文件指定一组可选的初始属性。例如，在支持POSIX标准集（例如UNIX）的文件系统上，您可以在创建文件时指定文件所有者，组所有者或文件权限。“ 管理元数据”页面介绍了文件属性以及如何访问和设置它们。
+此页面包含以下主题：
+
+该OpenOptions参数
+小文件的常用方法
+文本文件的缓冲I / O方法
+无缓冲流的方法和java.ioAPI的互操作性
+频道和频道的方法 ByteBuffers
+创建常规和临时文件的方法

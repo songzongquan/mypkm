@@ -1,0 +1,31 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-17T17:06:05+08:00
+
+====== 2-内存一致性错误 ======
+创建日期 星期一 17 十二月 2018
+
+Memory consistency errors occur when different threads have inconsistent views of what should be the same data. The causes of memory consistency errors are complex and beyond the scope of this tutorial. Fortunately, the programmer does not need a detailed understanding of these causes. All that is needed is a strategy for avoiding them.
+
+当不同的线程有一个应该是同样数据的不一致视图的时候，内存一致性错误就发生了．导致内存不一致错误的原因是复杂的，超越了我们本教程的范围，幸运的是，程序员不需要理解导致这个问题的细节，所有需要的就是如何避免它们策略．
+
+The key to avoiding memory consistency errors is understanding the happens-before relationship. 
+避免内存一致性错误的关键是要理解＂先发生（happens-before）＂关系．------也就是说一个动作在另一个动作之前发生了，这两动作之间就叫先发生关系．
+
+
+有几种行为可以创造先发生过的关系。其中之一是同步，我们将在以下部分中看到。
+
+我们已经看到了两种创造＂先发生＂关系的行为，实际上就是一种同步的关系．
+
+１．　当一个语句调用Thread.start时，与该语句有一个先发生关系的每个语句也与新线程执行的每个语句都有一个先发生关系。新线程可以看到导致创建新线程的代码的影响。
+２．　当一个线程终止并导致Thread.join另一个线程返回时，终止线程执行的所有语句与成功join后的所有语句都有一个先发生关系。即主线程之前发生的动作在join的线程之前，
+现在，执行join动作的线程，也就是主线程，可以看到被join线程中代码的效果。因为它们有一种同步的效果，被join的线程做的事，都是在主线程在此时间之后的，
+
+有关创建先发生关系的操作列表，请参阅包的“ 摘要”页面j[[https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html#MemoryVisibility|ava.util.concurrent]]。。
+Java语言规范的第17章定义了内存操作的 发生前关系，例如共享变量的读写。只有在读取操作之前发生写入操作时，一个线程的写入结果才能保证对另一个线程的读取可见。该 synchronized和volatile结构，以及在 Thread.start()和Thread.join()方法，可以形成 之前发生关系。
+
+===== volatile的含义： =====
+它虽说不是互斥作用，但是它能保证它修饰的变量，可以在线程读取它时，都能看到最近刚刚被修改的值．
+参考　https://www.cnblogs.com/daxin/p/3364014.html
+
+

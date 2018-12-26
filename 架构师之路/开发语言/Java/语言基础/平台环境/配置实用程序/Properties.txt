@@ -1,0 +1,16 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-17T15:45:06+08:00
+
+====== Properties ======
+创建日期 星期一 17 十二月 2018
+
+java.util.Properties. 
+
+此类提供以下方法：
+
+将键/值对Properties从流中加载到对象中，
+从其键中检索值，
+列出键及其值，
+枚举键，和
+将属性保存到流。

@@ -1,0 +1,19 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-21T15:30:26+08:00
+
+====== 生词本 ======
+创建日期 星期五 21 十二月 2018
+
+implicit   隐式的
+reentrant　　可重入的
+sophisticated　　复杂的
+idioms　　　习语
+acquire 退出
+ overhead due 　　开销
+a significant amount of　　大量的
+fixed 固定的．
+enhance
+goal
+represented  表现表示．
+manipulate　操纵

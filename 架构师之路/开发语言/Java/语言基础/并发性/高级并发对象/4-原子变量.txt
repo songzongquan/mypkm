@@ -1,0 +1,48 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-19T16:33:33+08:00
+
+====== 4-原子变量 ======
+创建日期 星期三 19 十二月 2018
+
+该 java.util.concurrent.atomic包定义了支持单个变量的原子操作的类。所有类都有get和set类似读取和写入volatile变量的方法。也就是说，a set与get同一变量上的任何后续关系具有先发生关系。原子compareAndSet方法也具有这些内存一致性功能，适用于整数原子变量的简单原子算法也是如此。
+
+要查看如何使用此包，让我们返回到 Counter我们最初用于演示线程干扰的类：
+
+class SynchronizedCounter {
+	private int c = 0;
+
+	public synchronized void increment() {
+		c++;
+	}
+
+	public synchronized void decrement() {
+		c--;
+	}
+
+	public synchronized int value() {
+		return c;
+	}
+
+}
+
+对于这个简单的类，同步是可接受的解决方案。但是对于更复杂的类，我们可能希望避免不必要的同步对活动的影响。用a替换int字段AtomicInteger允许我们在不诉诸同步的情况下防止线程干扰，如 AtomicCounter：
+
+import java.util.concurrent.atomic.AtomicInteger;
+
+class AtomicCounter {
+	private AtomicInteger c = new AtomicInteger(0);
+
+	public void increment() {
+		c.incrementAndGet();
+	}
+
+	public void decrement() {
+		c.decrementAndGet();
+	}
+
+	public int value() {
+		return c.get();
+	}
+
+}

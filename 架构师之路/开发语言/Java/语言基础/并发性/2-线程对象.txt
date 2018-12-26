@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-17T16:18:57+08:00
+
+====== 2-线程对象 ======
+创建日期 星期一 17 十二月 2018
+
+每个线程都与该类的实例相关联 Thread。使用Thread对象创建并发应用程序有两种基本策略。
+
+1. 要直接控制线程创建和管理，只需Thread在应用程序每次启动异步任务时进行实例化。
+2. 要从应用程序的其余部分抽象线程管理，请将应用程序的任务传递给Executors。
+本节介绍了Thread对象的使用。与其他高级并发对象讨论Executors。
+
+当当前就一个线程时，如果你sleep后，会抛出中断异常：interruptedException

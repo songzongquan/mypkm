@@ -1,0 +1,16 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-22T19:02:11+08:00
+
+====== 6-数据流 ======
+创建日期 星期六 22 十二月 2018
+
+数据流支持基本数据类型值的二进制I / O（ ，boolean，char，byte，short，int，long，float和double），以及字符串值。所有数据流都实现 DataInput接口或 DataOutput接口。本节重点介绍这些接口最广泛使用的实现， DataInputStream以及 DataOutputStream。
+
+请注意，DataStreams通过捕获EOFException而不是测试无效的返回值来检测文件结束条件 。DataInput方法的所有实现都使用EOFException而不是返回值。
+
+还要注意，每个专业write在DataStreams通过相应的专业是完全匹配read。程序员必须确保输出类型和输入类型以这种方式匹配：输入流由简单的二进制数据组成，没有任何内容可以指示单个值的类型，也不是它们在流中开始的位置。
+
+DataStreams使用一种非常糟糕的编程技术：它使用浮点数来表示货币值。通常，浮点对于精确值是不利的。对于小数部分尤其如此，因为常见值（例如0.1）没有二进制表示。
+
+用于货币值的正确类型是 java.math.BigDecimal。不幸的是，它BigDecimal是一种对象类型，因此它不适用于数据流。但是，BigDecimal 将使用对象流，这将在下一节中介绍。

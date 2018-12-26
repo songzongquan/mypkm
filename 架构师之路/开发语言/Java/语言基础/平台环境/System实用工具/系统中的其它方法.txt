@@ -1,0 +1,16 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-17T15:58:47+08:00
+
+====== 系统中的其它方法 ======
+创建日期 星期一 17 十二月 2018
+
+系统中的其他方法
+本节介绍System了前面几节中未介绍的一些方法。
+
+该arrayCopy方法有效地在数组之间复制数据。有关更多信息，请参阅 语言基础知识课程中的 数组。
+
+这些 currentTimeMillis和 nanoTime方法可用于测量应用程序执行期间的时间间隔。要以毫秒为单位测量时间间隔，请在间隔currentTimeMillis的开始和结束时调用两次，然后减去从第二个返回的第一个值。同样，调用nanoTime两次测量一个以纳秒为单位的间隔。
+
+注：  两者的准确性currentTimeMillis，并nanoTime通过由操作系统提供的服务的时间限制。不要认为currentTimeMillis精确到最接近的毫秒或nanoTime精确到最接近的纳秒。此外，既不应该currentTimeMillis也不nanoTime应该用来确定当前时间。使用高级方法，例如 java.util.Calendar.getInstance。
+该 exit方法使Java虚拟机关闭，并使用参数指定的整数退出状态。退出状态可用于启动应用程序的进程。按照惯例，退出状态0表示应用程序的正常终止，而任何其他值都是错误代码。

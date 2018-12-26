@@ -1,0 +1,39 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-22T16:34:04+08:00
+
+====== 格式化 ======
+创建日期 星期六 22 十二月 2018
+
+实现格式化的流对象PrintWriter是字符流类或 PrintStream字节流类的实例 。
+
+注意：PrintStream您可能需要 的唯一对象是 System.out和 System.err。（有关这些对象的更多信息，请参阅命令行中的I / O.）当您需要创建格式化输出流时，请实例化PrintWriter，而不是PrintStream。
+像所有字节和字符流对象一样，为简单的字节和字符输出实现PrintStream和PrintWriter实现一组标准write方法。此外，这两个PrintStream和PrintWriter执行相同的一组的方法，用于将内部数据转换成格式化的输出。提供两个级别的格式：
+
+print并println以标准方式格式化单个值。
+format 基于格式字符串格式化几乎任意数量的值，具有许多用于精确格式化的选项。
+
+
+===== format 方法 =====
+
+该format方法基于格式字符串格式化多个参数。格式字符串由嵌入格式说明符的静态文本组成; 除格式说明符外，格式字符串输出不变。
+
+格式字符串支持许多功能。在本教程中，我们将介绍一些基础知识。有关完整说明，请参阅 format string syntaxAPI规范。
+
+	public static void main（String [] args）{
+		System.out.format（“％f，％1 $ + 020.10f％n”，Math.PI）;
+	}
+}
+
+d 将整数值格式化为十进制值。
+f 将浮点值格式化为十进制值。
+n 输出特定于平台的线路终结器。
+以下是其他一些转换：
+
+x 将整数格式化为十六进制值。
+s 将任何值格式化为字符串。
+tB 将整数格式化为特定于语言环境的月份名称。
+
+下图显示了较长的说明符如何分解为元素。
+
+{{./pasted_image.png}}

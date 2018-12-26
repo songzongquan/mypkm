@@ -1,0 +1,21 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-23T15:29:32+08:00
+
+====== 路径类 ======
+创建日期 星期日 23 十二月 2018
+
+
+Java教程是为JDK 8编写的。本页描述的示例和实践没有利用后续版本中引入的改进。
+
+路径类
+PathJava SE 7发行版中介绍的 该类是该java.nio.file软件包的主要入口点之一 。如果您的应用程序使用文件I / O，您将需要了解此类的强大功能。
+
+__版本注意：  如果您使用的是JDK7之前的代码，java.io.File则仍可以Path通过使用该File.toPath方法来利用类功能 。有关更多信息，请参阅 旧文件I / O代码__。
+顾名思义，Path该类是文件系统中路径的编程表示。一个Path对象包含用于构建路径的文件名和目录列表，用于检查，定位和操作文件。
+
+一个Path实例反映了基础平台。在Solaris OS中，a Path使用Solaris语法（/home/joe/foo），在Microsoft Windows中，a Path使用Windows语法（C:\home\joe\foo）。A Path不是系统独立的。您无法比较PathSolaris文件系统中的a并期望它与PathWindows文件系统匹配，即使目录结构相同且两个实例都找到相同的相对文件。
+
+对应的文件或目录Path可能不存在。您可以创建一个Path实例并以各种方式对其进行操作：您可以附加到实例，提取它，将其与另一个路径进行比较。在适当的时候，您可以使用Files类中的方法 来检查对应的文件是否存在Path，创建文件，打开文件，删除文件，更改权限等等。
+
+下一页将Path详细介绍该课程。

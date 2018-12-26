@@ -1,0 +1,73 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-23T15:34:45+08:00
+
+====== 路径操作 ======
+创建日期 星期日 23 十二月 2018
+
+所述 Path类包括可以用来获得关于所述路径信息的各种方法，该路径的接入元件，所述路径转换为其它形式的，或提取物部分的路径的。还有用于匹配路径字符串的方法和用于去除路径中的冗余的方法。本课程介绍了这些Path方法，有时也称为语法操作，因为它们在路径上运行，不访问文件系统。
+
+本节包括以下内容：
+
+1. 创建路径　　　　
+用Paths类，如Paths.get("/home/song"); FileSystems.getDefault().getPath("/users/sally");
+2. 检索有关路径的信息
+您可以将其Path视为将这些名称元素存储为序列。目录结构中的最高元素将位于索引0处。目录结构中的最低元素将位于索引处[n-1]，其中n是名称元素的数量Path。方法可用于检索单个元素或Path使用这些索引的子序列。
+toString	/home/joe/foo	C:\home\joe\foo	返回的字符串表示形式Path。如果路径是使用Filesystems.getDefault().getPath(String)或创建的Paths.get（后者是一种方便的方法getPath），则该方法执行较小的语法清理。例如，在UNIX操作系统中，它会将输入字符串更正//home/joe/foo为/home/joe/foo。
+getFileName	foo	foo	返回文件名或name元素序列的最后一个元素。
+getName(0)	home	home	返回与指定索引对应的路径元素。第0个元素是最靠近根的路径元素。
+getNameCount	3	3	返回路径中的元素数。
+subpath(0,2)	home/joe	home\joe	返回Path由开始和结束索引指定的（不包括根元素）的子序列。
+getParent	/home/joe	\home\joe	返回父目录的路径。
+getRoot
+
+3从路径中删除冗余
+许多文件系统使用“。” 符号表示当前目录，“..”表示父目录。您可能遇到Path包含冗余目录信息的情况。也许服务器配置为将其日志文件保存在“ /dir/logs/.”目录中，并且您希望/.从路径中删除尾随的“ ”符号。
+
+以下示例均包含冗余：
+
+/home/./joe/foo 
+/home/sally/../joe/foo
+该normalize方法删除任何冗余元素，包括任何“ .”或“ directory/..”事件。前面的两个示例都标准化为/home/joe/foo。
+
+重要的是要注意，__normalize__在清理路径时不检查文件系统。这是一种纯粹的语法操作。在第二个示例中，如果sally是符号链接，则删除sally/..可能会导致Path不再定位目标文件。
+
+要在确保结果找到正确的文件的同时清理路径，可以使用该toRealPath方法。此方法将在下一节“ 转换路径”中介绍。
+
+
+4 转换路径
+	您可以使用三种方法来转换Path。如果需要将路径转换为可以从浏览器打开的字符串，则可以使用 toUri。
+该 toAbsolutePath方法将路径转换为绝对路径。如果传入的路径已经是绝对路径，则返回相同的Path对象。toAbsolutePath处理用户输入的文件名时，该方法非常有用
+该 toRealPath方法返回现有文件的实际路径。此方法在一个中执行多个操作：
+
+如果true传递给此方法并且文件系统支持符号链接，则此方法将解析路径中的所有符号链接。
+如果Path是相对的，则返回绝对路径。
+如果Path包含任何冗余元素，则返回删除了这些元素的路径。
+如果文件不存在或无法访问，则此方法将引发异常。当您想要处理任何这些情况时，您可以捕获异常。
+
+5 加入两条道路
+您可以使用该resolve方法组合路径。传入部分路径，该路径是不包含根元素的路径，并且该部分路径将附加到原始路径。
+
+6 在两条路径之间创建路径
+编写文件I / O代码时的一个常见要求是能够构建从文件系统中的一个位置到另一个位置的路径。您可以使用该relativize方法满足此要求。此方法构造一个源自原始路径并在传入路径指定的位置结束的路径。新路径相对于原始路径。
+例如，考虑定义为joe和的两个相对路径sally：
+
+路径p1 = Paths.get（“joe”）; 
+路径p2 = Paths.get（“sally”）;
+在没有任何其他信息的情况下，假设joe并且sally是兄弟节点，意味着节点位于树结构中的相同级别。从导航joe到sally，你会希望先浏览一个水平提高到父节点再向下sally：
+
+//结果是../sally 
+Path p1_to_p2 = p1.relativize（p2）; 
+//结果是../joe 
+Path p2_to_p1 = p2.relativize（p1）;
+考虑一个稍微复杂的例子：
+
+路径p1 = Paths.get（“home”）; 
+路径p3 = Paths.get（“home / sally / bar”）; 
+//结果是sally / bar 
+路径p1_to_p3 = p1.relativize（p3）; 
+//结果是../ .. 
+路径p3_to_p1 = p3.relativize（p1）;
+7 比较两条路径
+
+该Path级支持 equals，使您能够测试相等的两条路径。使用 startsWith和 endsWith方法可以测试路径是以特定字符串开头还是结尾。这些方法易于使用。

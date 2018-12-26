@@ -1,0 +1,13 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-19T16:33:17+08:00
+
+====== 3-并发集合 ======
+创建日期 星期三 19 十二月 2018
+
+该java.util.concurrent软件包包括Java Collections Framework的许多新增功能。这些最容易通过提供的集合接口进行分类：
+
+BlockingQueue 定义先进先出数据结构，当您尝试添加到完整队列或从空队列中检索时，该数据结构会阻塞或超时。
+ConcurrentMap是java.util.Map定义有用原子操作的子接口 。仅当ｋｅｙ存在时，这些操作才会删除或替换键值对，或仅在ｋｅｙ不存在时才添加键值对。使这些操作原子化有助于避免同步。标准的通用实现ConcurrentMap是 ConcurrentHashMap，它是一个并发的模拟 HashMap。
+ConcurrentNavigableMap是ConcurrentMap支持近似匹配的子接口。标准的通用实现ConcurrentNavigableMap是 ConcurrentSkipListMap，它是一个并发的模拟 TreeMap。
+所有这些集合通过定义将对象添加到集合的操作与访问或删除该对象的后续操作之间的先发生关系来帮助避免内存一致性错误。

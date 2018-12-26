@@ -1,0 +1,17 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-25T15:58:54+08:00
+
+====== 随机访问文件 ======
+创建日期 星期二 25 十二月 2018
+
+随机访问文件允许对文件内容进行非顺序或随机访问。要随机访问文件，请打开文件，查找特定位置，以及读取或写入该文件。
+
+SeekableByteChannel界面可以实现此功能 。的SeekableByteChannel接口扩展信道I / O与当前位置的概念。使用方法可以设置或查询位置，然后可以从该位置读取数据或将数据写入该位置。API由一些易于使用的方法组成：
+
+position - 返回频道的当前位置
+position(long) - 设置通道的位置
+read(ByteBuffer) - 从通道读取缓冲区中的字节
+write(ByteBuffer) - 将缓冲区中的字节写入通道
+truncate(long) - 截断连接到通道的文件（或其他实体）
+使用通道I / O读取和写入文件显示Path.newByteChannel方法返回a的实例SeekableByteChannel。在默认文件系统上，您可以按原样使用该通道，也可以将其强制转换 FileChannel为可以访问更高级的功能，例如将文件区域直接映射到内存中以便更快地访问，锁定文件的某个区域，或从绝对位置读取和写入字节而不影响通道的当前位置。

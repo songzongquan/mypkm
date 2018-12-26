@@ -1,0 +1,23 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-22T16:29:28+08:00
+
+====== 3-缓冲流 ======
+创建日期 星期六 22 十二月 2018
+
+到目前为止，我们看到的大多数示例都使用无缓冲的 I / O. 这意味着每个读取或写入请求都由底层操作系统直接处理。这可以使程序效率低得多，因为每个这样的请求经常触发磁盘访问，网络活动或一些相对昂贵的其他操作。
+
+为了减少这种开销，Java平台实现了缓冲的 I / O流。缓冲输入流从称为缓冲区的存储区读取数据; 仅当缓冲区为空时才调用本机输入API。类似地，缓冲输出流将数据写入缓冲区，并且仅在缓冲区已满时才调用本机输出API。
+
+程序可以使用我们现在多次使用的包装习惯用法将无缓冲的流转换为缓冲流，其中无缓冲的流对象被传递给缓冲流类的构造函数。以下是您可以修改CopyCharacters示例中的构造函数调用以使用缓冲I / O的方法：
+
+inputStream = new BufferedReader（new FileReader（“xanadu.txt”））;
+outputStream = new BufferedWriter（new FileWriter（“characteroutput.txt”））;
+还有用于包装缓冲流4个缓冲流类： BufferedInputStream与 BufferedOutputStream创建缓冲字节流，而 BufferedReader与 BufferedWriter创建缓冲字符流。
+
+===== 刷新缓冲流 =====
+在关键点写出缓冲区通常是有意义的，而无需等待它填充。这称为刷新缓冲区。
+
+一些缓冲的输出类支持autoflush，由可选的构造函数参数指定。启用autoflush时，某些键事件会导致刷新缓冲区。例如，autoflush PrintWriter对象在每次调用printlnor时刷新缓冲区format。有关这些方法的更多信息，请参阅格式化
+
+要手动刷新流，请调用其flush方法。该flush方法在任何输出流上都有效，但除非缓冲流，否则无效。

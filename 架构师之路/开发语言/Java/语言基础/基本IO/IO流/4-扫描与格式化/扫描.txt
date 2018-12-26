@@ -1,0 +1,43 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-22T16:33:11+08:00
+
+====== 扫描 ======
+创建日期 星期六 22 十二月 2018
+
+类型对象 Scanner可用于按标记将格式化输入分解，并根据其数据类型转换单个标记
+
+===== 将输入分解 =====
+默认情况下，扫描程序使用空格分隔令牌。（空格字符包括__空格__，__制表符和行终止符__。有关完整列表，请参阅相关文档 Character.isWhitespace。）要查看扫描的工作原理，让我们看一下 ScanXan，读取单个单词xanadu.txt并打印出来的程序，每个线。
+Scanner s = null; 
+
+		try { 
+			s = new Scanner（new BufferedReader（new FileReader（“xanadu.txt”）））; 
+
+			while（s.hasNext（））{ 
+				System.out.println（s.next（））; 
+			} 
+		}最后{ 
+			如果（S！= NULL）{ 
+				S.CLOSE（）; 
+			} 
+
+要使用其他标记分隔符，请调用useDelimiter()，指定正则表达式。例如，假设您希望令牌分隔符为逗号，可选地后跟空格。你会调用，
+
+s.useDelimiter（ “\\ S *”）;
+
+针对
+Scanner还支持所有Java语言的原始类型（除了char）以及BigInteger和之类的标记BigDecimal。此外，数值可以使用千位分隔符。因此，在US语言环境中，Scanner正确读取字符串“32,767”表示整数值。
+
+我们必须提到语言环境，因为千位分隔符和小数符号是特定于语言环境的。因此，如果我们没有指定扫描程序应该使用US语言环境，则以下示例将无法在所有语言环境中正常运行。这通常不必担心，因为您的输入数据通常来自使用相同语言环境的源。但是这
+
+如: s = new Scanner（new BufferedReader（new FileReader（“usnumbers.txt”）））; 
+			s.useLocale（Locale.US）; 
+
+			while（s.hasNext（））{ 
+				if（s.hasNextDouble（））{ 
+					sum + = s.nextDouble（）; 
+				} else { 
+					s.next（）; 
+				}    
+			}

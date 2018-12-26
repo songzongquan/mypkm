@@ -1,0 +1,28 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-25T15:05:10+08:00
+
+====== 复制文件与目录 ======
+创建日期 星期二 25 十二月 2018
+
+您可以使用该copy(Path, Path, CopyOption...)方法复制文件或目录 。如果目标文件存在，则复制将失败，除非REPLACE_EXISTING指定了该选项。
+
+目录可以复制。但是，目录中的文件不会被复制，因此即使原始目录包含文件，新目录也是空的。
+
+复制符号链接时，将复制链接的目标。如果要复制链接本身而不是链接的内容，请指定NOFOLLOW_LINKS或REPLACE_EXISTING选项。
+
+此方法采用varargs参数。支持以下StandardCopyOption和LinkOption枚举：
+
+REPLACE_EXISTING - 即使目标文件已存在，也执行复制。如果目标是符号链接，则复制链接本身（而不是链接的目标）。如果目标是非空目录，则复制将失败并显示FileAlreadyExistsException异常。
+COPY_ATTRIBUTES - 将与文件关联的文件属性复制到目标文件。支持的确切文件属性是文件系统和平台相关的，但last-modified-time跨平台支持并复制到目标文件。
+NOFOLLOW_LINKS - 表示不应遵循符号链接。如果要复制的文件是符号链接，则复制链接（而不是链接的目标）。
+如果您不熟悉enums，请参阅 枚举类型。
+
+以下显示了如何使用该copy方法：
+
+import static java.nio.file.StandardCopyOption。*;
+...
+Files.copy（source，target，REPLACE_EXISTING）;
+除文件复制外，Files该类还定义了可用于在文件和流之间进行复制的方法。该 copy(InputStream, Path, CopyOptions...)方法可用于将所有字节从输入流复制到文件。该 copy(Path, OutputStream)方法可用于将所有字节从文件复制到输出流。
+
+该 Copy示例使用copy和Files.walkFileTree方法来支持递归副本。有关更多信息，请参阅 遍历文件树。
