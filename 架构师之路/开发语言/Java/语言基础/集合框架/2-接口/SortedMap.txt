@@ -1,0 +1,40 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-05T16:54:17+08:00
+
+====== SortedMap ======
+创建日期 星期六 05 一月 2019
+
+A SortedMap是 Map按升序维护其条目，根据键的自然顺序排序，或根据创建Comparator时提供的条目排序的SortedMap。自然排序和Comparators在对象排序部分中讨论 。该SortedMap接口提供正常Map操作和以下操作：
+
+Range view - 对已排序的地图执行任意范围操作
+Endpoints - 返回有序映射中的第一个或最后一个键
+Comparator access- 返回Comparator用于对地图进行排序的（如果有）
+以下界面是Map模拟的 SortedSet。
+
+公共接口SortedMap <K，V>扩展Map <K，V> {
+	比较<？super K> comparator（）;
+	SortedMap <K，V> subMap（K fromKey，K toKey）;
+	SortedMap <K，V> headMap（K toKey）;
+	SortedMap <K，V> tailMap（K fromKey）;
+	K firstKey（）;
+	K lastKey（）;
+}
+
+===== Map操作 =====
+这些操作SortedMap从Map有序映射和法线贴图上的行为继承，但有两个例外：
+
+在Iterator由返回iterator任何的有序映射的操作Collection，以便意见遍历集合。
+Collection视图toArray操作返回的数组按顺序包含键，值或条目。
+尽管它不是由接口保证的，所述toString的方法Collection中的所有Java平台的观点SortedMap实现返回包含视图的所有元素中，为了一个字符串。
+
+
+===== 标准构造器＇ =====
+按照惯例，所有通用Map实现都提供了一个标准的转换构造函数，它采用了Map; SortedMap实现也不例外。在TreeMap，此构造函数创建一个实例，根据其键的自然顺序对其条目进行排序。这可能是一个错误。最好动态检查以查看指定的Map实例是否为a SortedMap，如果是，则根据相同的标准（比较器或自然排序）对新映射进行排序。因为TreeMap采用了它所采用的方法，它还提供了一个构造函数，它接受SortedMap并返回一个TreeMap包含与给定相同映射的newSortedMap，按照相同的标准排序。请注意，它是参数的编译时类型，而不是其运行时类型，它确定是否SortedMap优先于普通map构造函数调用构造函数。
+
+SortedMap按照惯例，实现还提供了一个构造函数，它接受Comparator并返回根据指定的类型排序的空映射Comparator。如果null传递给此构造函数，它将返回一个Map根据其键的自然顺序对其映射进行排序的方法。
+
+
+
+===== 与SortedSet的比较 =====
+因为这个接口是精确的Map模拟SortedSet，所以The SortedSet Interface部分中的所有习语和代码示例 SortedMap仅适用于简单的修改。

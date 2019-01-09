@@ -1,0 +1,25 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-08T12:25:14+08:00
+
+====== List实现 ======
+创建日期 星期二 08 一月 2019
+
+一样有通用实现与特殊实现．
+
+===== 通用实现 =====
+**有两个实现:ArrayList和LinkedList.**   大多情况下，你应该用ArrayList.  它在按位置进行访问时是有一个常量时间响应，并且是一般的快．它不需要为list中的每一个元素分配一个node对象，在需要同时移动多个元素时，它也可以利用上System.arrayCopy的好处．想一想当ArrayList作为Vector来使用时，并没有同步上的花销．
+
+如果你在list的开始处顺序地添加元素，或者通过ｌｉｓｔ的迭代器删除元素，那么你应该考虑用LinkedList. 这些操作在LinkedList中需要恒定的时间，在ArrayList中需要线性增长的时间（即元素越多，时间越长）
+但是你需要付出很大的性能代价．在LinkedList中进行按位置访问需要线性增长的时间代价，在ArrayList中需要一个常量的时间代价．针对LinkedList的常量因子要糟的多．如果你认为你应该用LinkedList,在决定选择使用LinkedList还是ArrayList之前，最好是针对你的应用使用两者的的性能分别作一下测量再作决定．通常情况下，ＡｒｒａｙＬｉｓｔ比较快一点．
+
+ArrayList有一个调优的参数－初始容量（capacity). 它指的是当ArrayList在必须扩展容量之前能够容纳的元素的个数．LinkedList没有这个调优的参数，但它有７个可选的操作，其中之一是clone，另外６个分别是addFirst, getFirst, removeFirst, addLast, getLast, 和 removeLast. LinkedList也实现了Queue接口．
+
+
+
+===== 特殊实现 =====
+CopyOnWriteArrayList 是一个Ｌｉｓｔ实现，由copy-on-write 的数组来支持实现，这个实现与CopyOnWriteArraySet自然的类似，它不必要进行同步，在迭代时，迭代器保证永远不会抛出ConcurrentModificationException。　它非常适合用于维护事件处理列表，即很少被改变，遍历非常频繁，而且可能非常耗时。
+
+如果你需要同步，那么，Ｖｅｃｔｏｒ比用Collections.synchronizedList实现同步的ＡｒｒａｙＬｉｓｔ更轻量的，更快．但是vector有很多遗留操作，所以请务必使用列表接口来操作vector，否则稍后将无法替换实现。
+
+如果列表的大小是固定的——也就是说，除了containsall之外，您永远不会使用remove、add或任何批量操作——那么您还有第三个选项值得考虑。有关详细信息，请参阅便利实现部分中的arrays.aslist。

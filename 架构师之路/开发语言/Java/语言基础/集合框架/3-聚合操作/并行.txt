@@ -1,0 +1,157 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-06T13:04:27+08:00
+
+====== 并行 ======
+创建日期 星期日 06 一月 2019
+
+并行计算涉及将问题划分为子问题，同时解决这些问题（并行地，每个子问题在单独的线程中运行），然后将解决方案的结果与子问题相结合。Java SE提供了 fork / join框架，使您可以更轻松地在应用程序中实现并行计算。但是，使用此框架，您必须指定问题的细分方式（分区）。通过聚合操作，Java运行时会为您执行此分区和组合解决方案。
+
+在使用集合的应用程序中实现并行性的一个难点是集合不是线程安全的，这意味着多线程无法在不引入线程干扰或 内存一致性错误的情况下操作集合 。Collections Framework提供了 同步包装器，它将自动同步添加到任意集合，使其成为线程安全的。但是，同步会引入 线程争用。您希望避免线程争用，因为它会阻止线程并行运行。聚合操作和并行流使您可以实现与非线程安全集合的并行性，前提是您在操作集合时不要修改集合。
+
+请注意，并行性并不比串行执行操作更快，尽管可能有足够的数据和处理器内核。虽然聚合操作使您能够更轻松地实现并行性，但您仍有责任确定您的应用程序是否适合并行性。
+
+本节包括以下主题：
+
+并行执行流
+同时减少
+订购
+副作用
+怠惰
+干扰
+有状态的Lambda表达式
+
+您可以在示例中找到本节中描述的代码摘录 ParallelismExamples。
+
+===== 并行执行流 =====
+您可以串行或并行执行流。当流并行执行时，Java运行时将流分区为多个子流。聚合操作迭代并且并行处理这些子流，然后组合结果。
+
+创建流时，除非另行指定，否则它始终是串行流。要创建并行流，请调用该操作 Collection.parallelStream。或者，调用操作 BaseStream.parallel。例如，以下语句并行计算所有男性成员的平均年龄：
+
+double average = roster 
+	.parallelStream（）。
+	filter（p  - > p.getGender（）== Person.Sex.MALE）
+	。mapToInt（Person :: getAge）
+	.average（）。
+	getAsDouble（）;
+
+
+===== 同时减少 =====
+再次考虑以下示例（在“ 缩减 ”一节中描述），该示例 按性别对成员进行分组。此示例调用collect操作，该操作将集合减少roster为Map：
+
+Map <Person.Sex，List <Person >> byGender = 
+	roster 
+		.stream（）。
+		collect（
+			Collectors.groupingBy（Person :: getGender））;
+以下是并行等效项：
+
+ConcurrentMap <Person.Sex，List <Person >> byGender = 
+	roster 
+		.parallelStream（）。
+		collect（
+			Collectors.groupingByConcurrent（Person :: getGender））;
+这称为并发减少。如果对包含该collect操作的特定管道满足以下所有条件，则Java运行时将执行并发减少：
+
+流是平行的。
+操作的参数collect，即收集器，具有特征 Collector.Characteristics.CONCURRENT。要确定收集器的特征，请调用该 Collector.characteristics方法。
+流是无序的，或者收集器具有特征 Collector.Characteristics.UNORDERED。要确保流是无序的，请调用该 BaseStream.unordered操作。
+注意：此示例返回一个实例 ConcurrentMap而不是Map和调用 groupingByConcurrent 操作而不是groupingBy。（有关详细信息，请参阅“ 并发集合 ”一节 ConcurrentMap。）与操作不同groupingByConcurrent，该操作groupingBy对并行流执行效果不佳。（这是因为它通过按键合并两个映射来操作，这在计算上是昂贵的。）类似地，对于 Collectors.toConcurrentMap并行流而言操作比操作更好 Collectors.toMap。
+
+===== 排序 =====
+
+管道处理流中的元素的顺序依赖于它是串行处还是并行处理,这个流包括了源与中间处理．
+结论：
+１．串行的话，缺少是按自然排顺序的处理的．如果排过序就按排序方法的顺序．
+２．并行一般是随机的．不确定
+３．如果在并行的情况下，用了forEachOrderd()，仍是会按顺序的．但这样会失去并行的好处的．
+
+===== 副作用 =====
+
+如果方法或表达式除了返回或产生值之外还修改计算机的状态，则该方法或表达式具有副作用。示例包括可变减少（使用该collect操作的操作;请参阅“ 减少 ”一节 以获取更多信息）以及调用System.out.println调试方法。JDK可以很好地处理管道中的某些副作用。特别地，该collect方法被设计为以并行安全的方式执行具有副作用的最常见的流操作。操作喜欢forEach和peek设计用于副作用; 返回void的lambda表达式（例如调用的表达式）System.out.println除了具有副作用外什么都不做。即便如此，你应该使用forEach和peek谨慎操作; 如果您对并行流使用其中一个操作，那么Java运行时可以从多个线程同时调用您指定为其参数的lambda表达式。另外，永远不要传递作为参数的lambda表达式，这些表达式在诸如filter和等操作中具有副作用map。以下部分讨论干扰和有状态lambda表达式，这两种表达式都可能是副作用的来源，并且可能返回不一致或不可预测的结果，尤其是在并行流中。然而，首先讨论懒惰的概念，因为它对干扰有直接影响。
+
+==== 懒惰 ====
+所有中间操作都是懒惰的。如果仅在需要时评估其值，则表达式，方法或算法是惰性的。（如果立即评估或处理算法，则算法急切。）中间操作是惰性的，因为它们在终端操作开始之前不开始处理流的内容。懒惰地处理流使Java编译器和运行时能够优化它们处理流的方式。例如，在一个管道，如filter- mapToInt- average在部分描述的示例 聚合操作中，average操作可能获得从由所述创建的流的第几个整数mapToInt操作，这从获得的元素filter的操作。该average 操作将重复此过程，直到它从流中获得所有必需元素，然后它将计算平均值。
+
+
+==== 干扰 ====
+流操作中的Lambda表达式不应该干扰。在流水线处理流时修改流的源时发生干扰，例如，以下代码尝试连接包含在中的字符串List listOfStrings。然而，它抛出一个ConcurrentModificationException：
+
+try {
+	List<String> listOfStrings =
+		new ArrayList<>(Arrays.asList("one", "two"));
+         
+	// This will fail as the peek operation will attempt to add the
+	// string "three" to the source after the terminal operation has
+	// commenced. 
+             
+	String concatenatedString = listOfStrings
+		.stream()
+        
+		// Don't do this! Interference occurs here.
+		.peek(s -> listOfStrings.add("three"))
+        
+		.reduce((a, b) -> a + " " + b)
+		.get();
+                 
+	System.out.println("Concatenated string: " + concatenatedString);
+         
+} catch (Exception e) {
+	System.out.println("Exception caught: " + e.toString());
+}
+
+==== 有状态的Lambda表达式 ====
+要避免在流操作中使用有状态的lambda表达式作为参数．有状态的的lambda表达式的结果依赖于任何一个状态，此状态在执行期间会被改变．
+以下示例使用中间操作将元素添加List listOfIntegers到新List实例map。它执行两次，首先使用串行流，然后使用并行流：
+
+List<Integer> serialStorage = new ArrayList<>();
+     
+System.out.println("Serial stream:");
+listOfIntegers
+	.stream()
+    
+	// Don't do this! It uses a stateful lambda expression.
+	.map(e -> { serialStorage.add(e); return e; })
+    
+	.forEachOrdered(e -> System.out.print(e + " "));
+System.out.println("");
+     
+serialStorage
+	.stream()
+	.forEachOrdered(e -> System.out.print(e + " "));
+System.out.println("");
+
+System.out.println("Parallel stream:");
+List<Integer> parallelStorage = Collections.synchronizedList(
+	new ArrayList<>());
+listOfIntegers
+	.parallelStream()
+    
+	// Don't do this! It uses a stateful lambda expression.
+	.map(e -> { parallelStorage.add(e); return e; })
+    
+	.forEachOrdered(e -> System.out.print(e + " "));
+System.out.println("");
+     
+parallelStorage
+	.stream()
+	.forEachOrdered(e -> System.out.print(e + " "));
+System.out.println("");
+
+lambda表达式e -> { parallelStorage.add(e); return e; }是有状态的lambda表达式。每次运行代码时，其结果都会有所不同。此示例打印以下内容：
+Serial stream:
+8 7 6 5 4 3 2 1
+8 7 6 5 4 3 2 1
+Parallel stream:
+8 7 6 5 4 3 2 1
+1 3 6 2 4 5 8 7
+操作forEachOrdered处理在由流指定，而不管流是否被以串行或并行地执行的顺序的元件。但是，当并行执行流时，该map操作将处理由Java运行时和编译器指定的流的元素。因此，每次运行代码时，lambda表达式e -> { parallelStorage.add(e); return e; }向元素添加元素的顺序List parallelStorage都会有所不同。对于确定性和可预测的结果，请确保流操作中的lambda表达式参数不具有状态。
+
+__注意：此示例调用方法， synchronizedList以便List parallelStorage线程安全。请记住，集合不是线程安全的。这意味着多个线程不应同时访问特定集合。假设您synchronizedList在创建时不调用该方法parallelStorage：__
+
+List <Integer> parallelStorage = new ArrayList <>（）;
+该示例表现不正常，因为多个线程在parallelStorage没有像同步这样的机制的情况下访问和修改，以便在特定线程可以访问List实例时进行调度。因此，该示例可以打印类似于以下内容的输出：
+
+平行流：
+8 7 6 5 4 3 2 1 
+null 3 5 4 7 8 1 2

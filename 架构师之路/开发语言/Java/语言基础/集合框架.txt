@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-29T11:59:53+08:00
+
+====== 集合框架 ======
+创建日期 星期六 29 十二月 2018
+
+节介绍Java Collections Framework。在这里，您将了解集合是什么以及它们如何使您的工作更轻松，程序更好。您将了解构成Java Collections Framework的核心元素 - 接口，实现，聚合操作和算法。

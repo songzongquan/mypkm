@@ -1,0 +1,38 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-08T18:03:35+08:00
+
+====== Deque实现 ======
+创建日期 星期二 08 一月 2019
+
+该Deque接口发音为“deck”，表示双端队列。该Deque接口可以实现为各种类型Collections。该Deque接口实现分为通用型和并发实现。
+
+===== 通用实现 =====
+通用实现包括 LinkedList 和 ArrayDeque两个类，Ｄｅｑｕｅ支持对两端进行元素插入，删除，获取操作． ArrayDeque 是一个实现Deque接口的基于可变长数组的实现类，而LinkedList是一个基于ｌｉｓｔ的实现．
+基本的插入，删除和retieval操作的Deque接口对应方法是：addFirst，addLast，removeFirst，removeLast，getFirst和getLast。方法addFirst在头部添加元素，而addLast在Deque实例的尾部添加元素。
+
+LinkedList实现比ArrayDeque实现更加灵活，LinkedList实现了所有的可选择list的操作，LinkedList允许ｎｕｌｌ元系的存在，但是ArrayDeque不行．
+
+在效率方面，对于两端的添加和删除操作，ArrayDeque比LinkedList更有效。LinkedList实现中的最佳操作是在迭代期间移除当前元素。LinkedList实现不是理想的迭代结构。
+
+LinkedList实现比ArrayDeque实现消耗更多的内存。对于arrayDeque实例遍历，请使用以下任一项：
+
+**foreach**
+foreach 是快的，并且能用于所有各类的list
+
+
+ArrayDeque<String> aDeque = new ArrayDeque<String>();
+
+. . .
+for (String str : aDeque) {
+	System.out.println(str);
+}
+
+**Iterator**
+迭代器可以用于对各种数据的各种列表进行正向遍历。
+
+ArrayDeque<String> aDeque = new ArrayDeque<String>();
+. . .
+for (Iterator<String> iter = aDeque.iterator(); iter.hasNext();  ) {
+	System.out.println(iter.next());
+}

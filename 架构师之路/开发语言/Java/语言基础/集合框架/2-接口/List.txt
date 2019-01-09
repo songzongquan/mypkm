@@ -1,0 +1,60 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-05T14:16:42+08:00
+
+====== List ======
+创建日期 星期六 05 一月 2019
+
+有序的集合，也可以叫做序列，可以包含重复的元素，继承Collection的行为，包含以下方法：
+１．位置访问－根据列表中的数字位置操纵元素。这包括方法，例如get， set，add，addAll，和remove。
+２．搜索－搜索列表中的指定对象并返回其数字位置。搜索方法包括 indexOf和lastIndexOf。
+３．迭代－
+４．范围视图－该sublist方法对列表执行任意范围操作。
+
+===== 集合操作 =====
+add类操作总是从ｌｉｓｔ的开始处添加，remove类操作总是从ｌｉｓｔ的最后进行删除．
+注意非破坏性的惯用法是先：List<Type> list3 = new ArrayList<Type>(list1);
+list3.addAll(list2);
+
+list和ｓｅｔ一样，也加强了比较相等与hashcode方法，当两个ｌｉｓｔ元素一样并且顺序相等，则认为它们相等．
+
+===== 位置访问与搜索操作 =====
+基本的位置访问操作是get、set、add和remove。（设置和删除操作返回被覆盖或删除的旧值。）其他操作（index of和last index of）返回列表中指定元素的第一个或最后一个索引。
+
+addall操作从指定位置开始插入指定集合的所有元素。元素按指定集合的迭代器返回的顺序插入。此调用是集合的addall操作的位置访问模拟。
+
+===== 迭代器 =====
+正如您所期望的那样，Iterator返回List的iterator操作以适当的顺序返回列表的元素。List还提供了一个更丰富的迭代器，称为a ListIterator，它允许您在任一方向遍历列表，在迭代期间修改列表，并获取迭代器的当前位置。
+ListIterator继承自Iterator（hasNext，next和remove）的三种方法在两个接口中完全相同。在hasPrevious和previous操作的准确类似物hasNext和next。前一个操作引用（隐式）游标之前的元素，而后者引用游标之后的元素。在previous操作光标向后移动，而next向前移动它。
+
+这是在列表中向后迭代的标准习惯用法。
+
+for（ListIterator <Type> it = list.listIterator（list.size（））; it.hasPrevious（）;）{ 
+	Type t = it.previous（）; 
+	... 
+}
+
+===== 范围视图操作 =====
+该range-view操作subList(int fromIndex, int toIndex)返回List该列表中其索引范围从fromIndex（包括）到toIndex独占的部分的视图。这个半开放范围反映了典型的for环路。
+
+for（int i = fromIndex; i <toIndex; i ++）{ 
+	... 
+}
+正如术语视图所暗示的那样，返回List由被调用的Liston 来备份subList，__因此前者的变化反映在后者中。__
+
+此方法消除了对显式范围操作的需要（对于数组通常存在的排序）。任何期望a的操作List都可以通过传递subList视图而不是整体来用作范围操作List。例如，以下习语从a中删除了一系列元素List。
+
+===== Ｌｉｓｔ的算法 =====
+Collections该类中的大多数多态算法专门适用于List。拥有所有这些算法可以很容易地操作列表。以下是这些算法的摘要，这些算法在“ 算法”部分中有更详细的描述 。
+
+* sort- List使用合并排序算法对a 进行排序，该算法提供快速，稳定的排序。（稳定的排序是不重新排序相同元素的排序。）
+* shuffle- 随机置换a中的元素List。
+* reverse- 颠倒a中元素的顺序List。
+* rotate- 将a中List的所有元素旋转指定的距离。
+* swap- 将元素交换到a中的指定位置List。
+* replaceAll - 将一个指定值的所有出现替换为另一个。
+* fill- List用指定的值覆盖a中的每个元素。
+* copy- 将源复制List到目标List。
+* binarySearch- List使用二进制搜索算法搜索有序元素。
+* indexOfSubList- 返回一个List等于另一个子列表的第一个子列表的索引。
+* lastIndexOfSubList- 返回一个List等于另一个子列表的最后一个子列表的索引。

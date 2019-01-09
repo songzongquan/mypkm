@@ -1,0 +1,77 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-28T17:16:08+08:00
+
+====== 9-Pattern类的方法 ======
+创建日期 星期五 28 十二月 2018
+
+到目前为止，我们只使用测试工具以Pattern最基本的形式创建对象。本节探讨了高级技术，例如使用标志创建模式以及使用嵌入式标志表达式。它还探讨了我们尚未讨论的一些其他有用的方法。
+
+===== 使用标志创建模式pattern =====
+在Pattern类定义的替代compile，它接受一组影响图案匹配的方式的标志方法。flags参数是一个位掩码，可能包含以下任何公共静态字段：
+
+Pattern.CANON_EQ启用规范等效。指定此标志时，如果且仅当它们的完整规范分解匹配时，将认为两个字符匹配。"a\u030A"例如，表达式将在"\u00E5"指定此标志时匹配字符串。默认情况下，匹配不会将规范等效性考虑在内。指定此标志可能会造成性能损失。
+Pattern.CASE_INSENSITIVE启用不区分大小写的匹配。默认情况下，不区分大小写的匹配假定只匹配US-ASCII字符集中的字符。可以通过将UNICODE_CASE标志与此标志一起指定来启用Unicode感知的不区分大小写的匹配。也可以通过嵌入的标志表达式启用不区分大小写的匹配(?i)。指定此标志可能会略微降低性能。
+Pattern.COMMENTS允许模式中的空格和注释。在此模式下，将忽略空格，并忽略以嵌入式注释开头，#直到行结束。注释模式也可以通过嵌入的标志表达式启用(?x)。
+Pattern.DOTALL启用dotall模式。在dotall模式下，表达式.匹配任何字符，包括行终止符。默认情况下，此表达式与行终止符不匹配。也可以通过嵌入的标志表达式启用Dotall模式(?s)。（s是“单行”模式的助记符，这是在Perl中调用的。）
+Pattern.LITERAL启用模式的文字解析。指定此标志后，指定模式的输入字符串将被视为文字字符序列。输入序列中的元字符或转义序列将没有特殊含义。当与此标志一起使用时，标志CASE_INSENSITIVE并UNICODE_CASE保持对匹配的影响。其他标志变得多余。没有用于启用文字解析的嵌入标志字符。
+Pattern.MULTILINE启用多线模式。在多行模式表达式^和$匹配刚过或之前，分别，一个线路终端器或输入序列的末尾。默认情况下，这些表达式仅在整个输入序列的开头和结尾处匹配。也可以通过嵌入的标志表达式启用多行模式(?m)。
+Pattern.UNICODE_CASE启用支持Unicode的案例折叠。指定此标志后，由CASE_INSENSITIVE标志启用时，不区分大小写的匹配将以与Unicode标准一致的方式完成。默认情况下，不区分大小写的匹配假定只匹配US-ASCII字符集中的字符。还可以通过嵌入的标志表达式启用支持Unicode的案例折叠(?u)。指定此标志可能会造成性能损失。
+Pattern.UNIX_LINES启用UNIX行模式。在这种模式下，只有'\n'行结束在行为的认可.，^和$。也可以通过嵌入的标志表达式启用UNIX行模式(?d)。
+在以下步骤中，我们将修改测试工具， RegexTestHarness.java以创建具有不区分大小写匹配的模式。
+
+首先，修改代码以调用以下的备用版本compile：
+
+模式模式= 
+Pattern.compile（console.readLine（“％n输入你的正则表达式：”），
+Pattern.CASE_INSENSITIVE）;
+
+要编译具有多个标志的模式，请使用按位OR运算符“ |” 分隔要包含的标志。为清楚起见，以下代码示例对正则表达式进行硬编码，而不是从以下代码中读取Console：
+
+ 
+pattern = Pattern.compile（“[az] $”，Pattern.MULTILINE | Pattern.UNIX_LINES）;
+您也可以指定一个int变量：
+
+ 
+final int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE; 
+模式模式= Pattern.compile（“aa”，flags）;
+
+
+===== 嵌入式标志表达式 =====
+也可以使用嵌入的标志表达式启用各种标志。嵌入式标志表达式是双参数版本的替代compile，并且在正则表达式本身中指定。以下示例使用原始测试工具， RegexTestHarness.java使用嵌入的标志表达式(?i)来启用不区分大小写的匹配。
+输入你的正则表达式：（？i）foo 
+
+与Pattern公共可访问字段对应的嵌入式标志表达式如下表所示：
+
+不变	等效嵌入式标志表达式
+Pattern.CANON_EQ	没有
+Pattern.CASE_INSENSITIVE	(?i)
+Pattern.COMMENTS	(?x)
+Pattern.MULTILINE	(?m)
+Pattern.DOTALL	(?s)
+Pattern.LITERAL	没有
+Pattern.UNICODE_CASE	(?u)
+Pattern.UNIX_LINES	(?d)
+
+
+===== 使用matches(String,CharSequence)方法 =====
+本Pattern类定义了一个方便的 matches方法，可以让你快速地检查模式是否出现在给定的输入字符串。与所有公共静态方法一样，您应该matches通过其类名调用，例如Pattern.matches("\\d","1");。在此示例中，方法返回true，因为数字“1”与正则表达式匹配\d。
+
+===== 使用split(String)方法 =====
+该 split方法是一个很好的工具，用于收集位于匹配模式两侧的文本。
+
+===== 其他实用方法 =====
+您可能会发现以下方法也有一些用处：
+
+public static String quote(String s)返回String指定的文字模式String。此方法生成一个String可用于创建Pattern匹配的方法String s，就像它是文字模式一样。输入序列中的元字符或转义序列将没有特殊含义。
+public String toString()返回String此模式的表示形式。这是编译此模式的正则表达式。
+
+===== java.lang.String中等价的模式方法 =====
+java.lang.String通过几种模仿行为的方法也存在正则表达式支持java.util.regex.Pattern。为方便起见，下面介绍了API的主要摘录。
+
+public boolean matches(String regex)：判断此字符串是否与给定的正则表达式匹配。调用此表单的方法会产生与表达式完全相同的结果。str.matches(regex)Pattern.matches(regex, str)
+public String[] split(String regex, int limit)：围绕给定正则表达式的匹配拆分此字符串。调用此表单的方法会产生与表达式相同的结果str.split(regex, n)Pattern.compile(regex).split(str, n)
+public String[] split(String regex)：围绕给定正则表达式的匹配拆分此字符串。此方法与调用具有给定表达式且limit参数为零的双参数split方法的方法相同。结果数组中不包括尾随空字符串。
+还有一种替换方法，可以替换CharSequence另一种方法：
+
+public String replace(CharSequence target,CharSequence replacement)：将此字符串中与文字目标序列匹配的每个子字符串替换为指定的文字替换序列。替换从字符串的开头到结尾，例如，在字符串“aaa”中将“aa”替换为“b”将导致“ba”而不是“ab”。

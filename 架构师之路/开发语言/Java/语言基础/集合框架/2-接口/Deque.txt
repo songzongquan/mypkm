@@ -1,0 +1,21 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-05T15:06:34+08:00
+
+====== Deque ======
+创建日期 星期六 05 一月 2019
+
+__通常发音为deck，deque是双端队列__。双端队列是元素的线性集合，支持在两个端点处插入和移除元素。该Deque接口是比Stack和Queue两者更丰富的抽象数据类型，因为它在同一时间同时实现堆栈和队列。 Deque接口，定义了方法来访问在所述的两端的元件。提供了插入，移除和检查元素的方法。预定义的实现类如 ArrayDeque和 LinkedList实现了Deque接口。
+
+请注意，该Deque接口既可以用作后进先出堆栈，也可以用作先进先出队列。Deque接口中给出的方法分为三个部分：
+
+===== 插入 =====
+该addfirst和offerFirst方法在Deque实例开始处插入元素。方法addLast和offerLast插入元素在Deque实例的末尾。当Deque实例的容量受到限制时，首选方法是offerFirst，offerLast因为addFirst如果它已满，可能无法抛出异常。
+
+===== 移除 =====
+该removeFirst和pollFirst方法在Deque实例开始处移除元素。的removeLast和pollLast的方法除去从端部元件。方法pollFirst 并pollLast返回null如果Deque为空而方法 removeFirst并removeLast在Deque实例为空时抛出异常。
+
+===== 取回 =====
+方法getFirst并peekFirst检索Deque实例的第一个元素。这些方法不会从Deque实例中删除值。同样，方法getLast 和peekLast检索最后一个元素。这些方法getFirst和getLast是否抛出一个异常 deque情况下是空的，而方法peekFirst和peekLast 回报NULL。
+
+该Deque接口还具有一些更预定义的方法。其中之一是removeFirstOccurence，如果指定元素存在于Deque实例中，则此方法将删除指定元素的第一个出现。如果元素不存在，则Deque实例保持不变。另一种类似的方法是removeLastOccurence; 此方法删除Deque实例中指定元素的最后一次出现。这些方法的返回类型是boolean，true如果元素存在于Deque实例中，它们将返回。

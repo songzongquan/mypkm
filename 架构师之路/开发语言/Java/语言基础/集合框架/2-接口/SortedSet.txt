@@ -1,0 +1,68 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-05T16:49:37+08:00
+
+====== SortedSet ======
+创建日期 星期六 05 一月 2019
+
+A SortedSet是 Set按升序维护其元素的元素，根据元素的自然顺序或根据创建时Comparator提供的元素进行排序SortedSet。除了正常Set操作外，该SortedSet接口还提供以下操作：
+
+１．Range view - 允许对已排序集进行任意范围操作
+２．Endpoints - 返回有序集合中的第一个或最后一个元素
+３．Comparator access- 返回Comparator用于对集合进行排序的（如果有）
+SortedSet接口的代码如下。
+
+public interface SortedSet <E> extends Set <E> { 
+	// Range-view 
+	SortedSet <E> subSet（E fromElement，E toElement）; 
+	SortedSet <E> headSet（E toElement）; 
+	SortedSet <E> tailSet（E fromElement）; 
+
+	//端点
+	E first（）; 
+	E last（）; 
+
+	//比较器访问
+	Comparator<？super E> comparator（）; 
+}
+
+===== Set 操作 =====
+继承于Ｓｅｔ，但有两个例外：
+１．迭代Iterator返回时以元素的顺序反回
+２．toＡｒｒａｙ方法返回数组时，元素顺序也是按排好的顺序．
+尽管接口不保证，但ＳｏｒｔｅｄＳｅｔ的toString()实现，返回的字串中的元素也是按其顺序排列的．
+
+
+===== 标准构造方法 =====
+按照惯例，所有通用Collection实现都提供了一个标准的转换构造函数，它采用了Collection; SortedSet实现也不例外。在TreeSet，此构造函数创建一个实例，根据其自然顺序对其元素进行排序。这可能是一个错误。最好动态检查以查看指定的集合是否是SortedSet实例，如果是，则TreeSet根据相同的标准（比较器或自然排序）对新的排序进行排序。因为TreeSet采用了它所采用的方法，它还提供了一个构造函数，它接受SortedSet并返回一个新的TreeSet包含根据相同标准排序的相同元素。请注意，它是参数的编译时类型，而不是其运行时类型，它确定调用这两个构造函数中的哪一个（以及是否保留了排序条件）。
+
+SortedSet按照惯例，实现还提供了一个构造函数，该构造函数接受Comparator并返回根据指定的类型排序的空集Comparator。如果null传递给此构造函数，它将返回一个集合，该集合根据其自然顺序对其元素进行排序。
+
+
+
+===== 范围视图操作 =====
+这些range-view操作有点类似于List界面提供的操作，__但有一个很大的区别。即使直接修改了后备排序集，排序集的范围视图仍然有效。__这是可行的，因为有序集的范围视图的端点是元素空间中的绝对点，而不是后备集合中的特定元素，如列表的情况。一个range-view有序集合的其实只是一个窗口到任何一组的部分在于元素空间的指定部分。range-view写回到后备排序集的更改，反之亦然。因此，range-view与range-view列表中的s 不同，可以长时间在有序集合上使用s 。
+
+__SortedSet提供了三个rang-view操作，第一个是subset,与subList类似，取两个端点，但端点不是索引，而是一个元素对象，这个元素对象必须是可比较且属于SortedSet中的元素．与subList一样，范围是半开放的，只是包括了低端点的元素，而不包括高端点的元素．__
+如：int count = dictionary.subSet("doorbell", "pickle").size();　则不会包括pickle
+
+
+如果想要得到一个关闭的区间,则可以用：int count = dictionary.subSet("doorbell", "pickle\0").size();
+如果要得到一个开放区间，两端都不要：int count = dictionary.subSet("doorbell\0", "pickle").size();
+
+SortedSet还提供了两个方法：headSet 和 tailSet,　都是接收一个对象作为参数．
+headSet可得到从开始到参数指定的对象为止，不包括指定对象，
+tailSet可得到从指定对象开始，到结尾，包括指定对象．
+
+
+
+===== 端点操作 =====
+SortedSet提供了端点操作，即获得第一个和最后一个元素的操作：
+ first 和 last；除了明显的用途之外，last还允许针对SortedSet接口缺陷的变通方法。你想做的一件事SortedSet就是进入内部Set并向前或向后迭代。从内部向前行很容易：只需获得tailSet并迭代它。不幸的是，没有简单的方法可以倒退。
+以下习语获得o的元素空间中的第一个元素小于指定的对象。
+
+Object predecessor = ss.headSet（o）.last（）;
+这是从排序集内部的一个点向后移动一个元素的好方法。它可以重复应用以向后迭代，但这非常低效，需要查找返回的每个元素。
+
+===== 比较访问器 =====
+该SortedSet接口包含一个调用的访问器方法comparator，该方法返回Comparator用于对集合进行排序的访问器方法，或者null是否根据元素的自然顺序对集合进行排序。提供此方法以便可以将排序的集合复制到具有相同排序的新排序集合中。它由前面SortedSet描述的构造函数使用。

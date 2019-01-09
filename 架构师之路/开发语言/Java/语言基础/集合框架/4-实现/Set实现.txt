@@ -1,0 +1,34 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-06T21:09:52+08:00
+
+====== Set实现 ======
+创建日期 星期日 06 一月 2019
+
+分为通用实现与特定实现
+
+===== 通用实现 =====
+有三种通用 Set的实现- HashSet， TreeSet和 LinkedHashSet。使用这三种中的哪一种通常是直截了当的。HashSet比TreeSet大多数操作的常数时间与对数时间快得多，但没有提供顺序保证。如果需要在SortedSet界面中使用操作，或者需要按值进行迭代，请使用TreeSet; 否则，使用HashSet。这是一个公平的赌注，你最终会在大部分时间里使用HashSet。
+
+LinkedHashSet在某种意义上介于HashSet和之间TreeSet。实现为具有贯穿它的链表的哈希表，它提供了插入顺序的迭代（最近最近插入到最近），并且运行速度几乎和HashSet一样快。该LinkedHashSet实现使其客户免于提供的未指定的，通常混乱的排序的HashSet而不会象TreeSet那样产生与之相关的增加的成本
+
+HashSet值得注意的一件事是，迭代在条目数和桶数（容量）之和是线性的。因此，选择太高的初始容量会浪费空间和时间。另一方面，选择一个太低的初始容量会在每次强制增加容量时复制数据结构，从而浪费时间。如果未指定初始容量，则默认值为16.过去，选择素数作为初始容量有一些优势。这不再是真的。在内部，容量总是四舍五入到2的幂。使用int构造函数指定初始容量。以下代码行分配HashSet其初始容量为64 的代码。
+
+设置<String> s = new HashSet <String>（64）;
+该HashSet班有叫另外一个调整参数客座率。如果您非常关心自己的空间消耗，请HashSet阅读HashSet文档以获取更多信息。否则，只接受默认值; 它几乎总是正确的做法。
+
+如果您接受默认加载因子但想要指定初始容量，请选择一个大约是您希望该组增长的大小的两倍的数字。如果您的猜测偏远，您可能会浪费一些空间，时间或两者，但这不太可能是一个大问题。
+
+LinkedHashSet具有相同的调整参数HashSet，但迭代时间不受容量影响。TreeSet没有调整参数。
+
+===== 特殊实现 =====
+有两个特殊用途的Set实现 - EnumSet和 CopyOnWriteArraySet。
+
+EnumSet是枚举类型Set的高性能实现。枚举集的所有成员必须具有相同的枚举类型。在内部，它由位向量表示，通常是单个向量long。枚举在枚举类型的范围上设置支持迭代。例如，给定星期几的枚举声明，您可以迭代工作日。本EnumSet类提供了一个静态的工厂，可以很容易。
+
+	for（Day d：EnumSet.range（Day.MONDAY，Day.FRIDAY））
+		System.out.println（d）;
+枚举集还为传统的位标志提供了丰富的，类型安全的替代品。
+
+	EnumSet.of（Style.BOLD，Style.ITALIC）
+CopyOnWriteArraySet是一个Set由写时复制数组备份的实现。所有可变操作，如add，set，和remove，通过使所述阵列的一个新的复制来实现; 不需要锁定。甚至迭代也可以安全地与元素插入和删除同时进行。不像大多数Set实施中，add，remove，和contains方法需要的时间与集合的大小。此实现仅适用于很少修改但经常迭代的集合。它非常适合维护必须防止重复的事件处理程序列表。

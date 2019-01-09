@@ -1,0 +1,20 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-27T11:31:19+08:00
+
+====== 1-介绍 ======
+创建日期 星期四 27 十二月 2018
+
+提供了对正则表达式的一般性介绍，也介绍了该ａｐｉ的核心类．
+
+正则表达式是一种基于集合中每个字符串共享的共同特征来描述一组字符串的方法。它们可用于搜索，编辑或操作文本和数据。您必须学习特定的语法来创建正则表达式 - 这超出了Java编程语言的常规语法。正则表达式的复杂程度各不相同，但是一旦你理解了它们的构造基础，你就能够解密（或创建）任何正则表达式。
+
+该路径教授java.util.regexAPI 支持的正则表达式语法， 并提供了几个工作示例来说明各种对象如何交互。在正则表达式的世界中，有许多不同的风格可供选择，例如grep，Perl，Tcl，Python，PHP和awk。java.util.regexAPI中的正则表达式语法与Perl中的语法最相似。
+
+===== 如何在此包中表示正则表达式？ =====
+该java.util.regex包主要包括三类： Pattern， Matcher，和 PatternSyntaxException。
+
+- Pattern对象是正则表达式的编译表示。本Pattern类提供没有公共构造。要创建模式，必须首先调用其中一个public static compile方法，然后返回一个Pattern对象。这些方法接受正则表达式作为第一个参数; 这条路径的前几课将教你所需的语法。
+- Matcher对象是解释图案和针对输入字符串执行匹配操作的发动机。与Pattern类一样，不Matcher定义公共构造函数。您可以通过在Matcher对象上调用matcher方法来获取Pattern对象。
+- PatternSyntaxException对象是一个未经检查的异常，其指示在正则表达式模式中的语法错误。
+

@@ -1,0 +1,135 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-06T12:27:53+08:00
+
+====== 缩减 ======
+创建日期 星期日 06 一月 2019
+
+JDK包含许多终端的操作（如 average， sum， min， max，和 count通过组合一个流的内容返回一个值）。这些操作称为__缩减操作__。JDK还包含返回集合而不是单个值的缩减操作。许多还原操作执行特定任务，例如查找值的平均值或将元素分组到类别中。然而，JDK提供了通用减少操作 reduce和 collect，此节详细介绍。
+
+本节包括以下主题：
+
+===== Stream.reduce方法 =====
+该 Stream.reduce方法是通用的还原操作。考虑以下管道，该管道计算集合中男性成员年龄的总和roster。它使用 Stream.sum还原操作：
+
+整数totalAge = roster 
+	.stream（）。
+	mapToInt（Person :: getAge）
+	.sum（）;
+将此与以下管道进行比较，该管道使用该Stream.reduce操作来计算相同的值：
+
+Integer totalAgeReduce = roster
+   .stream()
+   .map(Person::getAge)
+   .reduce(
+	   0,
+	   (a, b) -> a + b);
+
+reduce此示例中的操作有两个参数：
+
+１．　identity：如果流中没有元素，则identity元素既是缩小的初始值又是默认结果。在这个例子中，identity元素是0; 如果集合中不存在成员，则这是年龄总和的初始值和默认值roster。
+
+２．　accumulator：累加器函数有两个参数：缩减的部分结果（在本例中，到目前为止所有处理过的整数的总和）和流的下一个元素（在本例中为整数）。它返回一个新的部分结果。在此示例中，accumulator函数是一个lambda表达式，它添加两个Integer值并返回一个Integer值：
+
+（a，b） - > a + b
+该reduce操作始终返回一个新值。但是，累加器函数每次处理流的元素时也会返回一个新值。假设您要将流的元素减少为更复杂的对象，例如集合。这可能会妨碍您的应用程序的性能。如果您的reduce操作涉及向集合添加元素，那么每次您的累加器函数处理元素时，它都会创建一个包含该元素的新集合，这是低效的。相反，更新现有集合会更有效。您可以使用Stream.collect下一节描述的方法执行此操作 。
+
+===== Stream.collect方法 =====
+与在reduce处理元素时始终创建新值的方法不同，该 collect方法修改或改变现有值。
+
+考虑如何在流中查找值的平均值。您需要两个数据：值的总数和这些值的总和。但是，与reduce方法和所有其他还原方法一样，该collect方法仅返回一个值。您可以创建一个包含成员变量的新数据类型，这些成员变量跟踪值的总数以及这些值的总和，例如以下类 Averager：
+class Averager implements IntConsumer
+{
+	private int total = 0;
+	private int count = 0;
+        
+	public double average() {
+		return count > 0 ? ((double) total)/count : 0;
+	}
+        
+	public void accept(int i) { total += i; count++; }
+	public void combine(Averager other) {
+		total += other.total;
+		count += other.count;
+	}
+}
+以下管道使用Averager类和collect方法计算所有男性成员的平均年龄：
+
+Averager averageCollect = roster.stream()
+	.filter(p -> p.getGender() == Person.Sex.MALE)
+	.map(Person::getAge)
+	.collect(Averager::new, Averager::accept, Averager::combine);
+                   
+System.out.println("Average age of male members: " +
+	averageCollect.average());
+
+collect此示例中的操作有三个参数：
+
+１．supplier：supplier是工厂职能; 它构造了新的实例。对于该collect操作，它将创建结果容器的实例。在此示例中，它是类的新实例Averager。
+２．accumulator：累加器函数将流元素合并到结果容器中。在此示例中，它Averager通过将count变量递增1并向total成员变量添加stream元素的值来修改结果容器，该元素是表示男性成员年龄的整数。
+３．combiner：组合器函数接受两个结果容器并合并其内容。在此示例中，它Averager通过将count变量增加另一个实例的成员变量并将成员变量添加到count另一个Averager实例的total成员变量的值来修改 结果容器。Averagertotal
+请注意以下事项：
+
+１．supplier是lambda表达式（或方法引用），而不是像操作reduce中的identity元素那样的值。
+２．累加器和组合器函数不返回值。
+３．您可以将collect操作与并行流一起使用; 有关更多信息，请参阅并行性一节 。（如果collect使用并行流运行该方法，则只要组合器函数创建新对象（例如Averager此示例中的对象），JDK就会创建一个新线程。因此，您不必担心同步。）
+尽管JDK为您提供了average计算流中元素平均值的collect操作，但如果需要从流的元素计算多个值，则可以使用该操作和自定义类。
+
+collect操作最适用于集合。以下示例使用以下操作将男性成员的名称放在集合中collect：
+
+List <String> namesOfMaleMembersCollect = roster 
+	.stream（）。
+	filter（p  - > p.getGender（）== Person.Sex.MALE）
+	.map（p  - > p.getName（））。
+	collect（Collectors.toList（） ）;
+此版本的collect操作采用一个类型的参数 Collector。此类封装在collect操作中用作参数的函数，该函数需要三个参数（供应商，累加器和组合器函数）。
+
+此示例使用该 Collectors.toList操作，该操作将流元素累积到新的实例中List。与类中的大多数操作一样Collectors，toList运算符返回的是实例Collector，而不是集合。
+
+以下示例roster按性别对集合的成员进行分组：
+
+Map <Person.Sex，List <Person >> byGender = 
+	roster 
+		.stream（）。
+		collect（
+			Collectors.groupingBy（Person :: getGender））;
+该 groupingBy操作返回一个映射，其键是应用指定为其参数的lambda表达式（称为分类函数）得到的值。在此示例中，返回的映射包含两个键，Person.Sex.MALE和Person.Sex.FEMALE。密钥的对应值是List包含流元素的实例，当由分类函数处理时，流元素对应于密钥值。例如，与key对应的值Person.Sex.MALE是List包含所有男性成员的实例。
+
+以下示例检索集合中每个成员的名称，roster并按性别对其进行分组：
+
+Map <Person.Sex，List <String >> namesByGender = 
+	roster 
+		.stream（）。
+		collect（
+			Collectors.groupingBy（
+				Person :: getGender，                       
+				Collectors.mapping（
+					Person :: getName，
+					Collectors.toList（））））;
+groupingBy此示例中的 操作采用两个参数，分类函数和实例Collector。该Collector参数称为下游收集器。这是Java运行时应用于另一个收集器的结果的收集器。因此，此groupingBy操作使您可以将collect方法应用于运算符List创建的值groupingBy。此示例应用收集器mapping，该收集器 将映射函数应用于Person::getName流的每个元素。因此，生成的流只包含成员的名称。包含一个或多个下游收集器的管道（如此示例）称为多级别缩减。
+
+以下示例检索每个性别的成员的总年龄：
+
+Map <Person.Sex，Integer> totalAgeByGender = 
+	roster 
+		.stream（）。
+		collect（
+			Collectors.groupingBy（
+				Person :: getGender，                       
+				Collectors.reducing（
+					0，
+					Person :: getAge，
+					Integer :: sum）））;
+该 reducing操作有三个参数：
+
+identity：与Stream.reduce操作类似，如果流中没有元素，则identity元素既是缩小的初始值又是默认结果。在这个例子中，identity元素是0; 如果不存在成员，则这是年龄总和的初始值和默认值。
+mapper：该reducing操作将此映射器函数应用于所有流元素。在此示例中，映射器检索每个成员的年龄。
+operation：操作函数用于减少映射值。在此示例中，操作函数添加Integer值。
+以下示例检索每个性别的成员的平均年龄：
+
+Map <Person.Sex，Double> 
+	averageAgeByGender = roster .stream（）。
+	collect（
+		Collectors.groupingBy（
+			Person :: getGender，                       
+			Collectors.averagingInt（Person :: getAge）））;

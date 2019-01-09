@@ -1,0 +1,13 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-28T19:29:21+08:00
+
+====== PatternSyntaxException类的方法 ======
+创建日期 星期五 28 十二月 2018
+
+ PatternSyntaxException是未经检查的异常，表示正则表达式模式中的语法错误。本PatternSyntaxException类提供了以下方法来帮助你确定是什么出了问题：
+
+public String getDescription()：检索错误的描述。
+public int getIndex()：检索错误索引。
+public String getPattern()：检索错误的正则表达式模式。
+public String getMessage()：返回一个多行字符串，其中包含语法错误及其索引的描述，错误的正则表达式模式以及模式中错误索引的可视指示。

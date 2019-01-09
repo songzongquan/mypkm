@@ -1,0 +1,33 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2018-12-28T17:31:59+08:00
+
+====== 10-匹配类的方法 ======
+创建日期 星期五 28 十二月 2018
+
+本节介绍Matcher该类的一些其他有用方法。为方便起见，下面列出的方法根据功能进行分组。
+
+===== 索引方法 =====
+索引方法提供有用的索引值，可以精确显示在输入字符串中找到匹配的位置：
+
+public int start()：返回上一个匹配的起始索引。
+public int start(int group)：返回上一个匹配操作期间给定组捕获的子序列的起始索引。
+public int end()：返回最后一个字符匹配后的偏移量。
+public int end(int group)：返回在上一个匹配操作期间由给定组捕获的子序列的最后一个字符之后的偏移量。
+
+===== 学习方法 =====
+学习方法检查输入字符串并返回指示是否找到模式的布尔值。
+
+public boolean lookingAt()：尝试将从区域开头开始的输入序列与模式匹配。
+public boolean find()：尝试查找与模式匹配的输入序列的下一个子序列。
+public boolean find(int start)：重置此匹配器，然后尝试从指定的索引处开始查找与模式匹配的输入序列的下一个子序列。
+public boolean matches()：尝试将整个区域与模式匹配。
+
+===== 替换方法 =====
+替换方法是替换输入字符串中的文本的有用方法。
+
+public Matcher appendReplacement(StringBuffer sb, String replacement)：实现非终端追加和替换步骤。
+public StringBuffer appendTail(StringBuffer sb)：实现终端附加和替换步骤。
+public String replaceAll(String replacement)：将与模式匹配的输入序列的每个子序列替换为给定的替换字符串。
+public String replaceFirst(String replacement)：用与给定替换字符串匹配的模式替换输入序列的第一个子序列。
+public static String quoteReplacement(String s)：返回String指定的文字替换String。这种方法产生一个String，将工作作为文字置换s在appendReplacement所述的方法Matcher的类。该String产生了的字符序列将匹配s视为文字序列。斜杠（'\'）和美元符号（'$'）将没有特殊含义。

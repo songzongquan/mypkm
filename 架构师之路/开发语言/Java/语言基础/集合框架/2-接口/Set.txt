@@ -1,0 +1,65 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-05T13:43:37+08:00
+
+====== Set ======
+创建日期 星期六 05 一月 2019
+
+Set 是不能包含重复元素的集合．
+该Set接口仅包含Collection中继承的方法，并添加禁止重复元素的限制。Set还增加了关于equals和hashCode操作行为的更强的契约，允许Set实例进行有意义的比较，即使它们的实现类型不同。Set如果它们包含相同的元素，则两个实例相等。
+Java平台包含三个通用Set实现：HashSet，TreeSet，和LinkedHashSet。 HashSet，将其元素存储在哈希表中，是性能最佳的实现; 但是它不能保证迭代的顺序。 TreeSet，将其元素存储在红黑树中，根据其值对其元素进行排序; 它比HashSet慢得多。 LinkedHashSet实现为具有贯穿其的链表的哈希表，根据它们插入集合（插入顺序）的顺序对其元素进行排序。LinkedHashSet使客户免受HashSet未指定的，通常混乱的顺序的影响，且其成本仅略高。
+
+===== 惯用法一 =====
+根据一个集合ｃ创建一个Ｓｅｔ，要求ｃ中元素没有重复的．
+Collection<Type> noDups = new HashSet<Type>(c);
+或如果使用JDK 8或更高版本时如下
+c.stream()
+.collect(Collectors.toSet()); // no duplicates
+
+这是一个稍长的例子，它将一个Collection名字累积到 TreeSet：
+
+Set<String> set = people.stream()
+.map(Person::getName)
+.collect(Collectors.toCollection(TreeSet::new));
+
+以下是第一个成语的次要变体，它保留了原始集合的顺序，同时删除了重复的元素：
+
+Collection<Type> noDups = new LinkedHashSet<Type>(c);
+
+以下是封装前面的习惯用法的通用方法，返回Set与传递的通用类型相同的泛型类型。
+
+public static <E> Set <E> removeDups（Collection <E> c）{ 
+	return new LinkedHashSet <E>（c）; 
+}
+
+===== Ｓｅｔ接口基本操作 =====
+该size操作返回Set（基数）中的元素数。该isEmpty方法完全符合您的想法。该add方法将指定的元素添加到Setif尚不存在的位置，并返回一个布尔值，指示是否添加了该元素。类似地，该remove方法从Setif存在时删除指定的元素，并返回一个布尔值，指示元素是否存在。该iterator方法返回一个Iterator通过Set。
+
+批量操作特别适合于Sets; 应用时，它们执行标准的集代数运算。假设s1并且s2是集合。以下是批量操作的作用：
+
+1. s1.containsAll(s2)-返回true如果s2是一个子集的s1。（s2是s1if集的子集，s1包含所有元素s2。）
+2. s1.addAll(s2)-转变s1到s1和s的的并集。（两个集合的并集是包含任一集合中包含的所有元素的集合。）
+3. s1.retainAll(s2)-转换s1成的s1和s2的交集。（两个集合的交集是仅包含两个集合共有的元素的集合。）
+4. s1.removeAll(s2)-转换s1成s1和s2的（非对称的）差集。（例如，s1减去的设置差异s2是包含在s1但不在其中的所有元素的集合s2。）
+要非破坏性地计算两个集合的并集，交集或集合差异（不修改任何一个集合），调用者必须在调用适当的批量操作之前复制一个集合。以下是由此产生的习语。
+
+Set <Type> union = new HashSet <Type>（s1）; 
+union.addAll（S2）; 
+
+Set <Type> intersection = new HashSet <Type>（s1）; 
+intersection.retainAll（S2）; 
+
+Set<Type> difference = new HashSet <Type>（s1）; 
+difference.removeAll（S2）;
+Set前面的习语中的结果的实现类型HashSet是，如已经提到的，Set是Java平台中最好的全面实现。但是，任何通用Set实现都可以替代。
+
+__不太常见的集合代数运算是对称集合差异 -__ 即这个集合的元素，不同时在两个Ｓｅｔ中，但存在于两者之一中。以下代码非破坏性地计算两组的对称集合差异。
+
+Set<Type> symmetricDiff = new HashSet<Type>(s1);
+symmetricDiff.addAll(s2);
+Set<Type> tmp = new HashSet<Type>(s1);
+tmp.retainAll(s2);
+symmetricDiff.removeAll(tmp);
+
+===== Set接口的Array操作 =====
+不做任何操作．

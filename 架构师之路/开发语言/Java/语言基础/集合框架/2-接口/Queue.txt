@@ -1,0 +1,44 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-05T14:50:19+08:00
+
+====== Queue ======
+创建日期 星期六 05 一月 2019
+队列
+A Queue是用于在处理之前保持元素的集合。除基本Collection操作外，队列还提供额外的插入，删除和检查操作。该Queue界面如下。
+
+public interface Queue<E> extends Collection<E> {
+	E element();
+	boolean offer(E e);
+	E peek();
+	E poll();
+	E remove();
+}
+每种Queue方法都有两种形式：（1）如果操作失败则抛出异常，（2）如果操作失败，则另一种返回特殊值（null或者false，取决于操作）。接口的常规结构 如下表所示。
+
+队列接口结构
+操作类型	引发异常	返回特殊值
+插入	add(e)	offer(e)
+去掉	remove()	poll()
+检查	element()	peek()
+
+队列通常（但不一定）以FIFO（先进先出）方式对元素进行排序。优先级队列除外，它们根据元素的值对元素进行排序 - 有关详细信息，请参阅“ 对象排序”部分。无论使用什么顺序，队列的头部都是通过调用remove或poll删除元素。在FIFO队列中，所有新元素都插入队列的尾部。其他类型的队列可能使用不同的放置规则。每个Queue实现都必须指定其排序属性。
+
+一个Queue实现对它拥有的元素的数目这是可能的， 这样的队列被称为有界队列。java.util.concurrent中实现的有些队列是有界的，但ava.util中的实现不是。
+
+Queue的add方法继承自Collection插入元素，除非它违反队列的容量限制，在这种情况下它会抛出IllegalStateException。该offer方法仅用于有界队列，不同之处仅在于它表示无法插入元素返回false。
+
+该remove和poll方法都删除并返回队列的头。确切地删除哪个元素是队列的排序策略的功能。在remove和poll只有当队列为空在他们的行为方式有所不同。在这种情况下，remove抛出NoSuchElementException，同时poll返回null。
+
+该element和peek方法返回，但不移除，队列的头。他们从彼此完全相同的方式也不同remove和poll：如果队列为空，element抛出NoSuchElementException，而peek回报null。
+
+Queue实现通常不允许插入null元素。但基于LinkedList的实现是一个例外。由于历史原因，它允许null元素，但您应该避免利用它，因为null它被poll和peek方法用作特殊的返回值。
+
+__队列实现通常不定义equals和hashCode方法的基于元素的版本，而是从Object中继承的基于身份的版本。__
+
+Queue接口并未定义阻塞队列的方法，这些方法在并行编程很常见。等待元素出现或空间变得可用的这些方法在java.util.concurrent.BlockingQueue接口中定义。它们继承自 Queue
+
+
+
+
+

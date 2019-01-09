@@ -1,0 +1,89 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-05T15:24:50+08:00
+
+====== Map ======
+创建日期 星期六 05 一月 2019
+
+A Map是将键映射到值的对象。Map不能包含重复键：每个键最多可映射一个值。它模拟数学函数抽象。所述Map界面包括用于基本操作的方法（如put，get，remove， containsKey，containsValue，size，和empty），批量操作（如putAll和clear），以及集合视图（如keySet，entrySet，和values）。
+
+Java平台包含三个通用Map实现： HashMap， TreeMap，和 LinkedHashMap。他们的行为和性能，完全类似于HashSet，TreeSet和LinkedHashSet
+
+本页的其余部分Map详细讨论了该接口。但首先，这里有一些Map使用JDK 8聚合操作收集的示例。对现实世界对象进行建模是面向对象编程中的常见任务，因此可以合理地认为某些程序可能会按部门对员工进行分组：
+
+//按部门分组员工
+Map <部门，列表<员工>> byDept = employees.stream（）。
+collect（Collectors.groupingBy（Employee :: getDepartment））;
+或者按部门计算所有工资的总和：
+
+//按部门计算工资总额
+Map <Department，Integer> totalByDept = employees.stream（）。
+collect（Collectors.groupingBy（Employee :: getDepartment，
+Collectors.summingInt（Employee :: getSalary）））;
+或者也许通过成绩或成绩不及分组：
+
+//将学生分成传递和失败的
+Map <Boolean，List <Student >> passingFailing = students.stream（）。
+collect（Collectors.partitioningBy（s  - > s.getGrade（）> = PASS_THRESHOLD））;
+您还可以按城市分组：
+
+//按城市分类人物对象
+Map<String，List <Person >> peopleByCity 
+		 = personStream.collect（Collectors.groupingBy（Person :: getCity））;
+或者甚至级联两个收藏家按州和城市分类：
+
+// Cascade Collectors 
+Map <String，Map <String，List <Person >>> peopleByStateAndCity 
+  = personStream.collect（Collectors.groupingBy（Person :: getState，
+  Collectors.groupingBy（Person :: getCity）））
+同样，这些只是如何使用新JDK 8 API的几个示例。有关lambda表达式和聚合操作的深入介绍，请参阅标题为Aggregate Operations的课程 。
+
+===== Ｍａｐ接口基本操作 =====
+Map的基本操作（put，get，containsKey，containsValue，size，和isEmpty）表现得完全像他们在同行Hashtable。
+如需要ｋｅｙ按字母顺序排列，实现就用TreeMap,如果按加入的顺序，就用LinkedHashMap
+
+===== 批量操作 =====
+该clear操作完全按照您的想法执行：它从中删除所有映射Map。该putAll操作是接口操作的Map模拟。除了明显使用倾倒之外，它还有第二个更微妙的用途。假设a 用于表示属性 - 值对的集合; 该操作与转换构造函数结合使用，提供了一种使用默认值实现属性映射创建的简洁方法。
+static <K, V> Map<K, V> newAttributeMap(Map<K, V>defaults, Map<K, V> overrides) {
+	Map<K, V> result = new HashMap<K, V>(defaults);
+	result.putAll(overrides);
+	return result;
+}
+
+===== 集合视图 =====
+即将Ｍａｐ按一个集合来操作．
+* keySet- Set包含在Map中的ｋｅｙ。
+* values- Collection包含在中的值Map。这Collection不是a Set，因为多个键可以映射到相同的值。
+* entrySet- Set包含在中的键值对Map。该Map接口提供了一个小的嵌套接口，称为Map.EntrySet。此类中的元素类型是Ｓｅｔ
+这是它提供的唯一遍历的一种手段
+首先，大家可能会觉得这样用会比较慢．因为每一次调用集合视图方法时，都会重新生成一个集合．不过请放轻松：没有理由让map实现不会在请求集合视图时不去返回同一个对象．而且这在ja va.util包中所有的ｍａｐ实现都是精确的这么实现的．
+
+对于所有三个集合视图，调用迭代器的移除操作将从后台Map中移除相关条目，假定后台Map支持从开始移除元素。这可以通过前面的过滤习语来说明。
+
+使用EntrySet视图，还可以通过在迭代过程中调用map.entry的setValue方法来更改与键关联的值（同样，假设map支持值修改）。__请注意，这些是在迭代过程中修改映射的唯一安全方法；如果在迭代过程中以任何其他方式修改底层映射，则实际行为不确定。__
+
+集合视图支持元素移除的所有形式——移除、移除、保留和清除操作，以及迭代器.remove操作。（同样，这假定支持映射支持元素删除。）
+
+__集合视图在任何情况下都不支持元素添加。__对于keyset和values视图来说，这是没有意义的，对于entryset视图来说，这是不必要的，因为支持映射的put和putall方法提供了相同的功能。
+
+===== 集合视图的奇特用途：Ｍａｐ代数 =====
+
+当应用集合视图时，批量操作（containsAll, removeAll, and retainAll）是一个令信惊讶的工具．
+
+于初学者，假设您想知道一个是否Map是另一个的子图 - 也就是说，第一个是否Map包含第二个中的所有键值映射。以下成语可以解决这个问题。
+
+if（m1.entrySet（）。containsAll（m2.entrySet（）））{ 
+	... 
+}
+沿着类似的路线，假设您想知道两个Map对象是否包含所有相同键的映射。
+
+if（m1.keySet（）。equals（m2.keySet（）））{ 
+	... 
+}
+...
+
+
+===== 多映射map =====
+多重映射就像是一个Map，但它可以一个ｋｅｙ映射多个值。Java Collections Framework不包含多重映射的接口，因为它们并不是很通用。使用其值为List实例的Ｍａｐ实现一个多重映射是一件相当简单的事情。
+
+
