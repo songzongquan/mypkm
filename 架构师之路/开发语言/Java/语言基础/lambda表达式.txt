@@ -1,0 +1,318 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-11T16:48:32+08:00
+
+====== lambda表达式 ======
+创建日期 星期五 11 一月 2019
+
+了解如何和为什么要使用lambda表达式．＝　因为写的代码更少了，看起来也更简洁了．
+以下是通过把ｊａｖａ中简洁代码的方式从低级到高级讲了一遍．让你理解它的来由．
+
+__匿名类的一个问题是，如果它非常简单，比如这个接口只有一个方法，那么这个匿名类的语法看起来是笨拙和不干净的．在这种情况下，你通常想试着把把这个功能作为一个参数传给方法，就比如当你点击一个按钮时想触发一个什么动作．lambda表达可以令你做到这一点，将一个功能当作一个参数，把一作段码当作数据来用．__
+
+前面的章节　匿名类　讲到　怎么创建　一个没有命令的类，尽管比需要命名类在语法更加简洁，但针对只有一个方法的类来讲，也是有点过度和繁琐的，lambda表达式让你体验一种更加简洁的单方法类的实例．
+
+这一节涵盖以下内容：
+１．Lambda表达式的理想用例
+　方法1：创建搜索匹配一个特征的成员的方法
+　方法2：创建更多广义搜索方法
+　方法3：在本地类中指定搜索条件代码
+　方法4：在匿名类中指定搜索条件代码
+　方法5：使用Lambda表达式指定搜索条件代码
+　方法6：将标准功能接口与Lambda表达式一起使用
+　方法7：在整个应用程序中使用Lambda表达式
+　方法8：更广泛地使用泛型
+　方法9：使用接受Lambda表达式作为参数的聚合操作
+２．GUI应用程序中的Lambda表达式
+３．Lambda表达式的语法
+４．访问封闭范围的局部变量
+５．目标打字
+　　目标类型和方法参数
+７．序列化
+
+===== Lambda表达式的理想用例 =====
+简述：
+
+对于这个方法定义的实现方式：
+public static void printPersons(
+	List<Person> roster, CheckPerson tester) {
+	for (Person p : roster) {
+		if (tester.test(p)) {
+			p.printPerson();
+		}
+	}
+}
+
+从传统方法－－＞本地类－－－＞匿名类－－－＞lambda表达式．　语法越来越简洁！
+
+
+
+最终结果如下：
+
+该CheckPerson 接口是一个功能接口。功能接口是仅包含一个抽象方法的任何接口 。（功能接口可能包含一个或多个 默认方法或 静态方法。）由于功能接口只包含一个抽象方法，因此在实现该方法时可以省略该方法的名称。为此，不使用匿名类表达式，而是使用lambda表达式，该表达式在以下方法调用中突出显示：
+
+printPersons(
+	roster,
+	__(Person p)__ -> p.getGender() == Person.Sex.MALE
+		&& p.getAge() >= 18
+		&& p.getAge() <= 25
+);
+其中(Person p)相当于是接口方法的参数．－＞后面的是方法体．这样连匿名类的new也不要了，方法名也不用了．反正就一个方法定义，无需指定．
+
+
+**将标准功能接口与Lambda表达式一起使用**
+
+interface CheckPerson {
+	boolean test(Person p);
+}
+
+象这种只有一个抽象方法的接口，被叫作标准功能接口．太简单了，不值得在应用中单独再定义，因此，JDK定义了几个标准的功能接口，您可以在java.util.function包中找到这些接口。这样就不需要自已再定义这样的接口了．
+如：
+interface Predicate<T> {
+	boolean test(T t);
+}
+就是说这个通用的接口已ｊｄｋ已经定义过了，直接来用，无需上面的checkPersion的定义．
+但原方法定义要这样写：
+public static void printPersonsWithPredicate(
+	List<Person> roster, __Predicate<Person> tester)__ {　／／黄色部分注意
+	for (Person p : roster) {
+		if (tester.test(p)) {
+			p.printPerson();
+		}
+	}
+}
+
+于是：
+printPersonsWithPredicate(
+	roster,
+	__p__ -> p.getGender() == Person.Sex.MALE　　／／注意连Person也省了？
+		&& p.getAge() >= 18
+		&& p.getAge() <= 25
+);
+
+**在整个应用中使用lambda表达式**
+定义：
+
+public static void processPersons(
+	List<Person> roster,
+	Predicate<Person> tester,
+	__Consumer<Person> block)__ {
+		for (Person p : roster) {
+			if (tester.test(p)) {
+				block.accept(p);
+			}
+		}
+}
+看黄色部分，Consumer<T> interface contains the method void accept(T t) 　，用这个接口．
+调用此方法，用lambda表达式可以达到简洁的效果．定义与使用是相互配合的．
+processPersons(
+	 roster,
+	 p -> p.getGender() == Person.Sex.MALE
+		 && p.getAge() >= 18
+		 && p.getAge() <= 25,
+	 __p -> p.printPerson()__
+);
+
+再如下面的方法定义，安通过mapper，可以达到获取指定的信息．
+采用　The Function<T,R> interface contains the method R apply(T t). 　这个接口．
+public static void processPersonsWithFunction(
+	List<Person> roster,
+	Predicate<Person> tester,
+	__Function<Person, String> mapper,　　__
+	Consumer<String> block) {
+	for (Person p : roster) {
+		if (tester.test(p)) {
+			String data = mapper.apply(p);
+			block.accept(data);
+		}
+	}
+然后用lambda表达式调用
+processPersonsWithFunction(
+	roster,
+	p -> p.getGender() == Person.Sex.MALE
+		&& p.getAge() >= 18
+		&& p.getAge() <= 25,
+	__p -> p.getEmailAddress(),__
+	email -> System.out.println(email)
+);
+
+
+}
+
+**但以上这些套路都可以利用聚合操作更简单的解决，如下**
+roster
+	.stream()
+	.filter(
+		p -> p.getGender() == Person.Sex.MALE
+			&& p.getAge() >= 18
+			&& p.getAge() <= 25)
+	.map(p -> p.getEmailAddress())
+	.forEach(email -> System.out.println(email));
+processElements 行动	聚合操作
+获取对象的来源	Stream<E> stream()
+过滤与对象匹配的Predicate对象	Stream<T> filter(Predicate<? super T> predicate)
+如由指定的地图对象为另一个值Function对象	<R> Stream<R> map(Function<? super T,? extends R> mapper)
+执行Consumer对象指定的操作	void forEach(Consumer<? super T> action)
+细节还是看＂聚合操作＂相关章节．
+
+===== GUI应用程序中的Lambda表达式 =====
+要处理图形用户界面（GUI）应用程序中的事件，例如键盘操作，鼠标操作和滚动操作，通常会创建事件处理程序，这通常涉及实现特定的接口。通常，事件处理程序接口是功能接口; 他们往往只有一种方法。
+
+在JavaFX示例中（在上一节Anonymous Classes中讨论过 ），您可以在此语句中使用lambda表达式替换突出显示的匿名类： HelloWorld.java
+
+		btn.setOnAction（new EventHandler <ActionEvent>（）{
+
+			@Override 
+			public void handle（ActionEvent event）{ 
+				System.out.println（“Hello World！”）; 
+			} 
+		} ;
+方法调用btn.setOnAction指定在选择btn对象表示的按钮时发生的情况。此方法需要类型的对象EventHandler<ActionEvent>。该EventHandler<ActionEvent> 接口只包含一种方法void handle(T event)。此接口是一个功能接口，因此您可以使用以下突出显示的lambda表达式来替换它：
+
+		btn.setOnAction（
+		   __event  - > System.out.println（“Hello World！”）__ 
+		）;
+
+
+===== Lambda表达式的语法 =====
+
+ambda表达式包含以下内容：
+
+括号中用逗号分隔的形式参数列表。该CheckPerson.test方法包含一个参数， p表示Person类的实例 。
+
+注意：您可以省略lambda表达式中参数的数据类型。此外，如果只有一个参数，则可以省略括号。例如，以下lambda表达式也是有效的：
+
+p  - > p.getGender（）== Person.Sex.MALE 
+	&& p.getAge（）> = 18
+	&& p.getAge（）<= 25
+箭头标记， ->
+
+一个主体，由单个表达式或语句块组成。此示例使用以下表达式：
+
+p.getGender（）== Person.Sex.MALE 
+	&& p.getAge（）> = 18
+	&& p.getAge（）<= 25
+如果指定单个表达式，则Java运行时将计算表达式，然后返回其值。或者，您可以使用return语句：
+
+p  - > {
+	return p.getGender（）== Person.Sex.MALE
+		&& p.getAge（）> = 18
+		&& p.getAge（）<= 25;
+}
+return语句不是表达式; 在lambda表达式中，必须用braces（{}）括起语句。但是，您不必在大括号中包含void方法调用。例如，以下是有效的lambda表达式：
+
+emai l- > System.out.println（email）
+请注意，lambda表达式看起来很像方法声明; 您可以将lambda表达式视为匿名方法 - 没有名称的方法
+
+===== 访问封闭范围的局部变量 =====
+
+像本地和匿名类一样，lambda表达式可以 捕获变量 ; 它们对封闭范围的局部变量具有相同的访问权限。
+但是，与本地和匿名类不同，lambda表达式没有任何阴影问题（有关更多信息，请参阅 阴影）。Lambda表达式是词法范围的。这意味着它们不会从超类型继承任何名称或引入新级别的范围。lambda表达式中的声明与封闭环境中的声明一样被解释。
+
+什么是阴影　问题？
+
+如果__特定范围（例如内部类或方法定义）__中某个类型的声明（例如成员变量或参数名）与__封闭范围__中的另一个声明同名，__则该声明将隐藏封闭范围的声明__。不能仅用隐藏声明的名称引用它。下面的示例shadowtest演示了这一点，
+即以特定范围的值为准，外部的同名声明相当于被屏蔽了．
+public class ShadowTest {
+
+	public int x = 0;
+
+	class FirstLevel {
+
+		public int x = 1;
+
+		void methodInFirstLevel(int x) {
+			System.out.println("x = " + x);
+			System.out.println("this.x = " + this.x);
+			System.out.println("ShadowTest.this.x = " + ShadowTest.this.x);
+		}
+	}
+
+	public static void main(String... args) {
+		ShadowTest st = new ShadowTest();
+		ShadowTest.FirstLevel fl = st.new FirstLevel();
+		fl.methodInFirstLevel(23);
+	}
+}
+以上程序的输出　如下：
+
+x = 23
+this.x = 1
+ShadowTest.this.x = 0
+
+那么lambda与上面的这种本地和匿名类有何不同呢？
+例：
+import java.util.function.Consumer;
+
+public class LambdaScopeTest {
+
+	public int x = 0;
+
+	class FirstLevel {
+
+		public int x = 1;
+
+		void methodInFirstLevel(int x) {
+            
+			__// The following statement causes the compiler to generate__
+__            // the error "local variables referenced from a lambda expression__
+__            // must be final or effectively final" in statement A:__
+__            //__
+__            // x = 99;　　　／／这儿也一样．__
+            
+			Consumer<Integer> myConsumer = __(y) ->__ 　／／一方面这必须是ｙ，不能用ｘ，用了会编译出错，因为在这儿和本地，匿名类的方式不一样，它没有对ｘ屏蔽．
+			{
+				__System.out.println("x = " + x); // Statement A__
+__                System.out.println("y = " + y);__
+__                System.out.println("this.x = " + this.x);__
+__                System.out.println("LambdaScopeTest.this.x = " +　／／另一方面，它又可以和本地，匿名类一样，通过同样的方式．来引用这些外层封闭空间的同名变量．而互不影响．如加this. 和xxx.this.__
+					LambdaScopeTest.this.x);
+			};
+
+			myConsumer.accept(x);
+
+		}
+	}
+
+	public static void main(String... args) {
+		LambdaScopeTest st = new LambdaScopeTest();
+		LambdaScopeTest.FirstLevel fl = st.new FirstLevel();
+		fl.methodInFirstLevel(23);
+	}
+}
+This example generates the following output:
+
+x = 23
+y = 23
+this.x = 1
+LambdaScopeTest.this.x = 0
+
+===== 目标分型 =====
+怎么样决定lambda表达式的类型呢?
+__java 编译器可以根据被调用的上下文来判定它应该是什么类型 ，即方法期望它是啥类型，它就可以是啥类型__ 。
+这些方法期望的数据类型称为目标类型。为了确定lambda表达式的类型，Java编译器使用的是上下文类型或lambda表达式被找到的情况的目标类型。因此，在Java编译器可以确定目标类型的情况下，才能使用lambda表达式：
+
+Variable declarations  -变量声明
+
+Assignments--赋值语句
+
+Return statements 返回语句
+
+Array initializers 数组初始化
+
+Method or constructor arguments  方法或构造器参数
+
+Lambda expression bodies  lambda表达式体
+
+Conditional expressions, ?: 条件表达式，？：运算
+
+Cast expressions 类型转换表达式。
+
+===== 目标类型与方法参数 =====
+
+对于方法参数，Java编译器使用其他两种语言特征来确定目标类型：重载分辨和类型参数推断。
+即当两上互相重载的方法，如果其实参是一个lambda 表达式，同时有两个不同的参数类型 ，那倒底用哪一个呢，
+这个时编译器会根据方法有没有返回值等来决定应该用哪一个参数类型，从而决定了lambda表达式的类型是哪个。
+
+===== 序列化 =====
+如果lambda表达式的目标类型及其捕获的参数是可序列化的，则可以对其进行序列化。但是，与内部类一样，强烈不鼓励对lambda表达式进行序列化。

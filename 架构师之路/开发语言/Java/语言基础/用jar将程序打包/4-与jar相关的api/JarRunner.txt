@@ -1,0 +1,66 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-22T12:41:54+08:00
+
+====== JarRunner ======
+创建日期 星期二 22 一月 2019
+
+使用以下形式的命令启动JarRunner应用程序：
+
+java JarRunner url [参数]
+在上一节中，我们已经看到了JarClassLoader如何从给定的URL中识别和加载JAR绑定应用程序的主类。因此，要完成JarRunner应用程序，我们需要能够从命令行获取URL和任何参数，并将它们传递给JarClassLoader的实例。这些任务属于JarRunner类，它是JarRunner应用程序的入口点。
+
+首先，从命令行中指定的URL 创建java.net.URL对象：
+
+public static void main(String[] args) {
+	if (args.length < 1) {
+		usage();
+	}
+	URL url = null;
+	try {
+		url = new URL(args[0]);
+	} catch (MalformedURLException e) {
+		fatal("Invalid URL: " + args[0]);
+	}
+
+如果args.length <1，则表示命令行中未指定URL，因此将打印用法消息。如果第一个命令行参数是一个好的URL，则会创建一个新的URL对象来表示它。
+
+接下来，JarRunner创建一个新的JarClassLoader实例，将构造函数传递给命令行中指定的URL：
+
+JarClassLoader cl = new JarClassLoader（url）;
+正如我们在上一节中看到的那样，JarRunner 通过JarClassLoader进入JAR处理API。
+
+传递给JarClassLoader构造函数的URL是您要运行的JAR捆绑应用程序的URL。接下来，JarRunner调用类加载器的getMainClassName方法来识别应用程序的入口点类：
+
+String name = null;
+try {
+	**name = cl.getMainClassName();**
+} catch (IOException e) {
+	System.err.println("I/O error while loading JAR file:");
+	e.printStackTrace();
+	System.exit(1);
+}
+if (name == null) {
+	fatal("Specified jar file does not contain a 'Main-Class'" +
+		  " manifest attribute");
+}
+
+关键声明以粗体突出显示。其他语句用于错误处理。
+
+一旦JarRunner识别出应用程序的入口点类，只剩下两个步骤：将任何参数传递给应用程序并实际启动应用程序。JarRunner使用以下代码执行以下步骤：
+// Get arguments for the application
+String[] newArgs = new String[args.length - 1];
+System.arraycopy(args, 1, newArgs, 0, newArgs.length);
+// Invoke application's main class
+try {
+	cl.invokeClass(name, newArgs);
+} catch (ClassNotFoundException e) {
+	fatal("Class not found: " + name);
+} catch (NoSuchMethodException e) {
+	fatal("Class does not define a 'main' method: " + name);
+} catch (InvocationTargetException e) {
+	e.getTargetException().printStackTrace();
+	System.exit(1);
+}
+回想一下，第一个命令行参数是JAR绑定应用程序的URL。因此，传递给该应用程序的任何参数都在args数组中的元素1和更高层中。JarRunner接受这些元素，并创建一个名为newArgs的新数组以传递给应用程序（上面的粗线）。JarRunner然后经过入口点的类名称和新的参数列表中invokeClass的方法的JarClassLoader。正如我们在上一节中看到的，invokeClass将加载应用程序的入口点类，将任何参数传递给它，然后启动应用程序。
+

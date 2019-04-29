@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-04-11T11:54:19+08:00
+
+====== 开源网管软件 ======
+创建日期 星期四 11 四月 2019
+
+四大顶级开源网络管理工具详解 评分:     
+介绍四大顶级开源网络管理工具如Nagios Core 3.5、NetXMS 1.2.7、OpenNMS 1.10.9以及Zenoss Core 4.2。

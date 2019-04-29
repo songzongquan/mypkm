@@ -1,0 +1,7 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-25T15:17:49+08:00
+
+====== tkinter ======
+创建日期 星期一 25 二月 2019
+

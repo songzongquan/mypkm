@@ -1,0 +1,118 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-17T16:29:39+08:00
+
+====== 2-使用清单文件：基础 ======
+创建日期 星期四 17 一月 2019
+
+JAR文件支持广泛的功能，包括电子签名，版本控制，封装密封等。什么赋予JAR文件这种多功能性？答案是JAR文件的清单。
+
+清单是一个特殊文件，可以包含有关JAR文件中打包的文件的信息。通过定制清单包含的此“元”信息，您可以启用JAR文件以满足各种用途。
+
+本课将解释清单文件的内容，并向您展示如何使用它，并提供基本功能的示例：
+
+===== 了解默认清单 =====
+创建JAR文件时，会自动创建默认清单。本节介绍默认清单。
+创建JAR文件时，它会自动接收默认清单文件。归档中只能有一个清单文件，并且它始终具有路径名
+
+META-INF / MANIFEST.MF
+创建JAR文件时，默认清单文件只包含以下内容：
+
+Manifest-Version: 1.0
+Created-By: 1.7.0_06 (Oracle Corporation)”
+
+对的形式。标题的名称通过冒号与其值分隔。默认清单符合清单规范的1.0版，由JDK的1.7.0_06版本创建。
+
+清单还可以包含有关存档中打包的其他文件的信息。究竟应该在清单中记录哪些文件信息取决于您打算如何使用JAR文件。默认清单不会假设它应该记录哪些关于其他文件的信息。
+
+摘要信息不包含在默认清单中。要了解有关摘要和签名的更多信息，请参阅“ 签名和验证JAR文件”课程。
+
+===== 修改清单文件 =====
+本节介绍修改清单文件的基本方法。后面的部分演示了您可能想要进行的具体修改。
+可以使用m命令行选项在创建JAR文件期间向清单添加自定义信息。本节介绍m选项。
+
+Jar工具自动将带有路径名META-INF / MANIFEST.MF的默认清单放入您创建的任何JAR文件中。您可以通过修改默认清单来启用特殊JAR文件功能，例如包密封。通常，修改默认清单涉及向清单添加专用标头，以允许JAR文件执行特定的所需功能。
+
+要修改清单，必须首先准备一个文本文件，其中包含要添加到清单的信息。然后，使用Jar工具的m选项将文件中的信息添加到清单中。
+
+警告：  您要从中创建清单的文本文件必须以新行或回车符结束。如果最后一行没有以新行或回车结束，则不会正确解析。
+基本命令具有以下格式：
+
+jar cfm jar-file manifest-addition输入文件
+
+===== 设置应用程序的入口点 =====
+本节介绍如何使用清单文件中的Main-Class标头设置应用程序的入口点。
+如果您有一个捆绑在JAR文件中的应用程序，则需要某种方法来指示JAR文件中的哪个类是应用程序的入口点。您使用Main-Class清单中的标题提供此信息，该标题具有以下一般形式：
+
+Main-Class：classname
+该值classname是应用程序入口点的类的名称。
+
+回想一下，入口点是一个具有签名方法的类public static void main(String[] args)。
+另一种方法是用jar工具设置：
+用e标志，设置主类为MyApp.
+jar cfe app.jar MyApp MyApp.class
+
+===== 将类添加到JAR文件的类路径中 =====
+本节介绍如何在清单文件中使用Class-Path标头，以便在运行applet或应用程序时将其他JAR文件中的类添加到类路径中。
+将类添加到JAR文件的类路径中
+您可能需要从JAR文件中引用其他JAR文件中的类。
+
+例如，在典型情况下，applet捆绑在JAR文件中，该文件的清单引用不同的JAR文件（或几个不同的JAR文件）作为该applet的实用程序。
+
+您可以指定要包含在applet或应用程序的清单文件中的Class-Path头字段中的类。的类路径报头的形式如下：
+
+Class-Path：jar1-name jar2-name directory-name / jar3-name
+通过在清单中使用Class-Path标头，可以避免在调用Java以运行应用程序时指定很长的 -classpath标志。
+
+注：  在类路径头球点到类或JAR文件在本地网络上，JAR文件或类通过Internet协议访问中没有JAR文件。要将JAR文件中的JAR文件中的类加载到类路径中，必须编写自定义代码来加载这些类。例如，如果MyJar.jar包含另一个名为MyUtils.jar的 JAR文件，则不能使用MyJar.jar清单中的Class-Path标头将MyUtils.jar中的类加载到类路径中。
+
+===== 设置包版本信息 =====
+本节介绍如何在清单文件中使用程序包版本标头。
+Headers in a manifest
+Header	Definition
+Name	The name of the specification.
+Specification-Title	The title of the specification.
+Specification-Version	The version of the specification.
+Specification-Vendor	The vendor of the specification.
+Implementation-Title	The title of the implementation.
+Implementation-Version	The build number of the implementation.
+Implementation-Vendor	The vendor of the implementation.
+
+===== 密封JAR文件中的包 =====
+本节介绍如何通过修改清单文件来密封JAR文件中的包。
+JAR文件中的包可以选择性地密封，这意味着该包中定义的所有类必须存档在同一个JAR文件中。例如，您可能希望密封包，以确保软件中类之间的版本一致性。
+
+您可以通过在清单中添加Sealed标头来封装JAR文件中的包，该标头具有以下一般形式
+Name: myCompany/myPackage/
+Sealed: true
+
+值myCompany / myPackage /是要封装的包的名称。
+
+请注意，包名称必须以“/”结尾。
+如果要保证包中的所有类都来自相同的代码源，请使用JAR密封。密封的JAR指定由JAR定义的所有包都是密封的，除非在每个包的基础上被覆盖。
+
+要密封JAR文件，请使用值为true 的密封清单标头。
+Sealed: true
+指定此存档中的所有包都是密封的，除非显式覆盖清单条目中具有Sealed属性的特定包。
+
+===== 使用清单属性增强安全性 =====
+本节介绍如何使用清单属性来提高applet或Java Web Start应用程序的安全性。
+以下JAR文件清单属性可用于帮助确保applet或Java Web Start应用程序的安全性。只需要Permissions属性。
+
+1. 该Permissions属性用于确保应用程序的请求是在用于调用应用程序的applet标记或JNLP文件中指定的权限级别之内。使用此属性可帮助防止某人重新部署使用您的证书签名并在不同权限级别运行它的应用程序。
+主JAR文件的清单中需要此属性。有关详细信息，请参阅 Java平台标准版部署指南中的[[https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG896|权限属性]]。
+
+2. Codebase属性用于确保该JAR文件的代码库被限制为特定的域。使用此属性可防止某人出于恶意目的在其他网站上重新部署您的应用程序。有关详细信息，请参阅 Java平台标准版部署指南中的[[https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG897|代码库属性]]。
+
+ 3. 该Application-Name属性用来提供在安全显示提示签名的应用程序的标题。有关详细信息，请参阅 Java平台标准版部署指南中的[[https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG899|应用程序名称]]属性。
+
+4 .该Application-Library-Allowable-Codebase 属性是用来识别您的应用程序有望被发现的位置。当JAR文件位于与JNLP文件或HTML页面不同的位置时，使用此属性可减少安全提示中显示的位置数。有关详细信息，请参阅 Java平台标准版部署指南中的[[https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG900|Application-Library-Allowable-Codebase]]属性。
+
+5. 在Caller-Allowable-Codebase 属性用于标识从中JavaScript代码，就能使你的应用程序调用的域。使用此属性可防止未知JavaScript代码访问您的应用程序。有关详细信息，请参阅 Java平台标准版部署指南中的[[https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG901|Caller-Allowable-Codebase]]属性。
+
+6. 该Entry-Point属性是用来识别被允许作为切入点，以您的RIA的类。使用此属性可防止未经授权的代码从JAR文件中的其他可用入口点运行。有关详细信息，请参阅 Java平台标准版部署指南中的[[https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG902|入口点属性]]。
+
+7 Trusted-Only 属性用于防止不可信组件被加载。有关详细信息，请参阅 Java平台标准版部署指南中的[[https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG903|Trusted-Only Attribute]]。
+
+8. 该Trusted-Library 属性用来允许特权Java代码和沙箱的Java代码之间的调用，而不提示权限的用户。有关详细信息，请参阅 Java平台标准版部署指南中的[[https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG904|可信库属性]]。
+

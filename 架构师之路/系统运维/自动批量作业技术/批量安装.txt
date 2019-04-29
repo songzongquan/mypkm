@@ -1,0 +1,15 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-21T17:44:37+08:00
+
+====== 批量安装 ======
+创建日期 星期四 21 三月 2019
+
+===== Ansible =====
+http://www.ansible.com.cn/docs/intro.html
+
+===== Expect =====
+可以批量执行脚本的工具
+
+===== Chef =====
+一个商业版的自动化工具集

@@ -1,0 +1,61 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-09T15:44:36+08:00
+
+====== 关于ResourceBundle类 ======
+创建日期 星期六 09 二月 2019
+
+===== ResourceBundle是如何与Locale进行关联的？ =====
+从概念上讲，每个ResourceBundle都是一组共享相同基本名称的相关子类。下面的列表显示了一组相关的子类。ButtonLabel是基本名称。基本名称后面的字符表示语言代码，国家/地区代码和a的变体Locale。ButtonLabel_en_GB例如，匹配Locale英语（en）的语言代码和Great Britain（GB）的国家代码指定的。
+
+ButtonLabel 
+ButtonLabel_de 
+ButtonLabel_en_GB 
+ButtonLabel_fr_CA_UNIX
+要选择合适ResourceBundle的ResourceBundle.getBundle方法，请调用该方法。下面的例子选择ButtonLabel ResourceBundle的Locale是法语，加拿大的国家，和UNIX平台相匹配。
+
+__Locale currentLocale = new Locale（“fr”，“CA”，“UNIX”）; __
+__ResourceBundle introLabels = ResourceBundle.getBundle（__
+__                                 “ ButtonLabel ”，currentLocale）;__
+如果ResourceBundle指定的类Locale不存在，请getBundle尝试查找最接近的匹配项。例如，如果ButtonLabel_fr_CA_UNIX是所需的类，默认Locale值为en_US，getBundle则将按以下顺序查找类：
+
+ButtonLabel_fr_CA_UNIX 
+ButtonLabel_fr_CA 
+ButtonLabel_fr 
+ButtonLabel_en_US 
+ButtonLabel_en 
+ButtonLabel
+请注意，在选择基类之前getBundle根据缺省值查找Locale类（ButtonLabel)。如果getBundle在前面的类列表中找不到匹配项，则会抛出一个MissingResourceException。为了避免抛出此异常，应始终提供没有后缀的基类。
+
+===== ListResourceBundle和PropertyResourceBundle子类 =====
+抽象类ResourceBundle有两个子类：PropertyResourceBundle和ListResourceBundle。
+
+A PropertyResourceBundle由属性文件支持。属性文件是包含可翻译文本的纯文本文件。属性文件不是Java源代码的一部分，它们只能包含String对象的值。如果您需要存储其他类型的对象，请使用ListResourceBundle替代。使用属性文件备份ResourceBundle部分将向您展示如何使用PropertyResourceBundle。
+
+本ListResourceBundle类管理的资源提供了方便列表。每个ListResourceBundle都由类文件支持。您可以将任何特定于语言环境的对象存储在ListResourceBundle。要添加对Locale其他文件的支持，请创建另一个源文件并将其编译为类文件。使用ListResource Bundle一节有一个您可能会觉得有用的编码示例。
+
+这ResourceBundle堂课很灵活。如果您首先将特定String于语言环境的对象放在a中PropertyResourceBundle，然后决定使用它ListResourceBundle，那么对您的代码没有任何影响。例如，以下调用getBundle将检索ResourceBundle适当的Locale，无论ButtonLabel是由类还是由属性文件备份：
+
+ResourceBundle introLabels = ResourceBundle.getBundle（
+								 “ ButtonLabel ”，currentLocale）;
+
+===== 键值对 =====
+ResourceBundle对象包含键值对的数组。如果String要从中检索值，请指定必须为a的键ResourceBundle。该值是特定于语言环境的对象。以下示例中的键是OkKey和CancelKey字符串：
+
+class ButtonLabel_en extends ListResourceBundle { 
+	// English version 
+	public Object [] [] getContents（）{ 
+		return contents; 
+	} 
+	static final Object [] [] contents = { 
+		{“OkKey”，“OK”}，
+		{“CancelKey”，“Cancel”}，
+	}; 
+}
+为了取回OK String从ResourceBundle，你会在调用时指定相应的键getString：
+
+String okLabel = ButtonLabel.getString（“OkKey”）;
+属性文件包含键值对。键位于等号的左侧，值位于右侧。每对都在一条单独的线上。值可以String仅表示对象。以下示例显示了名为的属性文件的内容ButtonLabel.properties：
+
+OkKey =确定
+CancelKey =取消

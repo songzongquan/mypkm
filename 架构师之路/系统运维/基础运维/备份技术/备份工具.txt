@@ -1,0 +1,17 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-26T14:35:48+08:00
+
+====== 备份工具 ======
+创建日期 星期二 26 三月 2019
+
+===== BorgBackup =====
+增量、压缩、加密、支持管道。
+
+https://borgbackup.readthedocs.io/en/stable/
+
+更多的开源工具就在：
+
+https://linux.cn/article-4623-1.html
+
+https://www.oschina.net/project/tag/198/backupffcp 

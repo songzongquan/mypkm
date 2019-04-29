@@ -1,0 +1,28 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-04-10T17:56:09+08:00
+
+====== 应用性能监控 ======
+创建日期 星期三 10 四月 2019
+
+应用性能监控，应用拓扑，应用性能问题分析，事务性能跟踪分析．
+
+采样代理，探针，埋点等．　　发送代理，中央服务．
+ｗｅｂ前端．
+
+功能参考资料：
+https://www.toushibao.com/product_heath.html
+
+https://www.cnblogs.com/xiaoqi/p/apm.html
+
+http://www.elecfans.com/kongzhijishu/687628.html
+https://blog.csdn.net/enweitech/article/details/82887459
+
+https://blog.csdn.net/enweitech/article/details/82887459
+
+原理：
+APM 的核心原理：https://blog.csdn.net/sgwhp/article/details/50239747%E3%80%80
+
+http://www.elecfans.com/kongzhijishu/687628.html
+
+

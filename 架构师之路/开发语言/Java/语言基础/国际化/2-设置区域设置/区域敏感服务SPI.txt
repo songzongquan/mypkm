@@ -1,0 +1,36 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-09T11:17:18+08:00
+
+====== 区域敏感服务SPI ======
+创建日期 星期六 09 二月 2019
+
+此功能启用与区域设置相关的数据和服务的插件。通过这种方式，第三方能够在java.text和java.util包中提供大多数区域设置敏感类的实现。
+
+SPI （服务提供者接口）的实现基于由服务提供者实现的抽象类和Java接口。在运行时，Java类加载机制用于动态定位和加载实现SPI的类。
+
+您可以使用区域设置敏感服务SPI来提供以下区域设置敏感实现：
+
+* BreakIterator objects
+* Collator objects
+* Language code, Country code, and Variant name for the Locale class
+* Time Zone names
+* Currency symbols
+* DateFormat objects
+* DateFormatSymbol objects
+* NumberFormat objects
+* DecimalFormatSymbols objects
+
+相应的SPI包含java.text.spi在java.util.spi包中和包
+
+{{./pasted_image.png}}
+例如，如果要NumberFormat为新语言环境提供对象，则__必须实现java.text.spi.NumberFormatProvider该类。__您需要扩展此类并实现其方法：
+
+getCurrencyInstance(Locale locale)
+getIntegerInstance(Locale locale)
+getNumberInstance(Locale locale)
+getPercentInstance(Locale locale)
+Locale loc = new Locale（“da”，“DK”）;
+NumberFormat nf = NumberFormatProvider.getNumberInstance（loc）;
+这些方法首先检查Java运行时环境是否支持所请求的语言环境; 如果是这样，他们会使用这种支持。否则，这些方法会调用getAvailableLocales()已安装的提供程序的方法以获取适当的接口，以查找支持所请求区域设置的提供程序。
+

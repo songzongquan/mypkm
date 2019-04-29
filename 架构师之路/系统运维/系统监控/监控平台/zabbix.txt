@@ -1,0 +1,61 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-19T10:57:51+08:00
+
+====== zabbix ======
+创建日期 星期二 19 三月 2019
+
+
+
+===== 官方参考资料： =====
+https://www.zabbix.com/download_sources
+
+===== 下载资源 =====
+http://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/
+
+===== 安装 =====
+
+1. 先安装基础环境 php mysql  nginx等 ，这是zabbix前端需要的环境 
+
+特别注意要安装php-fpm
+还有就是在nginx.conf中的php激活的配置。
+
+参考文章 ：
+https://www.cnblogs.com/yxpblog/p/4627509.html
+
+2 .安装zabbix server   、 agent
+
+   方式一，直接安装打好的包，deb,rpm等
+
+
+   方式二，下载源码，自已编译 
+			这种方式一定要注意，依赖的软件包要先装，也可根据报错提示来逐步安装依赖包。
+            
+  另外的坑，是nginx.conf中要配置好buffer size 否则报错。如下：
+http段下：
+	proxy_buffer_size   128k;
+	proxy_buffers   4 256k;
+server段中，关于php的配置中加：
+	 fastcgi_buffer_size 128k;
+		  fastcgi_buffers 4 256k;
+ 
+又一坑，我用普通用户身份来安装javagateway,  configure脚本一直报javac找不到。后来硬时手工的修改了脚本,直接指定javac，才得以成功，后来发现用root身份执行，没有问题，可能是环境变量原因。
+看来__，安装软件最好用root身份登录__，sudo有时因为环境变量的原因并不太好用。
+ 
+可以深入学习了解一下root 用户  su 切换的用户、当前用户  以及sudo 时，的环境变量的差异
+
+==== 添加开机启动脚本 ====
+复制代码
+
+cd /usr/local/src/zabbix-2.4.7
+
+cp misc/init.d/fedora/core5/zabbix_server /etc/rc.d/init.d/zabbix_server
+cp misc/init.d/fedora/core5/zabbix_agentd /etc/rc.d/init.d/zabbix_agentd
+
+chmod u+x /etc/rc.d/init.d/zabbix_server
+chmod u+x /etc/rc.d/init.d/zabbix_agentd
+
+chkconfig zabbix_server on 
+chkconfig zabbix_agentd on
+
+

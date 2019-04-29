@@ -1,0 +1,23 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-13T10:42:07+08:00
+
+====== 物联网 ======
+创建日期 星期三 13 三月 2019
+
+===== modbus 设备模拟 =====
+
+https://blog.csdn.net/xukai871105/article/details/21884065
+
+modbus-tk  tcp协议学习：
+https://blog.csdn.net/qq_20101209/article/details/62055069
+
+树莓源实现modbus设备
+
+http://www.nrjs.cn/ctt/11120050.html
+
+modbus-tk 的git地址
+https://github.com/ljean/modbus-tk
+
+这个网站对modbus-tk 的api使用以及含义说明的较清楚全面
+https://blog.csdn.net/hxkrrzq/article/details/81941926

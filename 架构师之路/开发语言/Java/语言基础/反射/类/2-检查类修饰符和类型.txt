@@ -1,0 +1,114 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-13T17:14:40+08:00
+
+====== 2-检查类修饰符和类型 ======
+创建日期 星期三 13 二月 2019
+
+可以使用一个或多个影响其运行时行为的修饰符声明一个类：
+
+访问修饰符：public，protected，和private
+需要覆盖的修饰符： abstract
+修饰符限制为一个实例： static
+修饰符禁止修改值： final
+修饰符强制严格的浮点行为： strictfp
+注释
+并非所有类都允许使用所有修饰符，例如接口不能final和枚举不能abstract。 java.lang.reflect.Modifier包含所有可能修饰符的声明。它还包含可用于解码返回的修饰符的方法 Class.getModifiers()。
+
+该 ClassDeclarationSpy示例显示如何获取类的声明组件，包括修饰符，泛型类型参数，实现的接口和继承路径。由于 Class实现了 java.lang.reflect.AnnotatedElement接口，因此还可以查询运行时注释。
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import static java.lang.System.out;
+
+public class ClassDeclarationSpy {
+	public static void main(String... args) {
+	try {
+		__Class<?> c = Class.forName(args[0]);__
+		out.format("Class:%n  %s%n%n", c.getCanonicalName());
+		out.format("Modifiers:%n  %s%n%n",
+			   Modifier.toString(__c.getModifiers()__));
+
+		out.format("Type Parameters:%n");
+		__TypeVariable[] tv = c.getTypeParameters();__
+		if (tv.length != 0) {
+		out.format("  ");
+		for (TypeVariable t : tv)
+			out.format("%s ", t.getName());
+		out.format("%n%n");
+		} else {
+		out.format("  -- No Type Parameters --%n%n");
+		}
+
+		out.format("Implemented Interfaces:%n");
+		__Type[] intfs = c.getGenericInterfaces();__
+		if (intfs.length != 0) {
+		for (Type intf : intfs)
+			out.format("  %s%n", intf.toString());
+		out.format("%n");
+		} else {
+		out.format("  -- No Implemented Interfaces --%n%n");
+		}
+
+		out.format("Inheritance Path:%n");
+		List<Class> l = new ArrayList<Class>();
+		printAncestor(c, l);
+		if (l.size() != 0) {
+		for (Class<?> cl : l)
+			out.format("  %s%n", cl.getCanonicalName());
+		out.format("%n");
+		} else {
+		out.format("  -- No Super Classes --%n%n");
+		}
+
+		out.format("Annotations:%n");
+		__Annotation[] ann = c.getAnnotations();__
+		if (ann.length != 0) {
+		for (Annotation a : ann)
+			out.format("  %s%n", a.toString());
+		out.format("%n");
+		} else {
+		out.format("  -- No Annotations --%n%n");
+		}
+
+		// production code should handle this exception more gracefully
+	} catch (ClassNotFoundException x) {
+		x.printStackTrace();
+	}
+	}
+
+	private static void printAncestor(Class<?> c, List<Class> l) {
+	Class<?> ancestor = c.getSuperclass();
+ 	if (ancestor != null) {
+		l.add(ancestor);
+		printAncestor(ancestor, l);
+ 	}
+	}
+}
+
+接下来是一些输出样本。用户输入以斜体显示。
+$ java ClassDeclarationSpy java.util.concurrent.ConcurrentNavigableMap
+Class:
+  java.util.concurrent.ConcurrentNavigableMap
+
+Modifiers:
+  public abstract interface
+
+Type Parameters:
+  K V
+
+Implemented Interfaces:
+  java.util.concurrent.ConcurrentMap<K, V>
+  java.util.NavigableMap<K, V>
+
+Inheritance Path:
+  -- No Super Classes --
+
+Annotations:
+  -- No Annotations --
+This is the actual declaration for java.util.

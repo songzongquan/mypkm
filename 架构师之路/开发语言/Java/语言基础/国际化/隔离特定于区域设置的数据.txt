@@ -1,0 +1,26 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-09T15:38:40+08:00
+
+====== 隔离特定于区域设置的数据 ======
+创建日期 星期六 09 二月 2019
+
+	  必须根据最终用户的语言和区域的惯例来定制特定于语言环境的数据。用户界面显示的文本是区域设置特定数据的最明显示例。例如，在美国使用“取消”按钮的应用程序将在德国具有“Abbrechen”按钮。在其他国家/地区，此按钮将包含其他标签。显然你不想硬编码这个按钮标签。如果你能自动获得给定的正确标签，那不是很好Locale吗？幸运的是，只要您在一个区域中隔离特定于语言环境的对象，就可以ResourceBundle。
+
+在本课程中，您将学习如何创建和访问ResourceBundle对象。如果您急于查看一些编码示例，请继续查看本课程的最后两节。然后，您可以回到前两个部分来获取有关ResourceBundle对象的概念信息。
+
+[[+关于ResourceBundle类]]
+ResourceBundle对象包含特定于语言环境的对象。当您需要特定于语言环境的对象时，可以从ResourceBundle中获取它，该对象返回与最终用户匹配的对象Locale。本节介绍ResourceBundle与Locale如何相关，并描述ResourceBundle子类。
+
+[[+准备使用ResourceBundle]]
+在创建ResourceBundle对象之前，您应该做一些计划。首先，确定程序中特定于语言环境的对象。然后将它们组织成类别并相应地将它们存储在不同的ResourceBundle对象中
+
+[[+使用属性文件备份ResourceBundle]]
+如果您的应用程序包含String需要翻译成各种语言的String对象，则可以将这些对象存储在一个PropertyResourceBundle由一组属性文件备份的对象中。由于属性文件是简单的文本文件，因此翻译人员可以创建和维护这些文件。您不必更改源代码。在本节中，您将学习如何设置备份的属性文件PropertyResourceBundle。
+
+[[+使用ListResourceBundle]]
+的ListResourceBundle类，它是一个子类ResourceBundle，管理与列表区域设置特定的对象。A ListResourceBundle由类文件支持，这意味着每次Locale需要支持附加文件时，您必须编写和编译新的源文件。但是，ListResourceBundle对象很有用，因为与属性文件不同，它们可以存储任何类型的特定于语言环境的对象。通过单步执行示例程序，本节演示如何使用a ListResourceBundle。
+
+[[+自定义资源包加载]]
+本节介绍了提高ResourceBundle.getBundle工厂灵活性的新功能。在ResourceBundle.Control类中的工厂方法加载资源包合作。这允许将资源包加载过程的每个实质步骤及其高速缓存控制视为单独的方法。
+

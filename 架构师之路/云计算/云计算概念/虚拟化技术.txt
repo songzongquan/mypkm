@@ -1,0 +1,31 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-15T15:16:09+08:00
+
+====== 虚拟化技术 ======
+创建日期 星期五 15 三月 2019
+
+===== 虚拟化技术 =====
+而在虚拟化技术中，则可以同时运行多个操作系统，而且每一个操作系统中都有多个程序运行，每一个操作系统都运行在一个虚拟的CPU或者是虚拟主机上；
+虚拟机比真实的机器可以被更容易从外部被控制和检查，并且可以配置更灵活。这在内核开发与操作系统课程教学中尤为有用。
+分类：
+
+==== 完全虚拟化 ====
+虚拟机模拟一个足够强大的硬件使客户机操作系统独立运行，纯软件虚拟化
+支持完全虚拟化的虚拟机软件包括Parallels Workstation， Parallels Desktop for Mac， VirtualBox， Virtual Iron， Oracle VM， Virtual PC， Virtual Server， Hyper-V， VMware Workstation， VMware Server (formerly GSX Server)， QEMU， Adeos， Mac-on-Linux， Win4BSD， Win4Lin Pro， 以及 Egenera vBlade technology。
+
+==== 硬件辅助虚拟化 ====
+在硬件辅助虚拟化（hardware-assisted virtualization）中，硬件提供结构支持帮助创建虚拟机监视并允许客户机操作系统独立运行
+Intel和AMD为虚拟化提供了额外的硬件支持。支持硬件辅助虚拟化的有 Linux KVM， VMware Workstation， VMware Fusion， Microsoft Virtual PC， Xen， Parallels Desktop for Mac，VirtualBox and Parallels Workstation。
+
+
+==== 部分虚拟化 ====
+虚拟数个（不是全部）硬件底层资源
+
+==== 平行虚拟化 ====
+在平行虚拟化（paravirtualization）中，虚拟机不需要模拟硬件，而是提供一个特殊的API只能被特制的客户机操作系统使用。
+
+==== 操作系统虚拟化 ====
+在操作系统层虚拟化（OS-level virtualization）中，独立主机被虚拟化在操作系统层中，这使得多个独立且安全虚拟化的服务器运行在一台计算机上。客户操作系统环境与宿主服务器分享同一个操作系统，例如，相同的系统内核被用来创建客户机环境。程序运行在被视为独立系统的客户机环境中。这种方式由FreeBSD jails首创；类似的例子包括Solaris Containers， OpenVZ， Linux-VServer， AIX Workload Partitions， Parallels Virtuozzo Containers， 以及 iCore Virtual Accounts。
+
+

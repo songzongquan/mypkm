@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-27T14:53:45+08:00
+
+====== 常用监控 ======
+创建日期 星期三 27 三月 2019
+web 监控
+https://www.zabbix.com/documentation/4.0/zh/manual/web_monitoring

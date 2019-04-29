@@ -1,0 +1,15 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-06T18:09:24+08:00
+
+====== 经典好书 ======
+创建日期 星期三 06 三月 2019
+看以下网站介绍，其本上够了
+入门类：
+https://blog.csdn.net/qq_31939617/article/details/79915877
+
+http://baijiahao.baidu.com/s?id=1600753467845566677&wfr=spider&for=pc
+
+https://www.jianshu.com/p/99028b067805
+
+https://blog.csdn.net/aitaozi11/article/details/79641720

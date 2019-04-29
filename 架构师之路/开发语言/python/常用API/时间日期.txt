@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-14T16:10:16+08:00
+
+====== 时间日期 ======
+创建日期 星期四 14 三月 2019
+
+计算机的时钟可以调度程序，在特定的
+时间和日期运行，或定期运行。
+
+Python 的 time 和 datetime 模块提供了这些函数。
+利用 subprocess 和 threading 模块，你也可以编程按时启动
+其他程序。通常，编程最快的方法是利用其他人已经写好的应
+用程序

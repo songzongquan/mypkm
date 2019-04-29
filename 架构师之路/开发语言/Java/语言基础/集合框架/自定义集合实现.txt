@@ -1,0 +1,73 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-11T12:15:11+08:00
+
+====== 自定义集合实现 ======
+创建日期 星期五 11 一月 2019
+
+许多程序员将永远不需要自已实现一个集合的实现类．因为用ｊａｖａ集合框架提供的实现就可以让我走的很好很远，但是有那么一天，你也许真的想实现一个自已的集合实现类，那么，你可以在集合框架中的抽象实现的帮助下，很容易的实现它．在我们讨论这个之前，先来讨论一下为什么我要实现一个自定义的集合实现:
+
+===== 写一个自定义实现的原因 =====
+以下列表说明了Collection您可能希望实现的自定义类型。它并非详尽无遗：
+
+**持久性**：所有内置Collection实现都驻留在主内存中，并在程序退出时消失。如果您希望下次程序启动时仍然存在的集合，您可以通过在外部数据库上构建胶合代码来实现它。多个程序可以同时访问这样的集合。
+**特定应用**：这是一个非常广泛的类别。一个例子是Map包含实时遥测数据的不可修改的。键可以表示位置，并且可以响应于get操作从这些位置处的传感器读取值。
+**高性能，专用**：许多数据结构利用受限制的使用来提供比通用实现更好的性能。例如，考虑List包含长期运行的相同元素值。在文本处理中经常出现的这种列表可以是行程编码的 - 运行可以表示为包含重复元素和连续重复次数的单个对象。这个例子很有意思，因为它会影响性能的两个方面：它需要更少的空间但是时间比一个更多ArrayList。
+**高性能，通用**：Java Collections Framework的设计者试图为每个接口提供最佳的通用实现，但是可以使用许多很多数据结构，并且每天都会发明新的数据结构。也许你可以更快地拿出一些东西！
+**增强功能**：假设您需要一个高效的包实现（也称为多重集）：a Collection提供持续时间包含检查，同时允许重复元素。在a上面实现这样的集合是相当简单的HashMap。
+**便利性**：您可能希望获得除Java平台提供的便利之外的其他实现。例如，您可能经常需要List表示连续范围的Integers的实例。
+**适配器**：假设您使用的是具有自己的ad hoc集合API的旧API。您可以编写一个适配器实现，允许这些集合在Java Collections Framework中运行。一个适配器实现是很薄的木皮，它包装一个类型的对象，使他们通过在后一种类型转换操作到对前操作的行为像其他类型的对象。
+
+===== 如何写一个自定义实现 =====
+编写自定义实现非常简单。Java Collections Framework提供了明确设计的抽象实现，以方便自定义实现。我们将从下面的实现示例开始 Arrays.asList。
+
+public static <T> List<T> asList(T[] a) {
+	return new MyArrayList<T>(a);
+}
+
+private static class MyArrayList<T> extends AbstractList<T> {
+
+	private final T[] a;
+
+	MyArrayList(T[] array) {
+		a = array;
+	}
+
+	public T get(int index) {
+		return a[index];
+	}
+
+	public T set(int index, T element) {
+		T oldValue = a[index];
+		a[index] = element;
+		return oldValue;
+	}
+
+	public int size() {
+		return a.length;
+	}
+}
+
+不管你信不信，这都是java.util.Arrays中的包含的完整实现，它是简单的．你只需提供ｓｅｔ，ｇｅｔ，ｓｉｚｅ等几个方法实现，其它都让AbstractList来实现．您可以免费获得ListIterator、批量操作、搜索操作、哈希代码计算、比较和字符串表示。
+
+假如你想实现更快一点，抽象实现的的ａｐｉ文档描述了该方法是如何实现的．那么你将知道如何覆写该方法，以得到你想要的性能．前面的实现的性能是好的，但他仍可以再好一些．特别的，toArray方法在ｌｉｓｔ上进行迭代，一次只拷贝一个元素，考虑到内部表示，克隆数组更快更明智。
+public Object[] toArray() {
+	return (Object[]) a.clone();
+}
+
+加上这个重写和其他一些类似的方法，这个实现就是java.util.array中的实现。为了实现完全公开，使用其他抽象实现有点困难，因为您必须编写自己的迭代器，但仍然没有那么困难。
+
+下面的列表总结了抽象实现：
+AbstractCollection- Collection既不是a Set也不是a List。至少，您必须提供iterator和size方法。
+AbstractSet- a Set; 使用与...相同AbstractCollection。
+AbstractList- List由随机访问数据存储（例如阵列）备份。至少，必须提供positional access的方法（get和，可选地，set，remove，和add）和size方法。抽象类负责listIterator（和iterator）。
+AbstractSequentialList- List由顺序访问数据存储（例如链表）备份。至少，您必须提供listIterator和size方法。抽象类负责位置访问方法。（这与之相反AbstractList。）
+AbstractQueue-至少，你必须提供offer，peek，poll和size方法以及iterator支撑remove。
+AbstractMap- a Map。您至少必须提供entrySet视图。这通常通过AbstractSet类实现。如果Map可以修改，则还必须提供该put方法。
+
+编写自定义实现的过程如下：
+
+从前面的列表中选择适当的抽象实现类。
+为类的所有抽象方法提供实现。如果您的自定义集合是可修改的，则还必须覆盖一个或多个具体方法。抽象实现类的API文档将告诉您要覆盖哪些方法。
+测试并在必要时调试实现。您现在有一个可用的自定义集合实现。
+如果您担心性能，请阅读您继承其实现的所有方法的抽象实现类的API文档。如果有任何看起来太慢，请覆盖它们。如果覆盖任何方法，请确保在覆盖之前和之后测量方法的性能。您在调整性能方面付出了多少努力应该取决于实现将获得多少用途以及对其使用性能的重要性。（通常这个步骤最好省略。）

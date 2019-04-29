@@ -1,0 +1,40 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-10T13:16:58+08:00
+
+====== 便利实现 ======
+创建日期 星期四 10 一月 2019
+
+便利实施
+本节描述了几种迷你实现，当您不需要它们的全部功能时，它们比通用实现更方便，更高效。本节中的所有实现都是通过静态工厂方法而不是public类提供的。
+
+===== 数组的列表视图 =====
+该 Arrays.asList方法返回List视图，以数组参数。对List写入数组的更改，反之亦然。集合的大小是数组的大小，不能更改。如果在方法上调用add或remove方法List，UnsupportedOperationException则会产生结果。
+
+此实现的正常使用是作为基于阵列和基于集合的API之间的桥梁。它允许您将数组传递给期望a Collection或a 的方法List。但是，这种实现还有另一种用途。如果您需要固定大小List，它比任何通用List实现更有效。这是成语。
+
+List <String> list = Arrays.asList（new String [size]）;
+请注意，不保留对后备阵列的引用。
+
+不可变的多重复制列表
+偶尔你需要一个List由同一元素的多个副本组成的不可变元素。该 Collections.nCopies方法返回这样的列表。该实现有两个主要用途。第一个是初始化一个新创建的List; 例如，假设您希望ArrayList最初由1,000个null元素组成。以下咒语可以解决问题。
+
+List <Type> list = new ArrayList <Type>（Collections.nCopies（1000，（Type）null）;
+当然，每个元素的初始值不一定是null。第二个主要用途是发展现有的List。例如，假设您要将69个字符串副本添加"fruit bat"到a的末尾List<String>。目前尚不清楚你为什么要做这样的事情，但让我们假设你做了。以下是你如何做到的。
+
+lovablePets.addAll（Collections.nCopies（69，“fruit bat”））;
+通过使用addAll带有索引和a的形式Collection，您可以将新元素添加到a的中间List而不是结尾。
+
+===== 不可变单身集 =====
+有时你需要一个不可变的单例 Set，它由一个指定的元素组成。该 Collections.singleton方法返回这样的Set。此实现的一个用途是从a中删除所有出现的指定元素Collection。
+
+c.removeAll（Collections.singleton（E））;
+相关的习语会从a中删除映射到指定值的所有元素Map。例如，假设你有一个Map- job将人们映射到他们的工作线上，并假设你想要消灭所有的律师。以下单行将做行动。
+
+job.values（）的removeAll（Collections.singleton（律师））;
+此实现的另一个用途是为编写为接受值集合的方法提供单个输入值。
+
+===== 空集，列表和Map常量 =====
+本 Collections类提供了返回空Set，List和Map- emptySet， emptyList和 emptyMap。这些常量的主要用途是Collection当您不想提供任何值时采用值的方法的输入，如本示例所示。
+
+tourist.declarePurchases（Collections.emptySet（））;

@@ -1,0 +1,75 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-17T16:05:44+08:00
+
+====== 1-使用jar：基础 ======
+创建日期 星期四 17 一月 2019
+
+===== 创建jar文件 =====
+jar cf jar-file input-file(s)
+c-表示创建
+f-表示输出为文件
+jar-file表示最终输出的jar
+input-files表示要被打包的文件，可以用*等通配符。也可以是目录名，
+
+此命令会生成默认的manifest文件   -JAR文件中的元数据（如条目名、注释和清单的内容）必须用UTF8编码。
+
+
+您可以将以下任何附加选项添加到基本命令的cf选项中：
+
+jar命令选项
+选项	描述
+v	在构建JAR文件时，在stdout上生成详细输出。详细输出告诉您每个文件的名称，因为它已添加到JAR文件中。
+0（零）	表示您不希望压缩JAR文件。
+中号	表示不应生成默认清单文件。
+米	用于包括现有清单文件中的清单信息。使用此选项的格式为：
+jar cmf jar-file  existing-manifest  输入文件
+有关此选项的更多信息， 请参阅 修改清单文件。
+警告：  清单必须以新行或回车结束。如果最后一行没有以新行或回车结束，则不会正确解析。
+-C	在执行命令期间更改目录。请参阅下面的示例。指定-C后，直接从-C指定的目录中取文件，不再会包含目录和结构。
+不还-C是会将目录与其文件按目录结构打入包中。
+
+注意： 
+创建JAR文件时，创建时间存储在JAR文件中。因此，即使JAR文件的内容没有更改，当您多次创建JAR文件时，生成的文件也不完全相同。在构建环境中使用JAR文件时，应该注意这一点。建议您使用清单文件中的版本控制信息而不是创建时间来控制JAR文件的版本。请参阅“ 设置包版本信息”部分。
+
+===== 看jar包中的内容 =====
+jar tf jar-file
+
+===== 从jar包中提取文件 =====
+
+jar xf jar-file [archived-file(s)]  
+第2个参数可以指定提取指定的文件，但省略的话就是提取所有。
+
+===== 更新jar包 =====
+jar uf jar-file input-file(s)
+其中input-files要按包中的路径来书写。
+
+===== 运行jar打包的软件 =====
+有三个场景：
+1. 它是一个applet
+2. 它是一个application
+3. 它是一个扩展组件
+例子1：
+<applet code=TicTacToe.class 
+		archive="applets/TicTacToe.jar"
+		width="120" height="120">
+</applet>
+例子2：
+java -jar jar-file
+在执行此命令之前，请确保运行时环境具有有关JAR文件中哪个类是应用程序入口点的信息。
+
+要指示哪个类是应用程序的入口点，必须将一个Main-Class标头添加到JAR文件的清单中。标题采用以下形式：
+
+Main-Class：classname
+标头的值classname是应用程序入口点的类的名称。
+
+有关更多信息，请参阅 设置应用程序的入口点部分。
+
+当Main-Class的 manifest文件中设置，您可以运行在命令行应用程序：
+
+java -jar app.jar
+要从另一个目录中的JAR文件运行应用程序，必须指定该目录的路径： java -jar path/app.jar
+例子3：
+
+
+

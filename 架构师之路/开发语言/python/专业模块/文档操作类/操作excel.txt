@@ -1,0 +1,50 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-13T21:50:11+08:00
+
+====== 操作excel ======
+创建日期 星期三 13 三月 2019
+安装并导入模块：
+openpyxl
+
+官方文档 https://openpyxl.readthedocs.io/en/stable/
+
+===== 功能 =====
+
+1. 加载workbook
+2. 得到当前活动的sheet
+3. 根据名字得到sheet
+4. 用A1 B2这种方式得到一单元格如 sheet['A1']
+5. 用指定行号列号得到一个cell        sheet.cell(row=?,column=?)
+6. 得到一个区块  sheet['A1:B3']
+7. 创建 excel文件 
+8. 创建wheet页，改sheet标题
+9. 最后写入文件 
+10. 设置字体 风格  from openpyxl.styles import Font, Style
+11. 支持设置公式，读取公司及 结果值
+12. 可设行高列宽
+13. 合并和拆分单元格 sheet.merge_cells('A1:D3')
+14. 冻结窗格在 OpenPyXL 中，每个 Worksheet 对象都有一个 freeze_panes
+属性，可以设置为一个 Cell 对象或一个单元格坐标的字符串。请注意，单元格上边的所
+有行和左边的所有列都会冻结，但单元格所在的行和列不会冻结。
+要解冻所有的单元格，就将 freeze_panes 设置为 None 或'A1'。
+15可以处理图表
+1．从一个矩形区域选择的单元格，创建一个 Reference 对象。
+2．通过传入 Reference 对象，创建一个 Series 对象。
+3．创建一个 Chart 对象。
+4．将 Series 对象添加到 Chart 对象。
+5． 可选地设置 Chart 对象的 drawing.top、 drawing.left、 drawing.width 和 drawing.height
+变量。
+6．将 Chart 对象添加到 Worksheet 对象。
+Reference 对象需要一些解释。 Reference 对象是通过调用 openpyxl.charts. Reference()
+函数并传入 3 个参数创建的：
+1．包含图表数据的 Worksheet 对象。
+2．两个整数的元组，代表矩形选择区域的左上角单元格，该区域包含图表数
+据：元组中第一个整数是行，第二个整数是列。请注意第一行是 1，不是 0。
+3．两个整数的元组，代表矩形选择区域的右下角单元格，该区域包含图表数
+据：元组中第一个整数是行，第二个整数是列
+
+遗憾的是，在 OpenPyXL 的当前版本中（ 2.1.4）， load_workbook()不会加载 Excel
+文件中的图表。即使 Excel 文件包含图表，加载的 Workbook 对象也不会包含它们。
+如果加载一个 Workbook 对象，然后马上保存到同样的.xlsx 文件名中，实际上就会
+删除其中的图表。

@@ -1,0 +1,12 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-06T17:56:52+08:00
+
+====== 搜索引擎技术 ======
+创建日期 星期三 06 三月 2019
+
+参考此文：
+
+https://baijiahao.baidu.com/s?id=1613907909673723053&wfr=spider&for=pc
+
+https://blog.csdn.net/m0_37913549/article/details/78989078

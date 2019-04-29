@@ -1,0 +1,48 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-26T17:51:39+08:00
+
+====== web缓存服务 ======
+创建日期 星期二 26 三月 2019
+
+专业的软件有squid
+支持缓存加带，指定url或状态码的过期时间，并且支持手工清除缓存指令，
+但是nginx本身现在已经支持此功能，模块叫proxy_cache，除手工清除功能不支持。其它都可以。且对多核cpu的支持也比较好，所以
+完全可以用nginx来实现缓存服务。
+
+
+===== 相关指令 =====
+
+==== proxy_cache* ====
+针对普通代理内容
+
+1. proxy_cache   zone_name,用在 http  server  location .  指定缓存区，它的值由proxy_cache_path指令中指定的keys_zone的名字。
+2. proxy_cache_path ,  格式：proxy_cache_path  [[/to/path]]   levels=1:2    keys_zone=zone_name:500m  inactive=1d  max_size=30g,只用到http段，levels 表示两级目录 ，一级目录名为一个字母，二级目录为二个字母， inactive表示1d不被访问将会删除，max_size表示最大的磁盘缓存，500m代表的是内存中的缓存为500m
+3. proxy_cache_methods  GET   HEAD，支持缓存的访问方法，缺省只支持GET,HEAD, 使用环境 http    server   location
+4. proxy_cache_min_uses  NUM，可用于http,server,location,设置缓存的最小使用次数，默认值为1
+5. proxy_cache_valid  返回状态码 时间（m），用于对不同返回状态码的ur设置不同的缓存时间
+6. proxy_cache_key "$host$server_port$uri$is_args$args"，如域名+请求路径+参数，
+
+
+==== fastcgi_cache* ====
+
+针对fastcgi代理内容。用法也proxy_cache类的指令完全相同
+
+===== NCACHE =====
+新浪的开源网页缓存系统。可以了解。
+
+===== ngx_cache_purge =====
+第三方的清除cache的模块。
+编译时将这个模块也编译进去，可以实现。
+
+==== 配置 ====
+location ~ [[/purge(/.*]])
+{
+ #设置只允许指定的IP或IP段才可以清除URL缓存
+allow   127.0.0.1;
+allow  192.168.0.0/16;
+deny all;
+proxy_cache_purge cache_one  $host$1$is_args$args;
+
+
+}

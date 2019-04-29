@@ -1,0 +1,44 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-24T20:20:19+08:00
+
+====== 常用操作 ======
+创建日期 星期日 24 三月 2019
+
+====== 启动 ======
+1.一般启动
+
+nginx -c    config文件
+
+2. 试验配置文件 
+  nginx -t -c   文件 
+或  nginx -t 
+
+===== 停止 =====
+1. nginx  -s  stop 
+
+也可用kill
+1. 从容关闭    kill -QUIT  主pid
+2. 立即关闭     kill -TERM pid 或 kill -INT 主pid
+3. 强制关闭    pkill -9  nginx  杀掉所有nginx进程，主进程与子进程
+
+===== 平滑重启 =====
+指正在服务的进程不会中断，服务完后才会杀掉
+1. kill -HUP  主pid
+
+
+===== 平滑升级可执行程序 =====
+即不中断服务而升级
+
+1. 备份好旧程序，覆盖新程序
+2. kill -USR2  旧程序 的pid
+3. 执行新版程序，此时新旧进程同时存在，共同服务
+4. 从容关闭旧程序进程  kill -WINCH   旧版主pid
+5. 当旧程序进程都关闭后，考虑决定用新的还是旧的
+6. 如果用新的，就kill -QUIT  旧版 进程id
+7. 如果想恢复老的，则 kill -HUP 旧版 主进程id，然后再 kill -QUIT 新版主进程id  从容关闭新进程，最后再kill -TERM 新版主进程iD
+
+
+
+
+

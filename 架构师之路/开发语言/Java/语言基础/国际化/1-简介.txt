@@ -1,0 +1,156 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-22T15:49:46+08:00
+
+====== 1-简介 ======
+创建日期 星期二 22 一月 2019
+
+国际化是设计应用程序的过程，以便它可以适应各种语言和区域而无需进行工程更改。有时，国际化一词缩写为i18n，因为第一个“i”和最后一个“n”之间有18个字母。
+
+国际化计划具有以下特点：
+
+通过添加本地化数据，可以在全球范围内运行相同的可执行文件
+文本元素（例如状态消息和GUI组件标签）在程序中不是硬编码的。相反，它们存储在源代码之外并动态检索。
+支持新语言不需要重新编译。
+依赖于文化的数据（如日期和货币）以符合最终用户区域和语言的格式显示。
+它可以快速本地化。
+本地化是通过添加特定于语言环境的组件和翻译文本来调整特定区域或语言的软件的过程。术语本地化通常缩写为l10n，因为“l”和“n”之间有10个字母。
+
+本地化的主要任务是翻译用户界面元素和文档。本地化不仅涉及改变语言交互，还涉及其他相关更改，如数字显示，日期，货币等。其他类型的数据（如声音和图像）如果具有文化敏感性，则可能需要进行本地化。应用程序的国际化程度越高，就越容易将其本地化为特定的语言和字符编码方案。
+
+起初国际化似乎有点令人生畏。阅读以下部分将有助于您轻松进入主题。
+
+国际化的例子：
+
+import java.util.*;
+
+public class I18NSample {
+
+	static public void main(String[] args) {
+
+		String language;
+		String country;
+
+		if (args.length != 2) {
+			language = new String("en");
+			country = new String("US");
+		} else {
+			language = new String(args[0]);
+			country = new String(args[1]);
+		}
+
+		__Locale currentLocale;__
+__        ResourceBundle messages;__
+
+__        currentLocale = new Locale(language, country);__
+
+__        messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);__
+__        System.out.println(messages.getString("greetings"));__
+__        System.out.println(messages.getString("inquiry"));__
+__        System.out.println(messages.getString("farewell"));__
+	}
+}
+
+配合需要以下资源文件 ：
+MessagesBundle.properties
+MessagesBundle_de_DE.properties
+MessagesBundle_en_US.properties
+MessagesBundle_fr_FR.properties
+
+===== 实现步骤总结 =====
+1. 创建属性文件  如：            key=value
+2. 定义区域设置  如：aLocale = new Locale（“en”，“US”）;  参数前语言，后国家。
+3. 创建ResourceBundle  如：messages = ResourceBundle.getBundle（“MessagesBundle”，currentLocale）;
+4. 从ResourceBundle中获取文本  如：String msg1 = messages.getString（“greetings”）;
+
+
+===== 国际化改造检查清单 =====
+首次编写时，许多程序都没有国际化。这些程序可能已经开始作为原型，或者它们可能不是用于国际分发。如果必须国际化现有程序，请执行以下步骤：
+
+==== 识别文化依赖数据 ====
+短信是最明显的数据形式，随文化而变化。但是，其他类型的数据可能因地区或语言而异。以下列表包含文化相关数据的示例：
+
+**消息**
+**GUI组件上的标签**
+**网上帮助**
+**声音**
+**颜色**
+**图像**
+**图标**
+**日期**
+**时**
+**数字**
+**货币**
+**测量**
+**电话号码**
+**荣誉和个人头衔**
+**邮政地址**
+**页面布局**
+
+==== 隔离资源包中的可翻译文本 ====
+翻译费用昂贵。您可以通过隔离必须在ResourceBundle对象中翻译的文本来帮助降低成本。可翻译文本包括状态消息，错误消息，日志文件条目和GUI组件标签。该文本被硬编码到尚未国际化的程序中。您需要找到显示给最终用户的所有硬编码文本。例如，您应该像这样清理代码：
+
+String buttonLabel =“OK”;
+// ...
+JButton okButton =新的JButton（buttonLabel）;
+有关详细信息，请参阅隔离特定于区域设置的数据部分 。
+
+==== 处理复合消息 ====
+复合消息包含可变数据。在消息“磁盘包含1100个文件”中。整数1100可以变化。此消息难以翻译，因为句子中整数的位置在所有语言中都不相同。以下消息不可翻译，因为句子元素的顺序是通过连接硬编码的：
+
+整数fileCount;
+// ...
+String diskStatus =“磁盘包含”+ fileCount.toString（）+“files”;
+只要有可能，您应该避免构造复合消息，因为它们很难翻译。但是，如果您的应用程序需要复合消息，则可以使用“消息 ”一节中描述的技术处理它们 。
+
+==== 格式化数字和货币 ====
+如果您的应用程序显示数字和货币，则必须以与语言环境无关的方式对其进行格式化。以下代码尚未国际化，因为它不会在所有国家/地区正确显示数字：
+
+双倍金额;
+TextField amountField;
+// ...
+String displayAmount = amount.toString（）;
+amountField.setText（displayAmount）;
+您应该使用__正确格式化数字的例程替换前面的代码__。__Java编程语言提供了几个格式化数字和货币的类。这些类在数字和货币部分中讨论__ 。
+
+==== 格式日期和时间 ====
+日期和时间格式因地区和语言而异。如果您的代码包含如下语句，则需要更改它：
+
+Date currentDate = new Date（）;
+TextField dateField;
+// ...
+String dateString = currentDate.toString（）;
+dateField.setText（dateString）;
+如果您使用__日期格式化类__，您的应用程序可以在世界各地正确显示日期和时间。有关示例和说明，请参阅日期和时间部分 。
+
+==== 使用Unicode字符属性 ====
+以下代码尝试验证字符是否为字母：
+
+char ch;
+//这段代码不正确
+if（（ch> ='a'&& ch <='z'）||（ch> ='A'&& ch <='Z'））
+注意这样的代码，因为它不适用于英语以外的语言。例如，该if陈述错过了德语单词Grün中的字符ü。
+
+的Character比较方法使用Unicode标准来识别字符属性。因此，您应该使用以下代码替换以前的代码：
+
+char ch;
+// ...
+__if（Character.isLetter（ch））__
+__有关Character比较方法的详细信息，请参阅检查字符属性一节 。__
+
+==== 正确比较字符串 ====
+排序文本时，您经常比较字符串。如果显示文本，则不应使用String该类的比较方法。尚未国际化的程序可能会比较字符串如下：
+
+字符串目标;
+字符串候选;
+// ...
+if（target.equals（candidate））{
+// ...
+if（target.compareTo（candidate）<0）{
+// ...
+该String.equals和String.compareTo方法执行二进制比较，在大多数语言排序时是无效的。相反，您应该使用Collator类，比较字符串一节中描述 。
+
+
+==== 转换非Unicode文本 ====
+Java编程语言中的字符以Unicode编码。如果您的应用程序处理非Unicode文本，您可能需要将其转换为Unicode。有关更多信息，请参阅 转换非Unicode文本部分。
+

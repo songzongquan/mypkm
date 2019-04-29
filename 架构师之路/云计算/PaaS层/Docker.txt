@@ -1,0 +1,24 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-13T12:32:12+08:00
+
+====== Docker ======
+创建日期 星期三 13 三月 2019
+
+容器技术的一种实现。
+
+Docker的内部三大核心组件
+1、Docker  images
+	Docker  images也叫做Docker镜像，镜像一般是只读模版，用户不可以直接对其进行写入操作。使用镜像可以很轻松地创建容器。
+	目的也就是更好的保证数据的安全
+2、Docker  containers
+   Docker  containers也叫做Docker容器，容器与容器之间互相隔离、互不干扰，容器可以进行被开始、启动、停止、删除等操作。
+   开发者快速地把自己的应用打包到容器中进行发布
+3、Docker  registries
+   Docker  registries也叫做Docker仓库，仓库主要是用来下载和上传镜像的，仓库分为公有仓库和私有仓库。
+
+===== 与虚拟机技术的区别 =====
+{{./pasted_image001.png}}
+
+===== 与虚拟机技术对比 =====
+{{./pasted_image.png}}

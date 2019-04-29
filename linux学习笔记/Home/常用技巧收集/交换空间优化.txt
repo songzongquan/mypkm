@@ -1,0 +1,12 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-27T12:03:44+08:00
+
+====== 交换空间优化 ======
+创建日期 星期三 27 三月 2019
+查看交换空间占用大，内存占用少，并调节
+
+http://www.maixj.net/ict/linux-swap-15092
+
+清除交换分区
+https://blog.csdn.net/chenghuikai/article/details/77476830

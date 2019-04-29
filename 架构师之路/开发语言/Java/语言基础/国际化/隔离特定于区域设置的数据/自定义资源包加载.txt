@@ -1,0 +1,102 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-09T16:34:40+08:00
+
+====== 自定义资源包加载 ======
+创建日期 星期六 09 二月 2019
+
+在本课程的前面部分，您学习了如何创建和访问ResourceBundle类的对象。本节将扩展您的知识并解释如何从 ResourceBundle.Control类功能中获益。
+
+ResourceBundle.Control创建它是为了指定如何定位和实例化资源包。它定义了一组ResourceBundle.getBundle在bundle加载过程中由工厂方法调用的回调方法 。
+
+与ResourceBundle.getBundle前面描述的方法不同 ，此ResourceBundle.getBundle方法使用指定的基本名称，默认语言环境和指定的控件定义资源包。
+
+public static final ResourceBundle getBundle（
+	String baseName，
+	ResourceBundle.Control cont
+	// ...
+指定的控件提供资源包加载过程的信息。
+
+以下示例程序 RBControl.java说明了如何为中文语言环境定义自己的搜索路径。
+
+===== 1.创建properties文件。 =====
+如前所述，您可以从类或properties文件加载资源。这些文件包含以下语言环境的说明：
+
+RBControl.properties - 全球
+RBControl_zh.properties - 仅限语言：简体中文
+RBControl_zh_cn.properties - 仅限地区：中国
+RBControl_zh_hk.properties - 仅限地区：香港
+RBControl_zh_tw.properties - 台湾
+在此示例中，应用程序为香港地区创建新的区域设置。
+
+===== 2.创建一个ResourceBundle实例。 =====
+与上一节中的示例一样，此应用程序ResourceBundle通过调用getBundle方法来创建实例：
+private static void test(Locale locale) {
+	ResourceBundle rb = ResourceBundle.getBundle(
+							"RBControl",
+							locale,
+							new ResourceBundle.Control() {
+									// ...
+							}
+						);
+
+该getBundle方法properties使用RBControl前缀搜索文件。__但是，此方法包含一个Control参数，该参数驱动搜索Chineese语言环境的过程。__
+
+===== 3.调用getCandidateLocales方法 =====
+该getCandidateLocales方法返回Locales对象列表作为基本名称和语言环境的候选语言环境。
+new ResourceBundle.Control() {
+	@Override
+	public List<Locale> getCandidateLocales(
+							String baseName,
+							Locale locale) {
+				// ...                                        
+	}
+}
+默认实现返回Locale对象列表，如下所示：区域设置（语言，国家/地区）。
+
+但是，重写此方法以实现以下特定行为：
+if (baseName == null)
+	throw new NullPointerException();
+
+if (locale.equals(new Locale("zh", "HK"))) {
+	return Arrays.asList(
+			   locale,
+			   Locale.TAIWAN,
+			   // no Locale.CHINESE here
+			   Locale.ROOT);
+} else if (locale.equals(Locale.TAIWAN)) {
+	return Arrays.asList(
+			   locale,
+			   // no Locale.CHINESE here
+			   Locale.ROOT);
+}
+请注意，候选语言环境序列的最后一个元素必须是根区域设置。
+
+===== 调用Test类 =====
+test为以下四种不同的语言环境调用该类：
+
+public static void main(String[] args) {
+	test(Locale.CHINA);
+	test(new Locale("zh", "HK"));
+	test(Locale.TAIWAN);
+	test(Locale.CANADA);
+}
+
+5.运行示例程序
+您将看到程序输出如下：
+
+locale: zh_CN
+		region: China
+		language: Simplified Chinese
+locale: zh_HK
+		region: Hong Kong
+		language: Traditional Chinese
+locale: zh_TW
+		region: Taiwan
+		language: Traditional Chinese
+locale: en_CA
+		region: global
+		language: English
+请注意，新创建的分配了香港地区，因为它是在适当的properties文件中指定的。繁体中文被指定为台湾语言的语言。
+
+ResourceBundle.Control该RBControl示例中没有使用该类的另外两个有趣的方法，但它们值得提及。该getTimeToLive方法用于确定资源包在缓存中可以存在多长时间。如果缓存中资源束的时间限制已过期，needsReload则调用该方法以确定是否需要重新加载资源束。

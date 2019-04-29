@@ -1,0 +1,36 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-05T15:05:01+08:00
+
+====== nginx ======
+创建日期 星期二 05 三月 2019
+
+===== 将nginx加入到服务 =====
+请参考：
+https://blog.csdn.net/qq_36783142/article/details/73437973
+主要内容为在/etc/init.d/中加nginx脚本。
+
+
+===== nginx安装 =====
+下载
+解压
+[[./configure]] -prefix=/.../../指定安装目录。
+
+注：依赖软件包：
+openssl安装
+pcre安装
+zlib安装
+gcc-c++工具安装
+以上依赖包不同发行版方法不同，不再赘述。
+
+===== nginx命令使用 =====
+启动
+[root@localhost ~]# /usr/local/nginx/sbin/nginx
+停止/重启
+[root@localhost ~]# /usr/local/nginx/sbin/nginx -s stop(quit、reload)
+命令帮助
+[root@localhost ~]# /usr/local/nginx/sbin/nginx -h
+验证配置文件
+[root@localhost ~]# /usr/local/nginx/sbin/nginx -t
+配置文件
+[root@localhost ~]# vim /usr/local/nginx/conf/nginx.conf

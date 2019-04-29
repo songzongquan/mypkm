@@ -1,0 +1,62 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-08T10:25:58+08:00
+
+====== BCP 47扩展 ======
+创建日期 星期五 08 二月 2019
+
+
+Java SE 7版本符合__IETF BCP 47__标准，该标准支持向Locale添加扩展。__任何单个字符都可用于表示扩展名，但有两个预定义的扩展代码：'u'指定Unicode语言环境扩展名，并'x'指定专用扩展名__。
+
+Unicode语言环境扩展由Unicode 公共区域设置数据存储库（CLDR）项目定义。__它们用于指定非语言特定的信息，例如日历或货币。私有用扩展可用于指定任何其他信息，例如平台（例如，Windows，UNIX或Linux）或发布信息（例如，6u23或JDK 7）。__
+
+扩展名被指定为键/值对，其中键是单个字符（通常'u'或'x'）。格式良好的值具有以下格式：
+
+SUBTAG（' - 'SUBTAG）*
+采用以下格式：
+
+SUBTAG = [0-9a-zA-Z] {2,8}     对于key =' 
+u'SUBTAG = [0-9a-zA-Z] {1,8}     对于key ='x'
+请注意，私有用扩展允许使用单字符值。但是，Unicode语言环境扩展中的值最小为2个字符。
+
+扩展字符串不区分大小写，但Locale类将所有键和值映射为小写。
+
+该 __getExtensionKeys()方法返回一组扩展密钥（如果有）Locale。该 getExtension(key)方法返回指定键的值字符串（如果有）。__
+
+===== Unicode区域设置扩展 =====
+如前所述，Unicode语言环境扩展由'u'键代码或UNICODE_LOCALE_EXTENSION常量指定。值本身也由键/类型对指定。合法值在Unicode网站的“ key/类型定义”表中定义。key代码由两个字母字符指定。下表列出了Unicode语言环境扩展键：
+
+关键代码	描述
+ca	日历算法
+co	整理类型
+ka	整理参数
+cu	货币类型
+nu	数字类型
+va	常见的变种类型
+**注意： **
+**指定Unicode语言环境扩展（例如数字格式）并不保证底层平台的语言环境服务将遵循该请求。**
+
+下表显示了Unicode语言环境扩展的键/类型对的一些示例。
+
+键/类型对	描述
+ca-buddhist	泰国佛教日历
+co-pinyin	拼音顺序的拉丁文
+cu-usd	        美元
+nu-jpanfin	日本金融数字
+tz-aldav      	欧洲/安道尔
+以下字符串表示使用Linux平台的电话簿订购样式的德国所在国家/地区的德语语言环境。此示例还包含一个名为"email"的属性。
+
+DE-DE-U-电子邮件共phonebk-X-Linux的
+Locale可以使用以下方法访问有关Unicode语言环境扩展的信息。使用以前的德语语言环境示例描述了这些方法。
+
+getUnicodeLocaleKeys() - 如果语言环境没有，则返回Unicode语言环境键代码或空集。对于德语示例，这将返回包含单个字符串的集合"co"。
+getUnicodeLocaleType(String) - 返回与Unicode语言环境键代码关联的Unicode语言环境类型。调用getUnicodeLocaleType("co")德语示例将返回字符串"phonebk"。
+getUnicodeLocaleAttributes() - 返回与此语言环境关联的Unicode语言环境属性集（如果有）。在德语示例中，这将返回包含单个字符串的集合"email"。
+
+===== 私人使用扩展程序 =====
+由'x'密钥代码或PRIVATE_USE_EXTENSION常量指定的私有使用扩展可以是任何东西，只要该值形成良好。
+
+以下是可能的私有使用扩展的示例：
+
+x-jdk-1-7 
+x-linux

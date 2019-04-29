@@ -1,0 +1,92 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-22T12:41:39+08:00
+
+====== JarClassLoader类 ======
+创建日期 星期二 22 一月 2019
+
+
+===== JarClassLoader类 =====
+__该的JarClassLoader类扩展java.net.URLClassLoader的__。顾名思义，URLClassLoader旨在用于加载通过搜索一组URL访问的类和资源。URL可以引用目录或JAR文件。
+
+__除了子类化URLClassLoader之外，JarClassLoader还使用了另外两个与JAR相关的新API中的功能，java.util.jar包和java.net.JarURLConnection类。__在本节中，我们将详细介绍构造函数和JarClassLoader的两个方法。
+
+==== JarClassLoader构造函数 ====
+构造函数将java.net.URL的实例作为参数。传递给此构造函数的URL将在JarClassLoader中的其他位置使用，以查找要从中加载类的JAR文件。
+
+public JarClassLoader（URL url）{
+	super（new URL [] {url}）;
+	this.url = url;
+}
+的URL对象被传递到超类，的构造的URLClassLoader，这需要一个URL []阵列中，而不是单一的URL例如，作为参数。
+
+==== getMainClassName方法 ====
+一旦使用JAR绑定的应用程序的URL构造了JarClassLoader对象，就需要一种方法来确定JAR文件中哪个类是应用程序的入口点。这是getMainClassName方法的工作：
+
+public String getMainClassName() throws IOException {
+	URL u = new URL("jar", "", url + "!/");
+	JarURLConnection uc = (JarURLConnection)u.openConnection();
+	Attributes attr = uc.getMainAttributes();
+	return attr != null
+				   ? attr.getValue(Attributes.Name.MAIN_CLASS)
+				   : null;
+}
+您可以从上一课中回忆起JAR绑定的应用程序的入口点是由JAR文件清单的Main-Class标头指定的。要了解getMainClassName如何访问Main-Class标头值，让我们详细查看该方法，特别注意它使用的新JAR处理功能：
+
+==== JarURLConnection类和JAR URL ====
+该getMainClassName方法使用由指定的JAR URL格式java.net.JarURLConnection中类。J__AR文件的URL语法__如下例所示：
+
+jar:http://www.example.com/jarfile.jar!/
+终止！/分隔符表示URL引用整个JAR文件。分隔符后面的任何内容都引用特定的JAR文件内容，如下例所示：
+
+jar:http://www.example.com/jarfile.jar!/mypackage/myclass.class
+getMainClassName方法的第一行是：
+
+__URL u = new URL("jar", "", url + "!/");__
+此语句构造一个表示JAR URL 的新URL对象，将！/ separator 附加到用于创建JarClassLoader实例的URL 。
+
+==== java.net.JarURLConnection类 ====
+此类表示应用程序和JAR文件之间的通信链接。它具有访问JAR文件清单的方法。getMainClassName的第二行是：
+
+JarURLConnection uc =（JarURLConnection）u.openConnection（）;
+在此语句中，__在第一行中创建的URL实例将打开URLConnection。然后将URLConnection实例强制转换为JarURLConnection，__以便它可以利用JarURLConnection的JAR处理功能。
+
+===== 获取清单属性：java.util.jar.Attributes =====
+通过对JAR文件打开JarURLConnection，可以使用JarURLConnection的getMainAttributes方法访问JAR文件清单中的头信息。此方法返回java.util.jar.Attributes的实例，该实例将JAR文件清单中的标题名称与其关联的字符串值进行映射。getMainClassName中的第三行创建一个Attributes对象：
+
+属性attr = uc.getMainAttributes（）;
+要获取清单的Main-Class标头的值，getMainClassName的第四行将调用Attributes.getValue方法：
+
+return attr！= null
+			   ？attr.getValue（Attributes.Name.MAIN_CLASS）
+			   ： 空值;
+方法的参数Attributes.Name.MAIN_CLASS指定它是您想要的Main-Class标头的值。（Attributes.Name类还提供静态字段，如MANIFEST_VERSION，CLASS_PATH和SEALED，用于指定其他标准清单头。）
+
+===== invokeClass方法 =====
+我们已经看到了JarURLClassLoader如何识别JAR捆绑应用程序中的主类。最后一个要考虑的方法是JarURLClassLoader.invokeClass，它可以调用主类来启动JAR绑定的应用程序：
+
+public void invokeClass(String name, String[] args)
+	throws ClassNotFoundException,
+		   NoSuchMethodException,
+		   InvocationTargetException
+{
+	Class c = loadClass(name);
+	Method m = c.getMethod("main", new Class[] { args.getClass() });
+	m.setAccessible(true);
+	int mods = m.getModifiers();
+	if (m.getReturnType() != void.class || !Modifier.isStatic(mods) ||
+		!Modifier.isPublic(mods)) {
+		throw new NoSuchMethodException("main");
+	}
+	try {
+		m.invoke(null, new Object[] { args });
+	} catch (IllegalAccessException e) {
+		// This should not happen, as we have disabled access checks
+	}
+}
+该invokeClass方法有两个参数：应用程序的入口点类的名称和字符串参数数组传递到入口点类的主要方法。首先，加载主类：
+
+class c = loadClass（name）;
+所述的loadClass方法是继承自java.lang.ClassLoader中。
+
+加载主类后，java.lang.reflect包的反射API 用于将参数传递给类并启动它。您可以参考The Reflection API上的教程来查看反射。

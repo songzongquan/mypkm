@@ -1,0 +1,12 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-07T16:39:21+08:00
+
+====== pylucene ======
+创建日期 星期四 07 三月 2019
+
+python对lucene的一个包装，作为一个python 模块提供，通过启动一个jvm，间接调用lucenne的api。所以它不是一个lucene的一个python实现。
+
+官网：
+http://lucene.apache.org/pylucene/
+上面有介绍与安装说明

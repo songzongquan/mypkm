@@ -1,0 +1,61 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-09T20:49:18+08:00
+
+====== 包装器实现 ======
+创建日期 星期三 09 一月 2019
+
+包装器实现了代理特定集合的真实工作．并提供了扩展的功能．对于设计模式粉丝，这是装饰器模式的一个示例。虽然它看起来有点异国情调，但它真的很简单。
+
+这些实现是匿名的; 该库提供静态工厂方法，而不是提供公共类。所有这些实现都可以在Collections类中找到 ，它只包含静态方法。
+
+===== 同步包装 =====
+同步包装器将自动同步（线程安全性）添加到任意集合。每六个核心集合接口- ， Collection， Set， List， Map， SortedSet和 SortedMap-有一个静态的工厂方法。
+
+public static <T> Collection <T> synchronizedCollection（Collection <T> c）; 
+public static <T> Set <T> synchronizedSet（Set <T> s）; 
+public static <T> List <T> synchronizedList（List <T> list）; 
+public static <K，V> Map <K，V> synchronizedMap（Map <K，V> m）; 
+public static <T> SortedSet <T> synchronizedSortedSet（SortedSet <T> s）; 
+public static <K，V> SortedMap <K，V> synchronizedSortedMap（SortedMap <K，V> m）;
+
+这些方法的每一个都返回一个指定集合的同步（线程安全的）集合，为了保证操作的串行化，所有的操作必须由返回的集合来完成．保证这一点的简单方法是不保留对支持集合的引用。使用以下技巧创建同步集合。
+
+List <Type> list = Collections.synchronizedList（new ArrayList <Type>（））;
+这种方法创建　的集合与普通的同步集合是同样的．比如Vector
+
+面对并发访问，用户必须在迭代时手动同步返回的集合。原因是迭代是通过对集合的多次调用来完成的，集合必须组成一个原子操作。以下是迭代包装器同步集合的习惯用法。
+
+Collection<Type> c = Collections.synchronizedCollection(myCollection);
+synchronized(c) {
+	for (Type e : c)
+		foo(e);
+}
+如果一个明确的迭代被使用，iterator方法必须在一个同步块中被调用．如果不遵循此建议可能导致不确定的行为．在一个同步ｍａｐ上的迭代一个集合视图也是一样的，在同步ｍａｐ的集合视图上的用户同步是必要的，而不是让它自已同步．正象如下的例子所示：
+Map<KeyType, ValType> m = Collections.synchronizedMap(new HashMap<KeyType, ValType>());
+	...
+Set<KeyType> s = m.keySet();
+	...
+// Synchronizing on m, not s!
+synchronized(m) {
+	while (KeyType k : s)
+		foo(k);
+}
+使用包装器实现的一个小缺点是您无法执行包装实现的任何非接口操作。因此，例如，在前面的List示例中，您无法调用对包装ArrayList的 ensureCapacity操作ArrayList。
+
+===== 不可修改的包装 =====
+不象同步包装那样，给被包装的集合添加功能．不可改包装在消减它的功能．特别的，它们通过截获将修改集合的所有操作并抛出一个不受支持的OperationException，从而剥夺了修改集合的能力。
+不可修改包装有两个主要的用途，如下：
+* 一旦集合已经被创建了，令它变的不可变．在这种情况下，最好不要维护对支持集合的引用。这绝对保证了不变性。
+* 允许某些客户端以只读方式访问你的数据结构．您保留了对支持集合的引用，但给出了对包装器的引用。这样，当您保持完全访问时，客户机可以查看但不能修改。
+就象同步包装一样，这６个核心集合都有一个对应的工厂方法，如下：
+public static <T> Collection<T> unmodifiableCollection(Collection<? extends T> c);
+public static <T> Set<T> unmodifiableSet(Set<? extends T> s);
+public static <T> List<T> unmodifiableList(List<? extends T> list);
+public static <K,V> Map<K, V> unmodifiableMap(Map<? extends K, ? extends V> m);
+public static <T> SortedSet<T> unmodifiableSortedSet(SortedSet<? extends T> s);
+public static <K,V> SortedMap<K, V> unmodifiableSortedMap(SortedMap<K, ? extends V> m);
+
+===== 检查接口包装 =====
+提供collections.checked接口包装器以用于范型　集合。这些实现返回指定集合的动态类型安全视图
+如果客户机试图添加错误类型的元素，则抛出ClassCastException。语言中的泛型机制提供了编译时（静态）类型检查，但有可能会破坏这种机制。动态类型安全视图完全消除了这种可能性。

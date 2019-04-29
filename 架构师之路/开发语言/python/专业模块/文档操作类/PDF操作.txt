@@ -1,0 +1,50 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-14T15:28:11+08:00
+
+====== PDF操作 ======
+创建日期 星期四 14 三月 2019
+
+用于处理 PDF的模块是 PyPDF2。要安装它，就从命令行运行 pip install PyPDF2。
+
+===== 从pdf取文本 =====
+1. 只能取文件 ，取不了图片，
+2. 支持加密pdf的读取，调用解密函数，给出密码
+
+import PyPDF2
+>>> pdfReader = PyPDF2.PdfFileReader(open('encrypted.pdf', 'rb'))
+ >>> pdfReader.isEncrypted
+True
+
+ pdfReader.decrypt('rosebud')
+1
+>>> pageObj = pdfReader.getPage(0)
+
+
+
+===== 将文本写到pdf =====
+
+模块不允许直接编辑 PDF。必须创建一个新的 PDF，然后从已有的文档拷贝内
+容。本节的例子将遵循这种一般方式：
+1．打开一个或多个已有的 PDF（源 PDF），得到 PdfFileReader 对象。
+2．创建一个新的 PdfFileWriter 对象。
+3．将页面从 PdfFileReader 对象拷贝到 PdfFileWriter 对象中。
+4．最后，利用 PdfFileWriter 对象写入输出的 PDF。
+
+===== 旋转页面 =====
+
+利用 rotateClockwise()和 rotateCounterClockwise()方法， PDF 文档的页面也可以
+旋转 90 度的整数倍。
+
+===== 叠加页面 =====
+PyPDF2 也可以将一页的内容叠加到另一页上，这可以用来在页面上添加公司
+标志、时间戳或水印。利用 Python，很容易为多个文件添加水印，并且只针对程序
+指定的页面添加。
+minutesFirstPage.mergePage(pdfWatermarkReader.getPage(0))
+
+===== 加密pdf =====
+
+在调用 write()方法保存文件之前，调用 encrypt()方法，传入口令字符串。 PDF 可
+以有一个用户口令（允许查看这个 PDF）和一个拥有者口令（允许设置打印、注释、
+提取文本和其他功能的许可）。用户口令和拥有者口令分别是 encrypt()的第一个和第二
+个参数。如果只传入一个字符串给 encrypt()，它将作为两个口令。

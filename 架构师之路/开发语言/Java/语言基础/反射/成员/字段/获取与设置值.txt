@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-17T16:26:30+08:00
+
+====== 获取与设置值 ======
+创建日期 星期日 17 二月 2019
+
+给定一个类的实例，可以使用反射来设置该类中的字段值。这通常仅在特殊情况下才能以通常方式设置值。由于此类访问通常违反了该类的设计意图，因此应谨慎使用。
+示例：
+Book book = new Book();
+__Field chap = c.getDeclaredField("chapters");__
+__	    out.format(fmt, "before", "chapters", book.chapters);__
+__  	    chap.setLong(book, 12);__
+__	    out.format(fmt, "after", "chapters", chap.getLong(book));__

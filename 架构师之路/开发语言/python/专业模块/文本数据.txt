@@ -1,0 +1,63 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-14T15:59:40+08:00
+
+====== 文本数据 ======
+创建日期 星期四 14 三月 2019
+
+===== CSV文件 =====
+
+csv模块  python 自带的。
+
+能力：
+读、写
+指定分隔符
+指定行间距
+
+==== 1 .read ====
+import csv
+>>> exampleFile = open('example.csv')
+>>> exampleReader = csv.reader(exampleFile)
+>>> for row in exampleReader:
+print('Row #' + str(exampleReader.line_num) + ' ' + str(row))
+
+==== 2 write ====
+import csv
+ >>> outputFile = open('output.csv', 'w', newline='')
+ >>> outputWriter = csv.writer(outputFile)
+>>> outputWriter.writerow(['spam', 'eggs', 'bacon', 'ham'])
+21
+>>> outputWriter.writerow(['Hello, world!', 'eggs', 'bacon', 'ham'])
+32
+>>> outputWriter.writerow([1, 2, 3.141592, 4])
+
+==== 3 ====
+import csv
+>>> csvFile = open('example.tsv', 'w', newline='')
+ >>> csvWriter = csv.writer(csvFile, delimiter='\t', lineterminator='\n\n')
+>>> csvWriter.writerow(['apples', 'oranges', 'grapes'])
+24
+>>> csvWriter.writerow(['eggs', 'bacon', 'ham'])
+17
+
+
+
+===== json文件 =====
+Python 的 json 模块处理了 JSON 数据字符串和 Python 值之间转换的所有细节，
+得到了 json.loads()和 json.dumps()函数。 JSON 不能存储每一种 Python 值，它只能
+包含以下数据类型的值：字符串、整型、浮点型、布尔型、列表、字典和 NoneType。
+JSON 不能表示 Python 特有的对象，如 File 对象、 CSV Reader 或 Writer 对象、 Regex
+对象或 Selenium WebElement 对象。
+
+stringOfJsonData = '{"name": "Zophie", "isCat": true, "miceCaught": 0,
+"felineIQ": null}'
+>>> import json
+>>> jsonDataAsPythonValue = json.loads(stringOfJsonData)
+>>> jsonDataAsPythonValue
+{'isCat': True, 'miceCaught': 0, 'name': 'Zophie', 'felineIQ': None}
+
+ pythonValue = {'isCat': True, 'miceCaught': 0, 'name': 'Zophie',
+'felineIQ': None}
+>>> import json
+>>> stringOfJsonData = json.dumps(pythonValue)
+>>> stringOfJsonData

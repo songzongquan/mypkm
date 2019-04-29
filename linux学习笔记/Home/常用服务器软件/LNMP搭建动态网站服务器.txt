@@ -8,6 +8,34 @@ Created 星期日 15 四月 2018
 ===== 基本概念 =====
 LNMP =  Linux + Nginx +MySQL+PHP
 
+ 安装php，主配置文件 php.ini
+安装php-fpm，这个就是FastCGI管理补丁，
+[[FastCGI]] 与CGI的区别就是快，高效，因为它是将进程事先创建放在内存，不需每次重建。
+它是和语言无关的技术，不仅仅时支持php
+
+要执行php-fpm start 命令启动php服务，缺省9000端口
+
+===== 配置 =====
+
+主要说明 nginx中的配置：
+
+location ~  *.\.(php|php5)?$ {
+	 #fastcgi_pass  unix:/tmp/php-cgi.sock;     # 这个是用套接字直接连，
+	 fastcgi_pass=127.0.0.1:9000;          #这个是通过tcpip协义连。
+	 fastcgi_index  index.php;
+	include fcgi.conf
+    
+   
+}
+
+
+另外，一般还要做一个内核优化，让性能更好
+主要是优化网络相关的参数。详见相关的文档。
+
+修改/etc/sysctl.conf
+
+sysctl -p 令生效。
+
 ===== 功能 =====
 动态网站服务
 

@@ -1,0 +1,130 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-05T15:14:59+08:00
+
+====== 常用配置 ======
+创建日期 星期二 05 三月 2019
+
+===== 基本配置 =====
+
+主要的结构：
+
+...
+event {
+
+}
+...
+
+http {
+
+  server {
+
+	  upstream xxx{
+
+	   }
+	 ..
+	 location / {
+
+		... 
+	}
+	location [[/abc]] {
+	  ...
+   }
+
+  }
+
+ server {
+  ...
+
+ }
+ 
+
+
+
+}
+
+===== 虚拟主机 =====
+
+即多个站点，在一个nginx上
+一个server{}  就是一个虚拟主机，主要设定域名和端口号，及首页所在目录与首页文件。
+分三种类型与配法:
+
+==== 按域名 ====
+
+==== 按ip ====
+需要为一个网卡配多个ip别名，然后在listen 处加上不同的ip:port ,server_name  指定不同的ip
+为网卡配多个ip别名方法：
+ifconfig   eth0:1  ....
+
+route   add  -host  IP   dev eth0:1 
+
+
+==== 按端口 ====
+
+
+===== 日志相关配置 =====
+log_format  格式名字    ' 格式串，使用变量引用 '
+
+access_log   路径    格式名字      格式名字 
+
+如果不想记日志，也可以access_log off;
+
+
+常用变量：
+1. $remote_addr  客户端的地址 
+2. $http_x_forwarded_for 如果在代理后面，则用这个，才能得到真实的客户端地址
+3. $remote_user 客户端用户
+4. $time_local 时区时间
+5. $request  访问的URL
+6. $status 请求状态
+7. $body_bytes_send  发送内容大小
+8. $http_referer 是从哪个网页连接过来的
+9. $http_user_agent 浏览器类型 
+
+==== 日志切割 ====
+
+1.先将当前日志移到别一个地方，当然目录，文件名可以按时间命名
+2.kill -USR1 nginx的主进程号，这一步是让它重新生成新的日志。
+3.最后配合crontab -e 来将这个1,2的动作变成一个定时执行的事情
+
+===== 自动列目录 =====
+1. 不能有index.html
+2. 打开autoindex on
+
+
+===== 浏览器缓存设置 =====
+
+通过expires  [time|epoch|max|off]
+
+time 可以指定1d  1h  -1 -1表示永不过期
+expires off 表示不要缓存
+这个设置会影响 header中的 Cache-Control
+常常用于image、js引用时
+
+
+
+===== 反向代理 =====
+
+
+
+===== 负载均衡 =====
+{{./pasted_image001.png}}
+upstream xxx{};
+upstream模块是命名一个后端服务器组，组名必须为后端服务器站点域名，内部可以写多台服务器ip和port，还可以设置跳转规则及权重等等
+ip_hash;代表使用ip地址方式分配跳转后端服务器，同一ip请求每次都会访问同一台后端服务器
+server;代表后端服务器地址  ，后面可以有以下几个参数：weight= 权重，max_fail=检测失败次数，即失败几次就将其标识为失效。0为不检查，缺省值为1
+fail_timeout=在经历了max_fail的次数后，暂停的时间。down 标记为永久离线只用在ip_hash时，backup 只有在其它机器都无效了，这个才启用。
+
+
+
+
+
+
+
+
+server{};server模块依然是接收外部请求的部分
+server_name;代表外网访问域名
+location / {};同样代表过滤器，用于制定不同请求的不同操作
+proxy_pass;代表后端服务器组名，此组名必须为后端服务器站点域名
+
+server_name和upstream{}的组名可以不一致，server_name是外网访问接收请求的域名，upstream{}的组名是跳转后端服务器时站点访问的域名

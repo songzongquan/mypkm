@@ -1,0 +1,34 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-22T12:36:38+08:00
+
+====== 4-与jar相关的api ======
+创建日期 星期二 22 一月 2019
+
+ava平台包含几个用于JAR文件的类。其中一些API是：
+
+该java.util.jar中包
+该java.net.JarURLConnection中类
+该java.net.URLClassLoader的类
+为了让您了解这些新API开辟的可能性，本课程将指导您完成名为JarRunner的示例应用程序的内部工作。
+
+示例 - JarRunner应用程序
+JarRunner允许您通过在命令行上指定JAR文件的URL来运行捆绑在JAR文件中的应用程序。例如，如果名为TargetApp的应用程序捆绑在http://www.example.com/TargetApp.jar的JAR文件中，则可以使用以下命令运行该应用程序：
+
+java JarRunner http://www.example.com/TargetApp.jar
+为了让JarRunner工作，它必须能够执行以下任务，所有这些都是通过使用新API完成的：
+
+访问远程JAR文件并与其建立通信链接。
+检查JAR文件的清单，以查看存档中的哪些类是主类。
+加载JAR文件中的类。
+JarRunner应用程序由两个类组成，JarRunner和JarClassLoader。JarRunner将大多数JAR处理任务委托给JarClassLoader类。JarClassLoader扩展了java.net.URLClassLoader类。在继续学习之前，您可以浏览JarRunner和JarClassLoader类的源代码：
+
+JarRunner.java
+JarClassLoader.java
+本课有两个部分：
+
+JarClassLoader类
+本节向您展示了JarClassLoader如何使用一些新API来执行JarRunner应用程序所需的任务。
+
+JarRunner类
+本节总结了包含JarRunner应用程序的JarRunner类。

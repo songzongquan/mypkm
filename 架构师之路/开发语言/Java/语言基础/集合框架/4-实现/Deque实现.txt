@@ -36,3 +36,7 @@ ArrayDeque<String> aDeque = new ArrayDeque<String>();
 for (Iterator<String> iter = aDeque.iterator(); iter.hasNext();  ) {
 	System.out.println(iter.next());
 }
+本ArrayDeque类在本教程中用来实现Deque接口。本教程中使用的示例的完整代码可用于 ArrayDequeSample。这两个 LinkedList和ArrayDeque类都不支持多个线程的并发访问。
+
+===== 并发Deque实现 =====
+ LinkedBlockingDeque类是Deque接口的并发执行。如果队列为空，则如takeFirst和takeLast方法等待，直到元素变得可用，然后检索和删除相同的元件。

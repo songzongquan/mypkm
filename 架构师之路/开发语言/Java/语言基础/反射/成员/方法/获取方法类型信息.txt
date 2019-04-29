@@ -1,0 +1,99 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-17T16:44:02+08:00
+
+====== 获取方法类型信息 ======
+创建日期 星期日 17 二月 2019
+
+方法声明包括名称，修饰符，参数，返回类型和可抛出异常列表。本 java.lang.reflect.Method类提供了一种方法来获取此信息。
+
+该 MethodSpy示例说明了如何枚举给定类中的所有声明的方法，并检索给定名称的所有方法的返回，参数和异常类型。
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import static java.lang.System.out;
+
+public class MethodSpy {
+	private static final String  fmt = "%24s: %s%n";
+
+	// for the morbidly curious
+	<E extends RuntimeException> void genericThrow() throws E {}
+
+	public static void main(String... args) {
+	try {
+		Class<?> c = Class.forName(args[0]);
+		Method[] allMethods = __c.getDeclaredMethods();__
+		for (Method m : allMethods) {
+		if (!m.getName().equals(args[1])) {
+			continue;
+		}
+		out.format("%s%n", __m.toGenericString());__
+
+		out.format(fmt, "ReturnType", m.getReturnType());
+		out.format(fmt, "GenericReturnType", __m.getGenericReturnType(__));
+
+		Class<?>[] pType  = m.__getParameterTypes()__;
+		Type[] gpType = m.__getGenericParameterTypes()__;
+		for (int i = 0; i < pType.length; i++) {
+			out.format(fmt,"ParameterType", pType[i]);
+			out.format(fmt,"GenericParameterType", gpType[i]);
+		}
+
+		Class<?>[] xType  = __m.getExceptionTypes();__
+		Type[] gxType = __m.getGenericExceptionTypes();__
+		for (int i = 0; i < xType.length; i++) {
+			out.format(fmt,"ExceptionType", xType[i]);
+			out.format(fmt,"GenericExceptionType", gxType[i]);
+		}
+		}
+
+		// production code should handle these exceptions more gracefully
+	} catch (ClassNotFoundException x) {
+		x.printStackTrace();
+	}
+	}
+}
+这里的输出 Class.getConstructor()是具有参数化类型和可变数量参数的方法的示例。
+这是源代码中方法的实际声明：
+
+public Constructor <T> getConstructor（Class <？> ... parameterTypes）
+首先请注意，返回和参数类型是通用的。 Method.getGenericReturnType()将查询 类文件中的签名属性（如果存在）。如果该属性不可用，则它会回退， Method.getReturnType()因为引入了泛型。反射中具有某些Foo值的名称的其他方法也是类似地实现的。getGenericFoo()
+
+接下来，请注意最后一个（也是唯一的）参数parameterType是类型的变量arity（具有可变数量的参数）java.lang.Class。它表示为类型的单维数组java.lang.Class。这可以java.lang.Class通过调用 明确表示的数组来区分Method.isVarArgs()。返回值的语法在Method.get*Types()中描述 Class.getName()。
+
+以下示例说明了具有泛型返回类型的方法。
+
+$ java MethodSpy java.lang.Class cast 
+public T java.lang.Class.cast（java.lang.Object）
+			  ReturnType：class java.lang.Object 
+	   GenericReturnType：T 
+		   ParameterType：class java.lang.Object 
+	GenericParameterType：class java.lang 。宾语
+Class.cast()报告方法的泛型返回类型 是java.lang.Object因为泛型是通过类型擦除实现的，它在编译期间删除有关泛型类型的所有信息。擦除T由以下声明定义 Class：
+
+公共最终类Class <T>实现...
+因此T，在这种情况下，由类型变量的上限代替java.lang.Object。
+
+最后一个示例说明了具有多个重载的方法的输出。
+
+$ java MethodSpy java.io.PrintStream格式 
+public java.io.PrintStream java.io.PrintStream.format 
+  （java.util.Locale，java.lang.String，java.lang.Object []）
+			  ReturnType：class java.io. PrintStream 
+	   GenericReturnType：class java.io.PrintStream 
+		   ParameterType：class java.util.Locale 
+	GenericParameterType：class java.util.Locale 
+		   ParameterType：class java.lang.String 
+	GenericParameterType：class java.lang.String 
+		   ParameterType：class [Ljava.lang.Object ; 
+	GenericParameterType：class [Ljava.lang.Object; 
+public java.io.PrintStream java.io.PrintStream.format 
+  （java.lang.String，java.lang.Object []）
+			  ReturnType：class java.io.PrintStream 
+	   GenericReturnType：class java.io.PrintStream 
+		   ParameterType：class java.lang.String 
+	GenericParameterType：class java.lang.String 
+		   ParameterType：class [Ljava.lang.Object; 
+	GenericParameterType：class [Ljava.lang.Object;
+如果发现了相同方法名称的多个重载，则它们都将返回 Class.getDeclaredMethods()。由于format()有两个重载（有一个 Locale和一个没有），两者都显示MethodSpy。
+
+注意： Method.getGenericExceptionTypes()存在是因为实际上可以声明具有通用异常类型的方法。但是这很少使用，因为无法捕获通用异常类型。

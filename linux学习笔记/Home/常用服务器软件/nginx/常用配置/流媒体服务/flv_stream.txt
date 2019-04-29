@@ -1,0 +1,30 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-03-26T20:55:50+08:00
+
+====== flv stream ======
+创建日期 星期二 26 三月 2019
+
+===== http下载模式播放 =====
+省服务器带宽，但是默认不支持拖拽，并且刚开始下载时间长。要下载完到本地在本地播放。
+
+1.首先编译安装时加上 --with-http_flv_module
+2.nginx.conf中配置：
+location ~ \.flv 
+{
+   flv;
+}
+
+有两人工具可以将flv加上关键帧，也可以实现拖拽。
+yamdi
+flvTool2  这个能生成更多的关键帧，效果更好，但转换时间长
+
+===== 采用FMS /Red5i流媒体 =====
+经时nginx只是作为反向代理存在。也可作负载均衡。
+
+主要配置示意：
+{{./pasted_image.png}}
+RTMPT 用命令OPEN,SEND,IDEL,CLOSE
+
+
+播放器用jw player

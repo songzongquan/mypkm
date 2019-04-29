@@ -1,0 +1,30 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-25T15:17:41+08:00
+
+====== wxPython ======
+创建日期 星期一 25 二月 2019
+
+c++开发的
+
+===== 安装问题 =====
+解决gtk3库找不到问题，因为不同linux发行版的gtk库差异较大。
+pip install -U \
+	-f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-16.04 \
+	wxPython
+
+
+
+===== 使用中问题 =====
+
+最近在编写Python脚本过程中遇到一个问题比较奇怪：Python脚本完全正常没问题，但执行总报错"AttributeError: 'module' object has no attribute 'xxx'"。这其实是.pyc文件存在问题。
+
+问题定位：
+
+查看import库的源文件，发现源文件存在且没有错误，同时存在源文件的.pyc文件
+
+问题解决方法：
+
+1. 命名py脚本时，不要与python预留字，模块名等相同
+
+2. 删除该库的.pyc文件（因为py脚本每次运行时均会生成.pyc文件；在已经生成.pyc文件的情况下，若代码不更新，运行时依旧会走pyc，所以要删除.pyc文件），重新运行代码；或者找一个可以运行代码的环境，拷贝替换当前机器的.pyc文件即可

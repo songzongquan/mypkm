@@ -1,0 +1,13 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-04-11T10:03:24+08:00
+
+====== http ======
+创建日期 星期四 11 四月 2019
+
+关于长连接，短连接，长轮询与短轮询的区别的原理
+
+http://web.jobbole.com/85541/
+
+和websocket的区别，websocket可以服务端主动发起，不需要客户端请求．长短轮询都还是由客户端发起，服务端才响应．
+https://blog.csdn.net/liu0415111/article/details/79520583

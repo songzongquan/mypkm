@@ -1,0 +1,49 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-11T14:27:31+08:00
+
+====== 兼容性 ======
+创建日期 星期五 11 一月 2019
+
+Java 集合框架被设计成可以保证在核心的集合接口与各类早期ｊａｖａ平台的集合的代表之间（如 Vector, Hashtable, array,  Enumeration. I）进行交互，这一节你将学习到如何将老的集合转换成新框架中的集合的方法．反之亦然．
+
+===== 向上兼容 =====
+假你正在使用一个ＡＰＩ，此ＡＰＩ返回一个旧的集合对象，但它要和另一个ａｐｉ串联使用，而另一个ａｐｉ需要一个现代版的集合对象，为了使这两个ａｐｉ可以平滑的交互，你要转换这个旧集合对象成为新的集合对象，幸运的是，集合框架使它很容易做到．
+例如：
+
+==== １．array 转List ====
+Foo[] result = oldMethod(arg);
+newMethod(Arrays.asList(result));
+
+==== 2.hashtable 转map ====
+Hashtable result = oldMethod(arg);
+newMethod(result);
+
+==== 3.Enumeration　转ｌｉｓｔ ====
+Enumeration e = oldMethod(arg);
+newMethod(Collections.list(e));
+
+===== 向下兼容　 =====
+假如你正在使用一个返回现代集合对象的ａｐｉ，并且和一个需要旧的集合对象的ａｐｉ相互调用，那么你需要将现代的集合对象转换成旧的集合对象，ｊａｖａ集合框架再一次让它变成很容易：
+例如：
+
+==== １．　Collection  to array ====
+Collection c = newMethod();
+oldMethod(c.toArray());
+ 或者
+Collection c = newMethod();
+oldMethod((String[]) c.toArray(new String[0]));　　／／指定元素类型　．
+
+==== 2.转vector ====
+Collection c = newMethod();
+oldMethod(new Vector(c));
+3. 
+==== map 转hastable ====
+
+Map m = newMethod();
+oldMethod(new Hashtable(m));
+4. 
+==== 集合转枚举 ====
+
+Collection c = newMethod();
+oldMethod(Collections.enumeration(c));

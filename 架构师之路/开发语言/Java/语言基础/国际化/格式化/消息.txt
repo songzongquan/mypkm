@@ -1,0 +1,214 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-13T15:23:35+08:00
+
+====== 消息 ======
+创建日期 星期三 13 二月 2019
+
+
+Java教程是为JDK 8编写的。本页描述的示例和实践没有利用后续版本中引入的改进。
+
+我们都喜欢使用程序让我们知道发生了什么。通知我们的程序通常通过显示状态和错误消息来实现。当然，这些消息需要翻译，以便世界各地的最终用户能够理解这些消息。“ 隔离特定于区域设置的数据 ”一节 讨论了可翻译的文本消息。通常，在将消息移动String到一个消息后，您就完成了ResourceBundle。但是，如果您在消息中嵌入了可变数据，则必须采取一些额外步骤来准备翻译。
+
+__复合消息包含变量数据__。在以下复合消息列表中，变量数据带有下划线：
+
+The disk named MyDisk contains 300 files.
+The current balance of account #34-09-222 is $2,745.72.
+405,390 people have visited your website since January 1, 2009.
+Delete all files older than 120 days.
+您可能想通过连接短语和变量来构造前面列表中的最后一条消息，如下所示：
+
+double numDays;
+ResourceBundle msgBundle;
+// ...
+String message = msgBundle.getString(
+					 "deleteolder" +
+					 numDays.toString() +
+					 msgBundle.getString("days"));
+__这种方法在英语中运行良好，但它不适用于句子末尾出现动词的语言。由于此消息的单词顺序是硬编码的，因此您的本地化程序将无法为所有语言创建语法正确的翻译。__
+
+如果需要使用复合消息，如何使程序可以本地化？您可以使__用MessageFormat类__，这是本节的主题。
+
+警告： 
+复合消息很难翻译，因为邮件文本是碎片化的。如果您使用复合邮件，则本地化将花费更长时间并且成本更高。因此，您应该仅在必要时使用复合消息。
+
+===== 处理复合消息 =====
+
+复合邮件可能包含多种变量：日期，时间，字符串，数字，货币和百分比。若要以与语言环境无关的方式格式化复合邮件，请构造应用于MessageFormat对象的模式，并将此模式存储在ResourceBundle中。
+
+通过单步调试示例程序，本节演示了如何使复合消息国际化。示例程序使用 MessageFormat该类。该程序的完整源代码位于名为的文件中 MessageFormatDemo.java。德语语言环境属性位于名为的文件中 MessageBundle_de_DE.properties。
+
+==== 1.识别消息中的变量 ====
+假设您要国际化以下消息：
+{{./pasted_image.png}}
+
+以下文字：1998年4月13日1:15，我们在火星上发现了7艘宇宙飞船。 可变数据（1：15，1998年4月13日，7月和火星）已加下划线。
+请注意，我们已经为变量数据加下划线，并确定了哪种对象将代表这些数据。
+
+==== 2.隔离ResourceBundle中的消息模式 ====
+将消息存储在ResourceBundlenamed中MessageBundle，如下所示：
+
+ResourceBundle消息=
+   ResourceBundle.getBundle（“MessageBundle”，currentLocale）;
+这ResourceBundle由每个属性文件支持Locale。自ResourceBundle调用以来MessageBundle，美国英语的属性文件被命名MessageBundle_en_US.properties。该文件的内容如下：
+
+template = At {2,time,short} on {2,date,long}, \
+	we detected {1,number,integer} spaceships on \
+	the planet {0}.
+planet = Mars
+属性文件的第一行包含消息模式。如果将此模式与步骤1中显示的消息文本进行比较，__您将看到括在大括号中的参数替换消息文本中的每个变量。每个参数都以一个名为参数编号的数字开头，该数字匹配Object包含参数值的数组中元素的索引。请注意，在模式中，参数编号不是任何特定顺序。您可以将参数放在模式中的任何位置。__唯一的要求是参数号在参数值数组中具有匹配元素。
+下一步讨论参数值数组，但首先让我们看一下模式中的每个参数。下表提供了有关参数的一些详细信息：
+
+templatein的论据MessageBundle_en_US.properties
+争论	描述
+{2,time,short}	Date对象的时间部分。该short样式指定DateFormat.SHORT格式样式。
+{2,date,long}	Date对象的日期部分。Date日期和时间变量使用相同的对象。在Object参数数组中，持有该Date对象的元素的索引是2.（这将在下一步中描述。）
+{1,number,integer}	一个Number对象，进一步限定integer数字样式。
+{0}	将String在ResourceBundle对应于planet关键。
+有关参数语法的完整说明，请参阅MessageFormat该类的API文档 。
+
+==== 3.设置消息参数 ====
+以下代码行为模式中的每个参数赋值。messageArguments数组中元素的索引与模式中的参数号匹配。例如，Integer索引1处的元素对应{1,number,integer}于模式中的参数。因为它必须被翻译，则String在元素0对象将是从取出ResourceBundle与getString方法。以下是定义消息参数数组的代码：
+
+Object [] messageArguments = { 
+	messages.getString（“planet”），
+	new Integer（7），
+	new Date（）
+};
+
+==== 4.创建格式化程序 ====
+接下来，创建一个MessageFormat对象。您设置Locale因为消息包含Date和Number对象，应该以区域设置敏感的方式格式化。
+
+MessageFormat formatter = new MessageFormat（“”）; 
+formatter.setLocale（currentLocale）;
+
+==== 5.使用模式和参数格式化消息 ====
+此步骤显示模式，消息参数和格式化程序如何一起工作。首先，取图案String从ResourceBundle与getString方法。模式的关键是template。String使用该applyPattern方法将模式传递给格式化程序。然后通过调用format方法使用消息参数数组格式化消息。在String由返回的format方法是随时可以显示出来。所有这一切都只需两行代码即可完成：
+
+formatter.applyPattern（messages.getString（ “模板”））; 
+String output = formatter.format（messageArguments）;
+6.运行演示程序
+演示程序打印英语和德语语言环境的翻译消息，并正确格式化日期和时间变量。请注意，英语和德语动词（“detected”和“entdeckt”）位于相对于变量的不同位置：
+
+currentLocale = en_US
+At 10:16 AM on July 31, 2009, we detected 7
+spaceships on the planet Mars.
+currentLocale = de_DE
+Um 10:16 am 31. Juli 2009 haben wir 7 Raumschiffe
+auf dem Planeten Mars entdeckt.
+
+
+===== 处理复数 =====
+如果复数和单数单词形式都可能，则消息中的单词通常会有所不同。使用ChoiceFormat该类，您可以将数字映射到单词或短语，从而允许您构造语法正确的消息。
+
+
+在英语中，单词的复数和单数形式通常是不同的。当您构建引用数量的消息时，这可能会出现问题。例如，如果您的消息报告磁盘上的文件数，则可能存在以下变化
+
+here are no files on XDisk.
+There is one file on XDisk.
+There are 2 files on XDisk.
+
+解决此问题的最快方法是创建这样的MessageFormat模式：
+   There are {0,number} file(s) on {1}.
+不幸的是，前面的模式会导致错误的语法：
+There are 1 file(s) on XDisk.
+如果您使用ChoiceFormat该类，您可以做得更好 。在本节中，您将学习如何通过单步调用一个示例程序来处理消息中的复数 ChoiceFormatDemo。此程序还使用MessageFormat该类，在上一节“ 处理复合消息”中对此进行了讨论。
+
+==== 1.定义消息模式 ====
+首先，确定消息中的变量：
+{{./pasted_image001.png}}
+三行文本，每行中的变量都突出显示。
+接下来，使用参数替换消息中的变量，创建可应用于MessageFormat对象的模式：
+	There are 1 file(s) on XDisk.
+
+{0}由于以下几个原因，处理论证更为复杂：
+
+此参数替换的短语因文件数而异。要在运行时构造此短语，您需要将文件数映射到特定的String。例如，数字1将映射到String包含短语is one file。在ChoiceFormat类可以进行必要的映射。
+如果磁盘包含多个文件，则该短语包含整数。本MessageFormat类可以让你插入一个数字的短语。
+
+==== 2.创建ResourceBundle ====
+由于必须翻译消息文本，因此将其隔离在ResourceBundle：
+
+ResourceBundle bundle = ResourceBundle.getBundle（
+	“ChoiceBundle”，currentLocale）;
+示例程序支持ResourceBundlewith属性文件。将 ChoiceBundle_en_US.properties包含以下行：
+
+__pattern = {1}上有{0}。__
+__noFiles =没有文件__
+__oneFile =是一个文件__
+__multipleFiles =是{2}个文件__
+此属性文件的内容显示了如何构造和格式化消息。第一行包含模式MessageFormat。（参见步骤1.）其他行包含将替换{0}模式中的参数的短语。multipleFiles密钥的短语包含参数{2}，该参数将被数字替换。
+
+这是属性文件的法语版本， ChoiceBundle_fr_FR.properties
+
+pattern = Il {0} sur {1}。
+noFiles = n'y a pas de 
+fichiers oneFile = ya un fichier 
+multipleFiles = ya {2} fichiers
+
+==== 3.创建消息格式化程序 ====
+在此步骤中，您实例化MessageFormat并设置其Locale：
+
+MessageFormat messageForm = new MessageFormat（“”）; 
+messageForm.setLocale（currentLocale）;
+
+==== 4.创建选择格式化程序 ====
+该ChoiceFormat对象允许您根据double数字选择特定的对象String。double数字范围以及String它们映射到的对象在数组中指定：
+
+double [] fileLimits = {0,1,2}; 
+String [] fileStrings = { 
+	bundle.getString（“noFiles”），
+	bundle.getString（“oneFile”），
+	bundle.getString（“multipleFiles”）
+};
+ChoiceFormat将double数组中的每个元素映射到String具有相同索引的数组中的元素。在示例代码中，0映射到String通过调用返回的bundle.getString("noFiles")。巧合的是，索引与fileLimits数组中的值相同。如果代码设置fileLimits[0]为7，ChoiceFormat则将数字7映射到fileStrings[0]。
+
+在实例化时指定double和String数组ChoiceFormat：
+
+ChoiceFormat choiceForm = new ChoiceFormat（fileLimits，fileStrings）;
+
+==== 5.应用模式 ====
+还记得你在第1步中构建的模式吗？是时候从中检索模式ResourceBundle并将其应用于MessageFormat对象：
+
+String pattern = bundle.getString（“pattern”）; 
+messageForm.applyPattern（图案）;
+
+==== 6.分配格式 ====
+在此步骤中，您将在步骤4中创建的MessageFormat对象分配给对象ChoiceFormat：
+
+格式[] formats = {choiceForm，null，NumberFormat.getInstance（）}; 
+messageForm.setFormats（格式）;
+该setFormats方法将Format对象分配给消息模式中的参数。您必须在调用applyPattern方法之前调用该setFormats方法。下表显示了Format数组元素如何与消息模式中的参数相对应：
+
+该计划的Format阵列ChoiceFormatDemo
+数组元素	模式参数
+choiceForm	{0}
+null	{1}
+NumberFormat.getInstance()	{2}
+
+==== 7.设置参数并格式化消息 ====
+在运行时，程序将变量分配给它传递给MessageFormat对象的参数数组。数组中的元素对应于模式中的参数。例如，messageArgument[1]映射到pattern参数{1}，它String包含磁盘的名称。在上一步中，程序将ChoiceFormat对象分配给{0}模式的参数。因此，分配的数字messageArgument[0]决定String了ChoiceFormat对象选择的内容。如果messageArgument[0]大于或等于2，则String包含短语的are {2} files替换{0}模式中的参数。分配给的编号messageArgument[2]将替换为模式参数{2}。这是尝试这个的代码：
+
+Object [] messageArguments = {null，“XDisk”，null}; 
+
+for（int numFiles = 0; numFiles <4; numFiles ++）{ 
+	messageArguments [0] = new Integer（numFiles）; 
+	messageArguments [2] = new Integer（numFiles）; 
+	String result = messageForm.format（messageArguments）; 
+	的System.out.println（结果）; 
+}
+
+==== 8.运行演示程序 ====
+将程序显示的消息与ResourceBundle步骤2中的短语进行比较。请注意，ChoiceFormat对象选择正确的短语，MessageFormat对象使用该短语构造正确的消息。该ChoiceFormatDemo计划的产出如下：
+
+currentLocale = en_US 
+XDisk上没有文件。
+XDisk上有一个文件。
+XDisk上有2个文件。
+XDisk上有3个文件。
+
+currentLocale = fr_FR 
+Il n'y a pas des fichiers sur XDisk。
+Il ya un fichier sur XDisk。
+Il ya 2 fichiers sur XDisk。
+Il ya 3 fichiers sur XDisk。

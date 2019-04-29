@@ -1,0 +1,83 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-09T16:14:35+08:00
+
+====== 使用属性文件备份ResourceBundle ======
+创建日期 星期六 09 二月 2019
+
+本节逐步介绍一个名为的示例程序 PropertiesDemo。
+
+===== 1.创建默认属性文件 =====
+属性文件是一个简单的文本文件。您可以使用几乎任何文本编辑器创建和维护属性文件。
+
+您应该始终创建默认属性文件。此文件的名称以您的基本名称开头，ResourceBundle以.properties后缀结尾。在PropertiesDemo程序中，基本名称是LabelsBundle。因此，将调用默认属性文件LabelsBundle.properties。该文件包含以下行：
+
+＃这是默认的LabelsBundle.properties文件
+s1 =电脑
+s2 =磁盘
+s3 =监视器
+s4 =键盘
+请注意，在前面的文件中，注释行以井号（＃）开头。其他行包含键值对。键位于等号的左侧，值位于右侧。例如，s2是与值对应的键disk。关键是任意的。我们可以打电话给s2别人，比如msg5或diskID。但是，一旦定义，密钥就不应该改变，因为它在源代码中被引用。值可能会更改。实际上，当本地化程序创建新属性文件以容纳其他语言时，它们会将值转换为各种语言。
+
+
+===== 2.根据需要创建其他属性文件 =====
+要支持其他内容Locale，您的本地化程序将创建一个包含已翻译值的新属性文件。不需要更改源代码，因为您的程序引用了键而不是值。
+
+例如，要添加对德语的支持，您的本地化程序将转换值LabelsBundle.properties并将它们放在名为的文件中LabelsBundle_de.properties。请注意，此文件的名称（如默认文件的名称）以基本名称开头，LabelsBundle以.properties后缀结尾。但是，由于此文件适用于特定文件Locale，因此基本名称后跟语言代码（de）。内容LabelsBundle_de.properties如下：
+
+＃这是LabelsBundle_de.properties文件
+s1 =电脑
+s2 =普拉特
+s3 =监控
+s4 = Tastatur
+该PropertiesDemo示例程序附带三个属性文件：
+
+LabelsBundle.properties
+LabelsBundle_de.properties
+LabelsBundle_fr.properties
+
+===== 3.指定区域设置 =====
+该PropertiesDemo程序创建Locale对象如下：
+
+Locale [] supportedLocales = {
+	Locale.FRENCH，
+	Locale.GERMAN，
+	Locale.ENGLISH
+};
+这些Locale对象应与前两个步骤中创建的属性文件匹配。例如，Locale.FRENCH对象对应于LabelsBundle_fr.properties文件。在Locale.ENGLISH没有匹配的LabelsBundle_en.properties文件，所以默认的文件将被使用。
+
+===== 4.创建ResourceBundle =====
+此步骤显示Locale属性文件和属性如何ResourceBundle相关。要创建ResourceBundle，请调用getBundle方法，指定基本名称和Locale：
+
+ResourceBundle labels = ResourceBundle.getBundle（“LabelsBundle”，currentLocale）;
+该getBundle方法首先查找与基本名称匹配的类文件Locale。如果找不到类文件，则检查属性文件。在PropertiesDemo程序中，我们支持ResourceBundle使用属性文件而不是类文件。当getBundle方法找到正确的属性文件时，它返回一个PropertyResourceBundle包含属性文件中的键值对的对象。
+
+===== 5.获取本地化文本 =====
+要从中检索已翻译的值ResourceBundle，请getString按如下方式调用方法：
+
+String value = labels.getString（key）;
+在String通过返回getString对应于指定的键。如果String指定的属性文件存在，则使用正确的语言Locale。
+
+===== 6.遍历所有键 =====
+此步骤是可选的。调试程序时，您可能希望获取a中所有键的值ResourceBundle。该getKeys方法返回a Enumeration中所有键的一个ResourceBundle。您可以Enumeration使用该getString方法迭代并获取每个值。以下代码行来自PropertiesDemo程序，显示了如何完成此操作：
+
+ResourceBundle labels = ResourceBundle.getBundle（“LabelsBundle”，currentLocale）;
+枚举bundleKeys = labels.getKeys（）;
+
+while（bundleKeys.hasMoreElements（））{
+	String key =（String）bundleKeys.nextElement（）;
+	String value = labels.getString（key）;
+	System.out.println（“key =”+ key +“，”+“value =”+ value）;
+}
+
+===== 7.运行演示程序 =====
+运行该PropertiesDemo程序会生成以下输出。前三行显示getString各种Locale对象返回的值。当使用该getKeys方法迭代键时，程序显示最后四行。
+
+Locale = fr，key = s2，value = Disque dur
+Locale = de，key = s2，value = Platte
+Locale = en，key = s2，value = disk
+
+key = s4，value = Clavier
+key = s3，value = Moniteur
+key = s2，value = Disque dur
+key = s1，value = Ordinateur

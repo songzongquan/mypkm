@@ -1,0 +1,17 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-04-02T13:57:38+08:00
+
+====== Serverless ======
+以应用为中心，不关于服务器环境的架构？
+什么是 Serverless？什么是 FaaS？
+
+其实，广义的 Serverless 覆盖范围很大，很多云服务产品可以被视作 Serverless 化的。以存储服务的发展历程为例：最初常见是云服务器，此种情况对用户熟悉的原有开发方式的模拟，但是需要自行处理云服务器宕机带来的数据不可用问题，云磁盘上的数据也不便于分享；后来，对象存储（OSS），文件存储（NAS），表格存储（TableStore），消息服务（MNS）等都属于 Serverless 服务。这些服务不再有机器的概念，用户能够享受自动的扩容和负载平衡，性能水平扩展，通过 API 方便的读写数据，易于共享，并且按实际存储的数据量以及访问次数付费。此外，类似阿里云大数据计算服务（MaxCompute） 也是 Serverless 的，提供了 MapReduce，和 Streaming 等多种计算框架，用户不需要管理计算资源。
+
+Serverless 是一个宽泛的概念，很多存储、计算和中间件服务都是 Serverless 的。而 FaaS 是 Serverless 的子集，也是实现整个应用 Serverless 化的核心服务。
+
+FaaS 的关键特征是：事件驱动、细粒度调用、实时弹性伸缩，无需管理服务器等底层资源。在不瞋看来，FaaS 兴起是对现有技术很好的补充，配合使用已有的云服务产品，即可以真正构建 Serverless 的应用。阿里云之所以研发 FaaS 产品 - 函数计算，也是观察到在存储和计算业务中，从 server-base 到 Serverless 的演变趋势和用户的需求。
+
+参考：
+https://www.sohu.com/a/139908343_683048
+https://blog.csdn.net/wucong60/article/details/83616744

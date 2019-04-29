@@ -1,0 +1,43 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-08T10:33:58+08:00
+
+====== 识别可用的区域设置 ======
+创建日期 星期五 08 二月 2019
+
+您可以Locale使用有效语言和国家/地区代码的任意组合创建，但这并不意味着您可以使用它。请记住，Locale对象只是一个标识符。您将Locale对象传递给其他对象，然后执行实际工作。这些其他对象，我们称之为区域设置敏感，不知道如何处理所有可能的Locale定义。
+
+__要找出Locale区域设置敏感类可识别的定义类型，请调用该getAvailableLocales方法__。例如，要找出类Locale支持哪些定义DateFormat，可以编写如下例程：
+
+import java.util。*; 
+import java.text。*; 
+
+public class Available { 
+	static public void main（String [] args）{ 
+		Locale list [] = DateFormat.getAvailableLocales（）; 
+		for（Locale aLocale：list）{ 
+			System.out.println（aLocale.toString（））; 
+		} 
+	} 
+}
+请注意，String返回的toString包含语言和国家/地区代码，以下划线分隔：
+
+ar_EG 
+be_BY 
+bg_BG 
+ca_ES 
+cs_CZ 
+da_DK 
+de_DE 
+...
+如果要向Locale最终用户显示名称列表，您应该向他们展示比返回的语言和国家/地区代码更容易理解的内容toString。相反，你可以调用的Locale.getDisplayName方法，该方法获取本地化的String一个的Locale对象。例如，当在前面的代码中toString替换时getDisplayName，程序将打印以下行：
+
+阿拉伯语（埃及）
+白俄罗斯语（白俄罗斯
+语）
+保加利亚语（保加利亚语）加泰罗尼亚语（西班牙语）
+捷克语（捷克语）
+丹麦语（丹麦语）
+德语（德国）
+......
+您可能会看到不同的区域设置列表，具体取决于Java平台实现。

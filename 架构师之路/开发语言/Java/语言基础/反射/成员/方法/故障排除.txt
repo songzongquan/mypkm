@@ -1,0 +1,142 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-17T17:09:22+08:00
+
+====== 故障排除 ======
+创建日期 星期日 17 二月 2019
+
+节包含开发人员在使用反射来查找，调用或获取有关方法的信息时可能遇到的问题的示例。
+
+NoSuchMethodException由于类型擦除
+该 MethodTrouble示例说明了在类中搜索特定方法的代码未考虑类型擦除时会发生什么。
+import java.lang.reflect.Method;
+
+public class MethodTrouble<T>  {
+	public void lookup(T t) {}
+	public void find(Integer i) {}
+
+	public static void main(String... args) {
+	try {
+		String mName = args[0];
+		Class cArg = Class.forName(args[1]);
+		Class<?> c = (new MethodTrouble<Integer>()).getClass();
+		Method m = c.getMethod(mName, cArg);
+		System.out.format("Found:%n  %s%n", m.toGenericString());
+
+		// production code should handle these exceptions more gracefully
+	} catch (NoSuchMethodException x) {
+		x.printStackTrace();
+	} catch (ClassNotFoundException x) {
+		x.printStackTrace();
+	}
+	}
+}
+$ java MethodTrouble lookup java.lang.Integer
+java.lang.NoSuchMethodException: MethodTrouble.lookup(java.lang.Integer)
+		at java.lang.Class.getMethod(Class.java:1605)
+		at MethodTrouble.main(MethodTrouble.java:12)
+$ java MethodTrouble lookup java.lang.Object
+Found:
+  public void MethodTrouble.lookup(T)
+
+当使用泛型参数类型声明方法时，编译器将使用其上限替换泛型类型，在本例中为Tis 的上限Object。因此，当代码搜索时lookup(Integer)，没有找到任何方法，尽管实例MethodTrouble创建如下：
+
+Class <？> c =（new MethodTrouble <Integer>（））。getClass（）;
+lookup(Object)按预期搜索成功。
+$ java MethodTrouble find java.lang.Integer 
+找到：
+  public void MethodTrouble.find（java.lang.Integer）
+$ java MethodTrouble find java.lang.Object 
+java.lang.NoSuchMethodException：MethodTrouble.find（java.lang.Object）
+		at java MethodTrouble.main中的.lang.Class.getMethod（Class.java:1605）
+		（MethodTrouble.java:12）
+在这种情况下，find()没有通用参数，因此搜索的参数类型 getMethod()必须完全匹配。
+
+提示：  搜索方法时，始终传递参数化类型的上限
+
+===== 调用方法时出现IllegalAccessException =====
+IllegalAccessException如果尝试调用private或以其他方式无法访问的方法，则抛出An 。
+
+该 MethodTroubleAgain示例显示了典型的堆栈跟踪，这是通过尝试在另一个类中调用私有方法而产生的。
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+class AnotherClass {
+	private void m() {}
+}
+
+public class MethodTroubleAgain {
+	public static void main(String... args) {
+	AnotherClass ac = new AnotherClass();
+	try {
+		Class<?> c = ac.getClass();
+ 	    Method m = c.getDeclaredMethod("m");
+//  	    m.setAccessible(true);      // solution
+ 	    Object o = m.invoke(ac);    // IllegalAccessException
+
+		// production code should handle these exceptions more gracefully
+	} catch (NoSuchMethodException x) {
+		x.printStackTrace();
+	} catch (InvocationTargetException x) {
+		x.printStackTrace();
+	} catch (IllegalAccessException x) {
+		x.printStackTrace();
+	}
+	}
+}
+抛出异常的堆栈跟踪如下。
+
+$ java MethodTroubleAgain 
+java.lang.IllegalAccessException：类MethodTroubleAgain无法
+  在sun.reflect.Reflection.ensureMemberAccess 
+		（Reflection.java:65）
+		的java.lang.reflect.Method.invoke上访问具有修饰符“private”的类AnotherClass 的成员（方法.java：588）
+		在MethodTroubleAgain.main（MethodTroubleAgain.java:15）
+提示：  存在访问限制，阻止反射调用通常无法通过直接调用访问的方法。（这包括---但不限于--- private单独的类中的方法和单独的私有类中的公共方法。）但是，Method声明为extend AccessibleObject，它提供了通过抑制此检查的能力 AccessibleObject.setAccessible()。如果成功，则此方法对象的后续调用不会因此问题而失败。
+
+===== Method.invoke（）中的IllegalArgumentException =====
+Method.invoke()已被改装为可变方法。这是一个巨大的便利，但它可能导致意外的行为。该 MethodTroubleToo示例显示了Method.invoke()可能产生令人困惑的结果的各种方式 。
+import java.lang.reflect.Method;
+
+public class MethodTroubleToo {
+	public void ping() { System.out.format("PONG!%n"); }
+
+	public static void main(String... args) {
+	try {
+		MethodTroubleToo mtt = new MethodTroubleToo();
+		Method m = MethodTroubleToo.class.getMethod("ping");
+
+ 	    switch(Integer.parseInt(args[0])) {
+		case 0:
+  		m.invoke(mtt);                 // works
+		break;
+		case 1:
+ 		m.invoke(mtt, null);           // works (expect compiler warning)
+		break;
+		case 2:
+		Object arg2 = null;
+		m.invoke(mtt, arg2);           // IllegalArgumentException
+		break;
+		case 3:
+		m.invoke(mtt, new Object[0]);  // works
+		break;
+		case 4:
+		Object arg4 = new Object[0];
+		m.invoke(mtt, arg4);           // IllegalArgumentException
+		break;
+		default:
+		System.out.format("Test not found%n");
+		}
+
+		// production code should handle these exceptions more gracefully
+	} catch (Exception x) {
+		x.printStackTrace();
+	}
+	}
+}
+$ java MethodTroubleToo 0
+PONG!
+
+===== 调用方法失败时的InvocationTargetException =====
+

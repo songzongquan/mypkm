@@ -1,0 +1,291 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-08T10:48:01+08:00
+
+====== 语言标记过滤和查找 ======
+创建日期 星期五 08 二月 2019
+
+Java编程语言包含对语言标记，语言标记过滤和语言标记查找的国际化支持。这些功能由IETF BCP 47指定 ，其中包含 RFC 5646“用于识别语言的标签” 和 RFC 4647“匹配语言标签”。 本课程描述了如何在JDK中提供此支持。
+
+===== 什么是语言标签？ =====
+__语言标签是特殊格式的字符串，提供有关特定语言的信息。__
+语言标签可能是简单的（例如英语中的“en”），复杂的东西（例如中文中使用的“zh-cmn-Hans-CN”，普通话，简体中文），或介于两者之间的东西（例如“sr-Latn”，塞尔维亚语用拉丁文写成）。语言标签由连字符分隔的“子标签”组成; 在整个API文档中使用此术语。
+
+__本 java.util.Locale类提供了语言标记的支持。__
+A Locale包含几个不同的字段：__语言__（例如英语的“en”或日语的“ja”），__脚本__（例如拉丁语的“Latn”或西里尔语的“Cyrl”），__国家__（例如美国的“US”）状态或法国的“FR”，__变体__（表示区域设置的某些变体）和__扩展（__它提供单个字符键到String值的映射，表示除语言识别之外的扩展）。要从语言标记String创建对象Locale，请调用 Locale.forLanguageTag(String)，将语言标记作为唯一参数传递。这样做会创建并返回一个新Locale 对象，以便在您的应用程序中使用。
+Example 1:
+
+package languagetagdemo;
+
+import java.util.Locale;
+
+public class LanguageTagDemo {
+	 public static void main(String[] args) {
+		 Locale l = Locale.forLanguageTag("en-US");
+	 }
+}
+
+===== 什么是语言范围？ =====
+
+什么是语言范围？
+语言范围（由类表示 java.util.Locale.LanguageRange）标识共享特定属性的语言标记集。语言范围分为基本或扩展，与语言标签类似，因为它们由连字符分隔的子标签组成。基本语言范围的示例包括“en”（英语），“ja-JP”（日语，日本）和“*”（与任何语言标签匹配的特殊语言范围）。扩展语言范围的示例包括“* -CH”（任何语言，瑞士），“es- *”（西班牙语，任何地区）和“zh-Hant- *”（繁体中文，任何地区）。
+
+此外，语言范围可以存储在语言优先级列表中，这使得用户能够在加权列表中优先考虑他们的语言偏好。语言优先级列表是通过将表达LanguageRange对象成 java.util.List，然后可以传递给Locale接受一个方法List的LanguageRange对象。
+
+
+===== 创建语言范围 =====
+本 Locale.LanguageRange类提供用于创建语言范围的两个不同的构造函数：
+
+public Locale.LanguageRange(String range)
+public Locale.LanguageRange(String range, double weight)
+它们之间的唯一区别是第二个版本允许指定权重; 如果将范围放入语言优先级列表，则将考虑此权重。
+
+Locale.LanguageRange 还指定了一些与这些构造函数一起使用的常量：
+
+public static final double MAX_WEIGHT
+public static final double MIN_WEIGHT
+所述MAX_WEIGHT恒定保持为1.0的值，这表明它是一种非常适合于该用户。所述MIN_WEIGHT恒定保持的值0.0，这表明它不是。
+
+Example 2:
+
+package languagetagdemo;
+
+import java.util.Locale;
+
+public class LanguageTagDemo {
+
+	 public static void main(String[] args) {
+		 // Create Locale
+		 Locale l = Locale.forLanguageTag("en-US");
+
+		 // Define Some LanguageRange Objects
+		 Locale.LanguageRange range1 = new Locale.LanguageRange("en-US",Locale.LanguageRange.MAX_WEIGHT);
+		 Locale.LanguageRange range2 = new Locale.LanguageRange("en-GB*",0.5);
+		 Locale.LanguageRange range3 = new Locale.LanguageRange("fr-FR",Locale.LanguageRange.MIN_WEIGHT);
+	 }
+}
+
+===== 创建语言优先级列表 =====
+您可以使用该LanguageRange.parse(String)方法从语言范围列表中创建语言优先级列表 。此方法接受逗号分隔语言范围列表，对给定范围内的每个语言范围执行语法检查，然后返回新创建的语言优先级列表。
+
+有关“范围”参数所需格式的详细信息，请参阅此方法的API规范。
+
+Example 3:
+
+package languagetagdemo;
+
+import java.util.Locale;
+
+import java.util.List;
+
+public class LanguageTagDemo {
+
+	public static void main(String[] args) {
+
+		// Create Locale
+
+		Locale l = Locale.forLanguageTag("en-US");
+
+		// Create a Language Priority List
+
+		String ranges = "en-US;q=1.0,en-GB;q=0.5,fr-FR;q=0.0";
+
+		List<Locale.LanguageRange> languageRanges = Locale.LanguageRange.parse(ranges)
+
+	}
+}
+
+===== 过滤语言标签 =====
+语言标记过滤是将一组语言标记与用户的语言优先级列表进行匹配的过程。过滤结果将是所有匹配结果的完整列表。在Locale类定义了两个过滤器方法返回一个列表Locale对象。他们的签名如下：
+
+public static List<Locale> filter (List<Locale.LanguageRange> priorityList, Collection<Locale> locales)
+public static List<Locale> filter (List<Locale.LanguageRange> priorityList, Collection<Locale> locales, Locale.FilteringMode mode)
+在这两种方法中，第一个参数指定用户的语言优先级列表，如上一节中所述。
+
+第二个参数指定要匹配Collection的Locale对象。匹配本身将根据RFC 4647指定的规则进行。
+
+Example 4:
+
+package languagetagdemo;
+
+import java.util.Locale;
+import java.util.Collection;
+import java.util.List;
+import java.util.ArrayList;
+
+public class LanguageTagDemo {
+
+	public static void main(String[] args) {
+
+		// Create a collection of Locale objects to filter
+		Collection<Locale> locales = new ArrayList<>();
+		locales.add(Locale.forLanguageTag("en-GB"));
+		locales.add(Locale.forLanguageTag("ja"));
+		locales.add(Locale.forLanguageTag("zh-cmn-Hans-CN"));
+		locales.add(Locale.forLanguageTag("en-US"));
+
+		// Express the user's preferences with a Language Priority List
+		String ranges = "en-US;q=1.0,en-GB;q=0.5,fr-FR;q=0.0";
+		List<Locale.LanguageRange> languageRanges = Locale.LanguageRange.parse(ranges);
+
+		// Now filter the Locale objects, returning any matches
+		List<Locale> results = Locale.filter(languageRanges,locales);
+
+		// Print out the matches
+		for(Locale l : results){
+		System.out.println(l.toString());
+		}
+	}
+
+
+
+第三个参数（如果提供）指定要使用的“过滤模式”。该 Locale.FilteringMode枚举提供了许多不同的值的从，例如，选择AUTOSELECT_FILTERING（对于基本语言范围滤波）或EXTENDED_FILTERING（用于扩展语言范围滤波）。
+
+示例4提供了语言标记过滤的演示。
+
+Example 4:
+
+package languagetagdemo;
+
+import java.util.Locale;
+import java.util.Collection;
+import java.util.List;
+import java.util.ArrayList;
+
+public class LanguageTagDemo {
+
+	public static void main(String[] args) {
+
+		// Create a collection of Locale objects to filter
+		Collection<Locale> locales = new ArrayList<>();
+		locales.add(Locale.forLanguageTag("en-GB"));
+		locales.add(Locale.forLanguageTag("ja"));
+		locales.add(Locale.forLanguageTag("zh-cmn-Hans-CN"));
+		locales.add(Locale.forLanguageTag("en-US"));
+
+		// Express the user's preferences with a Language Priority List
+		String ranges = "en-US;q=1.0,en-GB;q=0.5,fr-FR;q=0.0";
+		List<Locale.LanguageRange> languageRanges = Locale.LanguageRange.parse(ranges);
+
+		// Now filter the Locale objects, returning any matches
+		List<Locale> results = Locale.filter(languageRanges,locales);
+
+		// Print out the matches
+		for(Locale l : results){
+		System.out.println(l.toString());
+		}
+	}
+}
+以上程序输出：
+en_US
+en_GB
+
+此返回列表根据用户的语言优先级列表中指定的权重进行排序。
+
+该Locale班还定义了filterTags用于过滤语言标签作为方法String的对象。
+
+方法签名如下：
+
+public static List<String> filterTags (List<Locale.LanguageRange> priorityList, Collection<String> tags)
+public static List<String> filterTags (List<Locale.LanguageRange> priorityList, Collection<String> tags, Locale.FilteringMode mode)
+示例5提供与示例4相同的搜索，但使用String对象而不是Locale对象。
+
+Example 5:
+
+package languagetagdemo;
+
+import java.util.Locale;
+import java.util.Collection;
+import java.util.List;
+import java.util.ArrayList;
+
+public class LanguageTagDemo {
+
+	public static void main(String[] args) {
+
+		// Create a collection of String objects to match against
+		Collection<String> tags = new ArrayList<>();
+		tags.add("en-GB");
+		tags.add("ja");
+		tags.add("zh-cmn-Hans-CN");
+		tags.add("en-US");
+
+		// Express user's preferences with a Language Priority List
+		String ranges = "en-US;q=1.0,en-GB;q=0.5,fr-FR;q=0.0";
+		List<Locale.LanguageRange> languageRanges = Locale.LanguageRange.parse(ranges);
+
+		// Now search the locales for the best match
+		List<String> results = Locale.filterTags(languageRanges,tags);
+
+		// Print out the matches
+		for(String s : results){
+			System.out.println(s);
+		}
+	}
+} 
+和以前一样，搜索将匹配并返回“en-US”和“en-GB”（按此顺序）。
+
+===== 执行语言标记查找 =====
+与语言标记过滤相反，语言标记查找是将语言范围与语言标记集匹配并返回与该范围最匹配的一种语言标记的过程。RFC4647声明：“Lookup从可用标记列表中生成最符合用户首选项的单个结果，因此在需要单个项目（并且只能返回单个项目）的情况下，它非常有用。”例如，如果一个进程要将一个人类可读的错误消息插入到协议头中，它可能会根据用户的语言优先级列表选择文本。由于该进程只能返回一个项目，因此它被强制选择一个项目，它必须返回一些项目，即使内容的语言标签都没有与用户提供的语言优先级列表相匹配。“
+
+Example 6:
+
+package languagetagdemo;
+
+import java.util.Locale;
+import java.util.Collection;
+import java.util.List;
+import java.util.ArrayList;
+
+public class LanguageTagDemo {
+
+	public static void main(String[] args) {
+
+		// Create a collection of Locale objects to search
+		Collection<Locale> locales = new ArrayList<>();
+		locales.add(Locale.forLanguageTag("en-GB"));
+		locales.add(Locale.forLanguageTag("ja"));
+		locales.add(Locale.forLanguageTag("zh-cmn-Hans-CN"));
+		locales.add(Locale.forLanguageTag("en-US"));
+
+		// Express the user's preferences with a Language Priority List
+		String ranges = "en-US;q=1.0,en-GB;q=0.5,fr-FR;q=0.0";
+		List<Locale.LanguageRange> languageRanges = Locale.LanguageRange.parse(ranges);
+
+		// Find the BEST match, and return just one result
+		Locale result = Locale.lookup(languageRanges,locales);
+		System.out.println(result.toString());
+	}
+}
+与过滤示例相反，示例6中的查找演示返回最匹配的一个对象（en-US在本例中）。对于completenes，示例7显示了如何使用String对象执行相同的查找。
+Example 7:
+
+package languagetagdemo;
+
+import java.util.Locale;
+import java.util.Collection;
+import java.util.List;
+import java.util.ArrayList;
+
+public class LanguageTagDemo {
+
+	public static void main(String[] args) {
+		// Create a collection of String objects to match against
+		Collection<String> tags = new ArrayList<>();
+		tags.add("en-GB");
+		tags.add("ja");
+		tags.add("zh-cmn-Hans-CN");
+		tags.add("en-US");
+
+		// Express user's preferences with a Language Priority List
+		String ranges = "en-US;q=1.0,en-GB;q=0.5,fr-FR;q=0.0";
+		List<Locale.LanguageRange> languageRanges = Locale.LanguageRange.parse(ranges);
+
+		// Find the BEST match, and return just one result
+		String result = Locale.lookupTag(languageRanges, tags);
+		System.out.println(result);
+	}
+} 
+此示例返回与用户的语言优先级列表最匹配的单个对象。
+
+

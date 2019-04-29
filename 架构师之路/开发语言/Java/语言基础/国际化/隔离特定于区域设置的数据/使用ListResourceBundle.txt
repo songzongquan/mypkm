@@ -1,0 +1,70 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-09T16:21:15+08:00
+
+====== 使用ListResourceBundle ======
+创建日期 星期六 09 二月 2019
+
+本节说明了如何使用ListResourceBundle带有示例程序的对象 ListDemo。下面的文本解释了创建ListDemo程序所涉及的每个步骤，以及ListResourceBundle支持它的子类。
+
+===== 1.创建ListResourceBundle子类 =====
+A ListResourceBundle由类文件备份。因此，第一步是为每个受支持的文件创建一个类文件Locale。在ListDemo程序中的基本名称ListResourceBundle是StatsBundle。由于ListDemo支持三个Locale对象，因此需要以下三个类文件：
+
+StatsBundle_en_CA.class
+StatsBundle_fr_FR.class
+StatsBundle_ja_JP.class
+在为日本而写的StatsBundle类是在随后的源代码中定义。请注意，通过将语言和国家/地区代码附加到基本名称来构造类名ListResourceBundle。在类内部，contents使用键值对初始化二维数组。键是在每对的第一个元素：GDP，Population，和Literacy。键必须是String对象，并且它们在StatsBundle集合中的每个类中必须相同。值可以是任何类型的对象。在此示例中，值是两个Integer对象和一个Double对象。
+
+import java.util.*;
+public class StatsBundle_ja_JP extends ListResourceBundle {
+	public Object[][] getContents() {
+		return contents;
+	}
+
+	private Object[][] contents = {
+		{ "GDP", new Integer(21300) },
+		{ "Population", new Integer(125449703) },
+		{ "Literacy", new Double(0.99) },
+	};
+}
+
+===== 2.指定区域设置 =====
+该ListDemo程序定义Locale对象如下：
+
+Locale[] supportedLocales = {
+	new Locale("en", "CA"),
+	new Locale("ja", "JP"),
+	new Locale("fr", "FR")
+};
+
+每个Locale对象对应一个StatsBundle类。例如，Locale使用ja和JP代码定义的日语匹配StatsBundle_ja_JP.class。
+
+===== 3.创建ResourceBundle =====
+要创建ListResourceBundle，请调用该getBundle方法。以下代码行指定了类（StatsBundle）的基本名称和Locale：
+
+ResourceBundle stats = ResourceBundle.getBundle（“StatsBundle”，currentLocale）;
+该getBundle方法搜索名称以其开头的类，StatsBundle后面跟着指定的语言和国家/地区代码Locale。如果currentLocale使用ja和JP代码创建，则getBundle返回ListResourceBundle与类对应的StatsBundle_ja_JP对象。
+
+===== 4.获取本地化对象 =====
+既然程序对适当的Locale有ListResourceBundle，它可以通过键获取本地化对象。以下代码行通过getObject使用Literacykey参数调用来检索识字率。由于getObject返回一个对象，将其强制转换为Double：
+
+Double lit =（Double）stats.getObject（“Literacy”）;
+
+===== 5.运行演示程序 =====
+ListDemo程序打印使用该getBundle方法获取的数据：
+
+Locale = en_CA
+GDP = 24400
+Population = 28802671
+Literacy = 0.97
+
+Locale = ja_JP
+GDP = 21300
+Population = 125449703
+Literacy = 0.99
+
+Locale = fr_FR
+GDP = 20200
+Population = 58317450
+Literacy = 0.99
+识字率= 0.99

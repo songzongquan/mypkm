@@ -1,0 +1,11 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-01-11T14:27:01+08:00
+
+====== 互操作性 ======
+创建日期 星期五 11 一月 2019
+
+在本节中，您将了解互操作性的以下两个方面：
+
+兼容性：本小节描述了如何使用旧的API来处理集合，这些API早于Collection向Java平台添加s。
+API设计：本小节描述了如何设计新的API，以便它们可以相互无缝地互操作。

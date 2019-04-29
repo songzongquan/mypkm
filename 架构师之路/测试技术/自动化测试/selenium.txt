@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-04-28T14:09:22+08:00
+
+====== selenium ======
+创建日期 星期日 28 四月 2019
+
+参考资料
+selenium form python 
+https://selenium-python.readthedocs.io/
+selenium （慢）
+https://www.seleniumhq.org/%E3%80%80
+快速的selenium下载站点
+http://npm.taobao.org/mirrors/selenium

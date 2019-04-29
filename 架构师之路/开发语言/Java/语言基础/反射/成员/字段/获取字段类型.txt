@@ -1,0 +1,8 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-17T16:09:26+08:00
+
+====== 获取字段类型 ======
+创建日期 星期日 17 二月 2019
+
+字段可以是原始字段或引用类型。有八种基本类型：boolean，byte，short，int，long，char，float，和double。引用类型是java.lang.Object包含接口，数组和枚举类型的直接或间接子类的任何内容 。

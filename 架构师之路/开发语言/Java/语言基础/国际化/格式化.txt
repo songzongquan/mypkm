@@ -1,0 +1,22 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-09T16:53:14+08:00
+
+====== 格式化 ======
+创建日期 星期六 09 二月 2019
+
+本课程介绍如何设置数字，货币，日期，时间和短信的格式。由于最终用户可以看到这些数据元素，因此它们的格式必须符合各种文化习俗。按照本课程中的示例将教您如何：
+
+**以区域设置敏感的方式格式化数据元素**
+**保持代码与语言环境无关**
+**避免为特定区域设置编写格式化例程**
+
+===== 数字和货币 =====
+本节将介绍如何使用NumberFormat，DecimalFormat以及DecimalFormatSymbols类。
+
+===== 日期和时间 =====
+版本说明：  此日期和时间部分使用java.util包中的日期和时间API 。JDK 8发行版中提供的java.time API提供了一个全面的日期和时间模型，它对java.util类提供了重大改进。该java.time的API在描述 日期时间线索。在 遗产日期，时间码页面可能具有特殊意义的。
+本节的重点是DateFormat，SimpleDateFormat和DateFormatSymbols类。
+
+===== 消息 =====
+本节介绍了MessageFormat和ChoiceFormat类如何帮助您解决格式化文本消息时可能遇到的一些问题。

@@ -1,0 +1,32 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-02-13T17:20:42+08:00
+
+====== 3-发现类成员 ======
+创建日期 星期三 13 二月 2019
+
+Class为访问字段，方法和构造函数提供了两类方法 ：枚举这些成员的方法和搜索特定成员的方法。还有一些不同的方法可以访问直接在类上声明的成员，而不是用于搜索继承成员的超接口和超类的方法。下表提供了所有成员定位方法及其特征的摘要。
+
+
+
+定位字段的类方法
+Class API	会员名单？	继承成员？	私人会员？
+getDeclaredField()	没有	没有	是
+getField()	没有	是	没有
+getDeclaredFields()	是	没有	是
+getFields()	是	是	没有
+
+定位方法的类方法
+Class API	会员名单？	继承成员？	私人会员？
+getDeclaredMethod()	没有	没有	是
+getMethod()	没有	是	没有
+getDeclaredMethods()	是	没有	是
+getMethods()	是	是	没有
+
+定位构造函数的类方法
+Class API	会员名单？	继承成员？	私人会员？
+getDeclaredConstructor()	没有	N / A 1	是
+getConstructor()	没有	N / A 1	没有
+getDeclaredConstructors()	是	N / A 1	是
+getConstructors()	是	N / A 1	没有
+1构造函数不是继承的。
