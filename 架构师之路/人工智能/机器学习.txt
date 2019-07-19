@@ -1,0 +1,12 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-05-17T15:30:09+08:00
+
+====== 机器学习 ======
+创建日期 星期五 17 五月 2019
+
+一个中文的机器学习资料的git项目
+https://github.com/apachecn/AiLearning
+
+现在免费的，专业的机器学习书（英文）
+https://mitpress.ublish.com/ereader/7093/?preview=#page/Cover

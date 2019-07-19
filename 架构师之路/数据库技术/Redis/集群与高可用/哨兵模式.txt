@@ -1,0 +1,9 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-05-06T18:09:31+08:00
+
+====== 哨兵模式 ======
+创建日期 星期一 06 五月 2019
+
+参考模式
+https://www.jianshu.com/p/06ab9daf921d

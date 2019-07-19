@@ -1,0 +1,19 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-06-11T18:43:05+08:00
+
+====== keepalived ======
+创建日期 星期二 11 六月 2019
+
+1）vrrp协议的实现
+keepalive 
+2）ais：完备HA集群
+
+vrrp协议：
+概念：在节点（主机）出现故障时，实现ip地址的切换。
+keepalive就是基于此协议而实现高可用的。
+
+Failover：故障切换，即某资源的主节点故障时，将资源转移至其它节点的操作；
+Failback：故障移回，即某资源的主节点故障后重新修改上线后，将转移至其它节点的资源重新切回的过程；
+
+

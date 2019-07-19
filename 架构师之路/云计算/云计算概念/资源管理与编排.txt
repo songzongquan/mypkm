@@ -1,0 +1,19 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-06-12T11:51:53+08:00
+
+====== 资源管理与编排 ======
+创建日期 星期三 12 六月 2019
+
+
+
+
+mesos
+
+yarn
+
+k8s
+
+
+参考资料：
+https://blog.csdn.net/xiangxizhishi/article/details/76747143

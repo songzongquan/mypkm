@@ -5,3 +5,10 @@ Creation-Date: 2019-03-15T12:24:53+08:00
 ====== kvm ======
 创建日期 星期五 15 三月 2019
 
+kvm主要在内核层面利用cpu的虚拟化指令实现对cpu和内存的虚拟化模拟。对外部设备的虚拟化几乎没有。
+kvm是与linux,x86相依赖的，是linux内核的功能。依赖于 x86平台的虚拟化指令。
+现在也有了kvm的龙芯版了。
+
+参考文章
+kvm与openstack的关系
+https://www.cnblogs.com/wangle1001986/p/5320752.html

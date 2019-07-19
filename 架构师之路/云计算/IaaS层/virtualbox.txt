@@ -1,0 +1,11 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-05-13T15:49:11+08:00
+
+====== virtualbox ======
+创建日期 星期一 13 五月 2019
+
+kvm与virtualbox的区别：
+kvm的性能高，但是对图形2d/3d加速上不行，viretual图形加速好，所以一般桌面环境用virtualbox,服务端用的kvm
+它们都算是虚拟机驱动软件。
+https://blog.csdn.net/wj_j2ee/article/details/7847836

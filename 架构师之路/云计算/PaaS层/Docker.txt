@@ -22,3 +22,7 @@ Docker的内部三大核心组件
 
 ===== 与虚拟机技术对比 =====
 {{./pasted_image.png}}
+
+参考材料：
+https://www.cnblogs.com/apollo1616/p/10318040.html
+https://blog.csdn.net/zhangdekui/article/details/81541519

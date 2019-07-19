@@ -1,0 +1,14 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-07-02T13:53:20+08:00
+
+====== 性能测试 ======
+创建日期 星期二 02 七月 2019
+
+===== Jmeter =====
+
+==== 非ＧＵＩ方式详解 ====
+https://blog.csdn.net/hualusiyu/article/details/53491014
+
+==== 分布式测试集群 ====
+https://www.cnblogs.com/fengpingfan/p/5586711.html

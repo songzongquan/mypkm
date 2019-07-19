@@ -5,3 +5,19 @@ Creation-Date: 2019-03-15T12:24:23+08:00
 ====== openstack ======
 创建日期 星期五 15 三月 2019
 
+openstack是一个云管理平台。它有多个组件组成，功能包括了虚拟机资源池管理，虚拟网络管理、对象存储、共享服务等。。
+它的虚拟化驱动软件仍是kvm，xen，vmware等。
+但是方便 建立一个公有云，私有云的平台。
+
+
+{{./pasted_image.png}}
+openstack是云管理平台，其本身并不提供虚拟化功能，真正的虚拟化能力是由底层的hypervisor（如KVM、Qemu、Xen等）提供。所谓管理平台，就是为了方便使用而已。打一个不恰当的比方，订单管理平台之类的产品，其实就是整合了一系列的sql调用而已。类似的，如果没有openstack，一样可以通过virsh、virt-manager来实现创建虚拟机的操作，只不过敲命令行的方式需要一定的学习成本，对于普通用户不是很友好。
+
+
+参考文章 ：
+kvm ,qemu,openstatck的关系和区别
+https://www.cnblogs.com/wangle1001986/p/5320752.html
+https://blog.csdn.net/superviser3000/article/details/80756942
+
+架构详解 
+https://blog.csdn.net/superviser3000/article/details/80756942

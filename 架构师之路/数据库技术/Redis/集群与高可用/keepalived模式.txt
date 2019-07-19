@@ -1,0 +1,11 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-05-06T18:09:58+08:00
+
+====== keepalived模式 ======
+创建日期 星期一 06 五月 2019
+即主主模式，即两个节点即是主也是从，双向同步
+
+参考：
+https://www.cnblogs.com/coolking/p/5626669.html
+

@@ -1,0 +1,33 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-06-12T10:21:17+08:00
+
+====== nginx负载均衡 ======
+创建日期 星期三 12 六月 2019
+
+支持http, tcp,udp的反向代理和负载均衡
+
+====== 反向代理（转发） ======
+
+http
+
+在http模块的下面的server{}中配．
+
+
+
+tcp:
+在stream模块的server中配．
+listen 2000 ;
+
+
+
+udp :
+在stream模块的server中配．
+listen   3000 udp;
+
+====== 负载均衡 ======
+利用upstream   alise_name {
+（这里可以设置集群ｉｐ和端口以及均衡的策略） 
+server  ip　：　ort  ;
+server  ip　：　port ;
+}

@@ -1,0 +1,23 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-05-06T18:09:18+08:00
+
+====== 集群与高可用 ======
+创建日期 星期一 06 五月 2019
+
+高可用关注点是防止单点故障，即当前节点挂了之后自动切换到可用的节点。
+集群的关注点是性能的提高，以及动态的可扩展性。
+
+但有时候这两者可能同时考虑。混合两种技术。
+
+
+===== redis集群三种策略 =====
+https://blog.csdn.net/q649381130/article/details/79931791
+
+===== redis集群的最全的方式 =====
+此文中有codis的使用
+https://blog.csdn.net/sanpo/article/details/52839044
+
+===== 多种方式的测试 =====
+https://blog.csdn.net/guying4875/article/details/79044012
+

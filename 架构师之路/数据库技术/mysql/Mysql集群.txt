@@ -5,3 +5,16 @@ Creation-Date: 2019-04-02T14:03:21+08:00
 ====== Mysql集群 ======
 创建日期 星期二 02 四月 2019
 
+===== mysql 主-主双向热备高可用 =====
+
+用keepalived 实现切换
+
+https://blog.csdn.net/niuzaiwenjie/article/details/82992117
+
+
+===== mysql 主-从 模式 =====
+
+
+===== mysql 主-从+读写分离 =====
+
+===== 写入主，从从机上读。 =====
