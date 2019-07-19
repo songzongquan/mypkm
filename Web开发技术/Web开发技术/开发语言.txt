@@ -1,0 +1,13 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-07-18T11:08:52+08:00
+
+====== 开发语言 ======
+创建日期 星期四 18 七月 2019
+
+本节我们主要针对几种流行的编程语言的ｗｅｂ开发相关的内容进行介绍．
+
+这些语言主要包括php，java，javascript,  python,  go
+
+
+

@@ -1,0 +1,223 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-07-18T11:16:54+08:00
+
+====== Vue.js ======
+创建日期 星期四 18 七月 2019
+
+官方网站：https://cn.vuejs.org/v2/guide/
+
+===== Ｖｕｅ是什么？ =====
+Vue (读音 /vjuː/，类似于 view) 是一套用于**构建用户界面**的渐进式框架。与其它大型框架不同的是，Vue 被设计为可以自底向上逐层应用。**Vue 的核心库只关注视图层**，不仅易于上手，还便于与第三方库或既有项目整合。另一方面，当与现代化的工具链以及各种支持类库结合使用时，Vue 也完全能够为复杂的单页应用提供驱动。
+
+响应式：就是数据发生变化，页面自动根着变化
+
+===== 安装 =====
+
+==== １．直接引用法 ====
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+或者：
+
+<!-- 生产环境版本，优化了尺寸和速度 -->
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+==== ２．ＮＰＭ ====
+# 最新稳定版
+$ npm install vue
+适用于大型项目，NPM 能很好地和诸如 webpack 或 Browserify 模块打包器配合使用
+
+==== ３．命令行工具（ＣＬＩ） ====
+Vue 提供了一个官方的 CLI，为单页面应用 (SPA) 快速搭建繁杂的脚手架。它为现代前端工作流提供了 batteries-included 的构建设置。只需要几分钟的时间就可以运行起来并带有热重载、保存时 lint 校验，以及生产环境可用的构建版本。
+CLI 工具假定用户对 Node.js 和相关构建工具有一定程度的了解。如果你是新手，我们强烈建议先在不用构建工具的情况下通读指南，在熟悉 Vue 本身之后再使用 CLI。
+
+===== 基本语法 =====
+
+==== １．初始化 ====
+var app = new Vue({
+  el: '#app',
+  data: {
+	message: 'Hello Vue!'
+  }，
+　method:{
+		  methodName：function(){
+		  ....
+	 }
+
+   }
+   }
+})
+
+Vue()传进的是options，选项，el表示dom元素的ｉｄ，data指数据．method表示方法函数．
+一个 Vue 应用由一个通过 new Vue 创建的根 Vue 实例，以及可选的嵌套的、可复用的组件树组成。要明白所有的 Vue 组件都是 Vue 实例
+
+app.message  就等同于 data里的message．
+注意：值得注意的是只有当实例被创建时 data 中存在的属性才是响应式的。所以后来添加的属性不行．
+Object.freeze()，这会阻止修改现有的属性，也意味着响应系统无法再追踪变化。
+
+对应于options中的ｋｅｙ，都对应一个vm.$el ,vm.$method ．．．等这些ａｐｉ来调用．ｖｍ即ａｐｐ是ｖｕｅ实例名．
+
+=== 实例的生命周期 ===
+每个 Vue 实例在被创建时都要经过一系列的初始化过程——例如，需要设置数据监听、编译模板、将实例挂载到 DOM 并在数据变化时更新 DOM 等。同时在这个过程中也会运行一些叫做生命周期钩子的函数，这给了用户在不同阶段添加自己的代码的机会。
+{{./pasted_image.png}}
+
+==== 生命周期图钩子 ====
+new Vue({
+  data: {
+	a: 1
+  },
+  created: function () {
+	// `this` 指向 vm 实例
+	console.log('a is: ' + this.a)
+  }
+})
+created就是一个钩子．还有上图中红色部分都是钩子．
+
+
+==== ２．显示变量值 ====
+
+｛｛　varName  ｝｝直接显示变量值．
+
+varName一般作为普通文本来显示，如果要放ｈｔｍｌ，则需要用v－ｈｔｍｌ指令．
+
+varName是个变量，在此也可以用一个javascript表达式代替，包括　有一些值令＝的值也可以用表达式．
+
+
+==== ３．数据绑定指令 ====
+   v-bind：xxxx   = "varName" 将varName 与xxxx属性绑定． xxxx是这个指令的参数．
+
+　v-* 这类关键词叫＂指令＂，
+v-bind：［xxxx］ = "varName" xxx是一个变量．这个叫动态指令．
+还有简写：:xxxx = "varName" 
+
+=== 样式绑定－class ===
+１．表达式结果的类型除了字符串之外，还可以是对象或数组。也是v-bind：style=?   ：class=? 
+２．对象：{｝  key为class的名，后面的值为true/false,表示生效还是不生效．
+３．数组：［］这里的元素是class名字．
+４．用在组件上的class ,　原来的class不会覆盖，是添加模式．
+
+=== 样式绑定－style ===
+v-bind:style 的对象语法十分直观——看着非常像 CSS，但其实是一个 JavaScript 对象。CSS 属性名可以用驼峰式 (camelCase) 或短横线分隔 (kebab-case，记得用引号括起来) 来命名
+如果用数组，那么表示加多个style样式．
+如果用带浏览器前缀的样式时，它会自动侦测并添加．
+多重值：则是自动选浏览器用支持的那个．
+
+
+==== ４．条件与循环 ====
+
+**条件：**
+v-if="varName",varName=true/false，来控制显示不显示．
+不仅可以把数据绑定到 DOM 文本或特性，还可以绑定到 DOM 结构
+
+  
+
+还有v-else,v-else-if 来配合组成块．
+ｖ指令只能用在一个元素上，但是要是想控制多个元素怎么办？用template元素包起来．ｖ指令用在template上．
+
+v-show='ok' 也类似于条件显示，但是它是初始渲染代价高，v-if是切换渲染代价高．如果不怎么变就用v-if,否则用v-show
+
+**循环：**
+<li v-for="todo in todos">　表示li会根据todos的个数循环生成，每一个循环便利得到的值是todo　，todos一般是数组．
+在 v-for 块中，我们可以访问所有父作用域的属性。v-for 还支持一个可选的第二个参数，即当前项的索引。
+todos也可以是一个对象，此时，todo就是对对象的属性值的遍历，也可用（value,name）来表示属性值与属性名，并且用这个两个名字用来显示．还有一个是用index来表示它的索引值．
+如果　一个数组发生顺序变化，缺省展现的列表不会重新排序，这样会更快，但是如果确实需要重新排序．那么可以给每一个元素加上一个key值．
+
+v-for=" n  in 10 "　这是一种表示范围的办法，即从１．．１０
+不建议v-for 和v-if在一个元素中同时用，确实有必要时，v-for的优先级高，即相当于有些循环项不会被渲染，如果是想让v-if先执行，那么需要分开用．v-if在外层．
+
+==== ５．交互与事件 ====
+v-on：xxxx = "methodName"     表示注册事件处理函数，xxxx为事件名，methodName为处理函数名．
+＝号后面可以是一段表达式，也可以是调用函数语句　，也可是指定一个无参数的函数名，绑定．
+一般用于按钮等．
+v-on的简写法是 ＠xxxx= 
+
+=== 事件修饰符 ===
+Vue.js 为 v-on 提供了事件修饰符。之前提过，修饰符是由点开头的指令后缀来表示的。
+
+	.stop
+	.prevent
+	.capture
+	.self
+	.once
+	.passive
+
+
+
+==== ６．表单数据绑定 ====
+<input v-model="message">　表单值与message变量绑定．
+　
+　
+
+==== 7 组件 ====
+组件系统是 Vue 的另一个重要概念，因为它是一种抽象，允许我们使用小型、独立和通常可复用的组件构建大型应用。仔细想想，几乎任意类型的应用界面都可以抽象为一个组件树
+
+注册组件：
+Vue.component('todo-item', {          — todo-item为组件名，可以当标签用．
+  // todo-item 组件现在接受一个
+  // "prop"，类似于一个自定义特性。
+  // 这个 prop 名为 todo。
+  props: ['todo'],　　－－定义了todo的属性．
+  template: '<li>｛｛　todo.title ｝｝</li>'　　－－模板，负责组件展示．
+})
+
+==== ８重复元素 ====
+ｖｕｅ会尽可能复用同样的元素的渲染，提高性能，即同样的元素只会渲染一次，但有时就是想要区别开来．那么请在元素上用key属性，指定不同的值．来分离开．
+
+
+==== ９．计算属性 ====
+　即vue初始化时传的optins中有一个是computed属性，它可以注册一个计算函数．这个函数名可以直接在模板中用｛｛　　｝｝来引用显示．得到计算结果
+计算属性是基于它们的响应式依赖进行缓存的。也就是说依赖的属性没变，不管刷新几次，计算属性都是从缓存中拿数据，不必重新计算．
+
+　注意，用方法　，即method:{}中定义的方法，也可以在　｛｛　ｘｘｘ　｝｝这种方式也可以实现计算的功能，但是方法会在每次渲染时重新调用这引函数　，但如果用的是计算属性办法，则会用上缓存，
+这在作复杂耗时运算时可提高性能．
+
+计算属性默认只有 getter ，不过在需要时你也可以提供一个 setter ：
+
+==== １０　侦听属性 ====
+就是在options中加watch:{
+
+}里边定义函数　，函数名就是被侦听的属性名，当这个属性发生变化，就会执行函数体．
+
+==== １１数组的变更 ====
+１．变异方法
+　即可会让数组内容发生变化的方法：ｖｕｅ对它们进行了再包装，令其实现响应式．
+
+	push()
+	pop()
+	shift()
+	unshift()
+	splice()
+	sort()
+	reverse()
+
+
+
+２．替换数组．
+有些方法不会改变数组的内容，而只会生成一个新的数组．这个并不会导致页面重新渲染．　而且很高效．
+
+注意:
+由于 JavaScript 的限制，Vue 不能检测以下数组的变动：
+
+	当你利用索引直接设置一个数组项时，例如：vm.items[indexOfItem] = newValue
+	当你修改数组的长度时，例如：vm.items.length = newLength
+但有替代方案:
+Vue.set(vm.items, indexOfItem, newValue)
+
+// Array.prototype.splice
+vm.items.splice(indexOfItem, 1, newValue)
+vm.$set(vm.items, indexOfItem, newValue)
+长度问题：vm.items.splice(newLength)
+
+==== １２．对象检查变更注意事项 ====
+Vue 不能检测对象属性的添加或删除：
+对于已经创建的实例，Vue 不允许动态添加根级别的响应式属性。但是，可以使用 Vue.set(object, propertyName, value) 方法向嵌套对象添加响应式属性。
+
+有时你可能需要为已有对象赋值多个新属性，比如使用 Object.assign() 或 _.extend()。
+如：
+vm.userProfile = Object.assign({}, vm.userProfile, {
+  age: 27,
+  favoriteColor: 'Vue Green'
+})
+
+
+
